@@ -129,8 +129,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div class="topbar">
   <h1>Industry Benchmarks</h1>
   <div class="region-toggle" id="regionToggle">
-    <button class="region-btn active" data-region="global">Global</button>
-    <button class="region-btn" data-region="us">US</button>
+    <button class="region-btn active" data-region="global">All Markets</button>
+    <button class="region-btn" data-region="us">$1M-$10M GMV</button>
   </div>
   <div class="search-wrap"><input type="text" id="searchInput" placeholder="Search industries..."></div>
   <div class="stats">
@@ -294,7 +294,7 @@ function getChannelsFor(industry){
   return globalData[industry]?Object.keys(globalData[industry]).sort():[];
 }
 
-function hasUSData(industry){ return !!(usData[industry]&&Object.keys(usData[industry]).length) }
+function hasSegmentData(industry){ return !!(usData[industry]&&Object.keys(usData[industry]).length) }
 
 function getGlobalMonthlyTrend(industry,metric,n){
   const chs=globalData[industry];if(!chs)return[];
@@ -372,12 +372,12 @@ function render(){
 function cardHTML(ind){
   const id=ind.replace(/\W/g,'');
   const chs=getChannelsFor(ind);
-  const noUS=currentRegion==='us'&&!hasUSData(ind);
+  const noUS=currentRegion==='us'&&!hasSegmentData(ind);
   const chText=chs.length?chs.slice(0,6).join(', ')+(chs.length>6?` +${chs.length-6} more`:''):'No data';
 
   return`<div class="card" id="c-${id}">
     <div class="card-top">
-      <h3>${fmtInd(ind)}${noUS?'<span class="no-us">No US data</span>':''}</h3>
+      <h3>${fmtInd(ind)}${noUS?'<span class="no-us">No segment data</span>':''}</h3>
       <div class="card-channels" id="cch-${id}">${chText}</div>
       <div class="metrics" id="met-${id}">
         <div class="metric" id="m-cpm-${id}"><div class="label">CPM</div><div class="val">—</div><div class="sub">Cost per 1K</div></div>
@@ -487,7 +487,7 @@ function renderDetail(id,ind){
 
   det.innerHTML=`
     <div class="detail-section">
-      <h4>Channel Breakdown${isUS?' (US)':' (Global, Latest Month)'}</h4>
+      <h4>Channel Breakdown${isUS?' ($1M-$10M GMV Tier)':' (All Markets, Latest Month)'}</h4>
       ${rows?`<table class="tbl"><thead><tr><th>Channel</th><th>CPM</th><th>CPC</th><th>CTR</th><th>CPA</th><th>CVR</th><th>ROAS</th><th>AOV</th><th>MER</th></tr></thead><tbody>${rows}</tbody></table>`:'<div style="color:var(--text3);font-size:12px;padding:12px">No data for current selection</div>'}
     </div>
     ${!isUS?`<div class="detail-section"><h4>ROAS Trend (12 Months)</h4><div class="chart-box"><canvas id="${trendId}"></canvas></div></div>`:''}
