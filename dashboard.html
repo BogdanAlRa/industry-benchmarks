@@ -7,932 +7,617 @@
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
-  :root {
-    --bg-dark: #0d1117;
-    --bg-card: #161b22;
-    --bg-card-hover: #1c2333;
-    --bg-expand: #0d1117;
-    --border: #30363d;
-    --text-primary: #e6edf3;
-    --text-secondary: #8b949e;
-    --text-muted: #6e7681;
-    --accent: #58a6ff;
-    --accent-dim: #1f6feb33;
-    --highlight: #f85149;
-    --green: #3fb950;
-    --orange: #d29922;
-    --purple: #bc8cff;
-  }
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0b0f19;--bg2:#111827;--bg3:#1f2937;--bg4:#374151;
+  --border:#1e293b;--border2:#334155;
+  --text:#f1f5f9;--text2:#94a3b8;--text3:#64748b;
+  --accent:#3b82f6;--accent2:#60a5fa;
+  --green:#22c55e;--green2:#16a34a;--green-bg:rgba(34,197,94,.1);
+  --orange:#f59e0b;--orange-bg:rgba(245,158,11,.1);
+  --red:#ef4444;--red-bg:rgba(239,68,68,.1);
+  --purple:#a78bfa;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+/* Top bar */
+.topbar{position:sticky;top:0;z-index:100;background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.topbar h1{font-size:18px;font-weight:700;white-space:nowrap}
+.region-toggle{display:flex;background:var(--bg);border-radius:8px;overflow:hidden;border:1px solid var(--border)}
+.region-btn{padding:7px 16px;font-size:13px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--text3);transition:all .15s}
+.region-btn.active{background:var(--accent);color:#fff}
+.region-btn:hover:not(.active){background:var(--bg3);color:var(--text2)}
+.search-wrap{flex:1;min-width:200px;max-width:400px;position:relative}
+.search-wrap input{width:100%;padding:8px 12px 8px 36px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;outline:none}
+.search-wrap input:focus{border-color:var(--accent)}
+.search-wrap::before{content:'\1F50D';position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:12px;opacity:.5}
+.stats{display:flex;gap:16px;font-size:12px;color:var(--text3);margin-left:auto}
+.stats strong{color:var(--text2)}
 
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-    background: var(--bg-dark);
-    color: var(--text-primary);
-    min-height: 100vh;
-  }
+/* Channel group bar */
+.channel-bar{background:var(--bg2);border-bottom:1px solid var(--border);padding:10px 24px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.channel-bar-label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-right:4px;font-weight:600}
+.ch-group{display:flex;align-items:center;gap:2px;background:var(--bg);border-radius:8px;padding:3px;border:1px solid var(--border)}
+.ch-group-btn{padding:5px 12px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;border:none;background:transparent;color:var(--text3);transition:all .15s;white-space:nowrap}
+.ch-group-btn.active{background:var(--bg3);color:var(--text);border:1px solid var(--border2)}
+.ch-group-btn:hover:not(.active){color:var(--text2)}
+.ch-sub{display:flex;gap:4px;margin-left:4px;flex-wrap:wrap}
+.ch-sub-btn{padding:3px 10px;border-radius:12px;font-size:11px;cursor:pointer;border:1px solid transparent;transition:all .15s;white-space:nowrap}
+.ch-sub-btn.selected{border-color:rgba(255,255,255,.3);box-shadow:0 0 4px rgba(255,255,255,.1)}
+.ch-sub-btn:hover{opacity:.8}
 
-  /* Header */
-  .header {
-    padding: 32px 24px 20px;
-    text-align: center;
-    border-bottom: 1px solid var(--border);
-    background: linear-gradient(180deg, #161b2288, transparent);
-  }
-  .header h1 {
-    font-size: 28px;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-  }
-  .header .subtitle {
-    color: var(--text-secondary);
-    font-size: 14px;
-    margin-top: 6px;
-  }
-  .search-bar {
-    max-width: 480px;
-    margin: 16px auto 0;
-    position: relative;
-  }
-  .search-bar input {
-    width: 100%;
-    padding: 10px 16px 10px 40px;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    background: var(--bg-card);
-    color: var(--text-primary);
-    font-size: 14px;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .search-bar input:focus { border-color: var(--accent); }
-  .search-bar::before {
-    content: '\1F50D';
-    position: absolute;
-    left: 14px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 14px;
-  }
+/* Loading */
+.loading{text-align:center;padding:80px;color:var(--text3)}
+.spinner{display:inline-block;width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;margin-bottom:12px}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-  /* Stats bar */
-  .stats-bar {
-    display: flex;
-    justify-content: center;
-    gap: 32px;
-    padding: 14px 24px;
-    border-bottom: 1px solid var(--border);
-    font-size: 13px;
-    color: var(--text-secondary);
-  }
-  .stats-bar span strong {
-    color: var(--text-primary);
-    font-size: 15px;
-  }
+/* Main */
+.main{padding:24px;max-width:1600px;margin:0 auto}
 
-  /* Loading */
-  .loading {
-    text-align: center;
-    padding: 80px 24px;
-    color: var(--text-secondary);
-    font-size: 16px;
-  }
-  .loading .spinner {
-    display: inline-block;
-    width: 32px;
-    height: 32px;
-    border: 3px solid var(--border);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    margin-bottom: 12px;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
+/* Super-category */
+.super-cat{margin-bottom:28px}
+.super-cat-hdr{display:flex;align-items:center;gap:10px;padding:8px 0;cursor:pointer;user-select:none}
+.super-cat-hdr:hover h2{color:var(--accent2)}
+.super-cat-hdr .arr{font-size:11px;color:var(--text3);transition:transform .2s;width:16px}
+.super-cat-hdr.collapsed .arr{transform:rotate(-90deg)}
+.super-cat-hdr h2{font-size:15px;font-weight:600}
+.super-cat-hdr .cnt{font-size:11px;color:var(--text3);padding:2px 8px;background:var(--bg3);border-radius:10px}
 
-  /* Main content */
-  .content { padding: 24px; max-width: 1440px; margin: 0 auto; }
+/* Cards grid — 2 columns, larger */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(580px,1fr));gap:16px}
+.grid.hidden{display:none}
 
-  /* Super-category */
-  .super-category {
-    margin-bottom: 24px;
-  }
-  .super-category-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 4px;
-    cursor: pointer;
-    user-select: none;
-  }
-  .super-category-header:hover { color: var(--accent); }
-  .super-category-header .arrow {
-    font-size: 12px;
-    transition: transform 0.2s;
-    color: var(--text-secondary);
-  }
-  .super-category-header.collapsed .arrow { transform: rotate(-90deg); }
-  .super-category-header h2 {
-    font-size: 16px;
-    font-weight: 600;
-  }
-  .super-category-header .count {
-    color: var(--text-muted);
-    font-size: 12px;
-  }
+/* Card */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color .2s}
+.card:hover{border-color:var(--border2)}
+.card-top{padding:20px 24px 16px}
+.card-top h3{font-size:17px;font-weight:700;margin-bottom:4px}
+.card-top .card-channels{font-size:11px;color:var(--text3);margin-bottom:14px}
 
-  /* Industry cards grid */
-  .industry-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: 16px;
-  }
-  .industry-grid.hidden { display: none; }
+/* Metrics grid — 2 rows of 4 */
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.metric{background:var(--bg);border-radius:8px;padding:12px;text-align:center;border:1px solid var(--border)}
+.metric .label{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);margin-bottom:4px;font-weight:600}
+.metric .val{font-size:22px;font-weight:800;line-height:1.1}
+.metric .sub{font-size:10px;color:var(--text3);margin-top:3px}
+.metric.highlight{border-color:var(--green);background:var(--green-bg)}
+.metric.warn{border-color:var(--orange);background:var(--orange-bg)}
+.metric.bad{border-color:var(--red);background:var(--red-bg)}
 
-  /* Industry card */
-  .industry-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
-    transition: border-color 0.2s;
-  }
-  .industry-card:hover { border-color: var(--accent); }
-  .card-main { padding: 16px; }
-  .card-main h3 {
-    font-size: 15px;
-    font-weight: 600;
-    margin-bottom: 10px;
-  }
+/* Spark row */
+.spark-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:6px}
+.spark-box{background:var(--bg);border-radius:8px;padding:10px 12px}
+.spark-box .spark-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin-bottom:4px}
+.spark-box canvas{height:50px!important;width:100%!important}
 
-  /* Platform selector */
-  .platform-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-    margin-bottom: 12px;
-  }
-  .platform-badge {
-    padding: 3px 8px;
-    border-radius: 12px;
-    font-size: 11px;
-    cursor: pointer;
-    border: 1px solid transparent;
-    transition: all 0.15s;
-    white-space: nowrap;
-  }
-  .platform-badge:hover { opacity: 0.85; }
-  .platform-badge.selected { border-color: #fff; box-shadow: 0 0 6px rgba(255,255,255,0.15); }
+/* Expand */
+.expand-btn{display:flex;align-items:center;justify-content:center;width:100%;padding:10px;background:none;border:none;border-top:1px solid var(--border);color:var(--text3);font-size:12px;cursor:pointer;transition:all .15s;font-weight:500}
+.expand-btn:hover{color:var(--accent2);background:rgba(59,130,246,.05)}
 
-  /* KPI grid */
-  .kpi-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-    margin-bottom: 10px;
-  }
-  .kpi-item {
-    text-align: center;
-    padding: 6px 4px;
-    background: var(--bg-dark);
-    border-radius: 6px;
-  }
-  .kpi-label {
-    font-size: 10px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-  .kpi-value {
-    font-size: 16px;
-    font-weight: 700;
-    margin-top: 2px;
-  }
+/* Detail */
+.detail{display:none;padding:20px 24px;border-top:1px solid var(--border);background:var(--bg)}
+.detail.open{display:block}
+.detail h4{font-size:12px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.detail-section{margin-bottom:20px}
+.tbl{width:100%;border-collapse:collapse;font-size:12px;display:block;overflow-x:auto}
+.tbl th,.tbl td{padding:6px 8px;text-align:right;white-space:nowrap}
+.tbl th{color:var(--text3);font-weight:500;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg)}
+.tbl td:first-child,.tbl th:first-child{text-align:left}
+.tbl tr:hover td{background:var(--bg2)}
+.chart-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.chart-box{background:var(--bg2);border-radius:8px;padding:14px}
+.chart-box h5{font-size:11px;color:var(--text3);margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:.3px}
+.chart-box canvas{width:100%!important;height:170px!important}
 
-  /* Sparkline */
-  .sparkline-container {
-    height: 48px;
-    margin: 8px 0 4px;
-  }
+/* No data badge */
+.no-us{display:inline-block;padding:2px 8px;font-size:10px;background:var(--bg3);color:var(--text3);border-radius:4px;margin-left:8px}
 
-  /* See more button */
-  .see-more-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    padding: 8px;
-    background: none;
-    border: none;
-    border-top: 1px solid var(--border);
-    color: var(--text-secondary);
-    font-size: 12px;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .see-more-btn:hover { color: var(--accent); background: var(--accent-dim); }
-
-  /* Expanded detail */
-  .card-detail {
-    display: none;
-    padding: 16px;
-    border-top: 1px solid var(--border);
-    background: var(--bg-expand);
-  }
-  .card-detail.open { display: block; }
-  .detail-section {
-    margin-bottom: 20px;
-  }
-  .detail-section h4 {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-secondary);
-    margin-bottom: 8px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  /* Monthly table */
-  .monthly-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 12px;
-    overflow-x: auto;
-    display: block;
-  }
-  .monthly-table th, .monthly-table td {
-    padding: 5px 6px;
-    text-align: right;
-    white-space: nowrap;
-  }
-  .monthly-table th {
-    color: var(--text-muted);
-    font-weight: 500;
-    border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 0;
-    background: var(--bg-expand);
-  }
-  .monthly-table td:first-child, .monthly-table th:first-child { text-align: left; }
-  .monthly-table tr:hover td { background: var(--bg-card); }
-
-  /* Chart containers in detail */
-  .chart-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
-  .chart-box {
-    background: var(--bg-card);
-    border-radius: 8px;
-    padding: 12px;
-  }
-  .chart-box h5 {
-    font-size: 12px;
-    color: var(--text-secondary);
-    margin-bottom: 8px;
-  }
-  .chart-box canvas { width: 100% !important; height: 180px !important; }
-
-  /* No data */
-  .no-data {
-    color: var(--text-muted);
-    font-size: 12px;
-    font-style: italic;
-    text-align: center;
-    padding: 16px;
-  }
-
-  /* Responsive */
-  @media (max-width: 768px) {
-    .industry-grid { grid-template-columns: 1fr; }
-    .chart-row { grid-template-columns: 1fr; }
-    .header h1 { font-size: 22px; }
-    .stats-bar { flex-wrap: wrap; gap: 16px; }
-  }
+/* Responsive */
+@media(max-width:768px){
+  .grid{grid-template-columns:1fr}
+  .metrics{grid-template-columns:repeat(2,1fr)}
+  .chart-row{grid-template-columns:1fr}
+  .topbar{padding:10px 16px}
+  .channel-bar{padding:8px 16px}
+  .main{padding:16px}
+  .stats{display:none}
+}
 </style>
 </head>
 <body>
 
-<div class="header">
-  <h1>Industry Benchmarks Dashboard</h1>
-  <p class="subtitle">49 Industries &middot; 19 Channels &middot; Data from Nov 2022 &ndash; Feb 2026</p>
-  <div class="search-bar">
-    <input type="text" id="searchInput" placeholder="Search industries...">
+<div class="topbar">
+  <h1>Industry Benchmarks</h1>
+  <div class="region-toggle" id="regionToggle">
+    <button class="region-btn active" data-region="global">Global</button>
+    <button class="region-btn" data-region="us">US</button>
+  </div>
+  <div class="search-wrap"><input type="text" id="searchInput" placeholder="Search industries..."></div>
+  <div class="stats">
+    <span><strong id="sI">0</strong> Industries</span>
+    <span><strong id="sC">0</strong> Channels</span>
+    <span><strong id="sR">0</strong> Records</span>
   </div>
 </div>
 
-<div class="stats-bar" id="statsBar">
-  <span><strong id="statIndustries">0</strong> Industries</span>
-  <span><strong id="statChannels">0</strong> Channels</span>
-  <span><strong id="statMonths">0</strong> Months</span>
-  <span><strong id="statDataPoints">0</strong> Data Points</span>
+<div class="channel-bar">
+  <span class="channel-bar-label">Channels:</span>
+  <div class="ch-group" id="chGroupBar">
+    <button class="ch-group-btn active" data-group="all">All</button>
+    <button class="ch-group-btn" data-group="social">Social</button>
+    <button class="ch-group-btn" data-group="search">Search</button>
+    <button class="ch-group-btn" data-group="native">Native</button>
+    <button class="ch-group-btn" data-group="marketplace">Marketplace</button>
+    <button class="ch-group-btn" data-group="other">Other</button>
+  </div>
+  <div class="ch-sub" id="chSubBar"></div>
 </div>
 
-<div class="loading" id="loading">
-  <div class="spinner"></div>
-  <div>Loading benchmark data...</div>
-</div>
-
-<div class="content" id="content" style="display:none;"></div>
+<div class="loading" id="loading"><div class="spinner"></div><div>Loading benchmarks...</div></div>
+<div class="main" id="main" style="display:none"></div>
 
 <script>
-// ========== CONFIGURATION ==========
+// =========== CONFIG ===========
+const CHANNEL_GROUPS = {
+  social: { label: 'Social', channels: ['Meta','TikTok','Snapchat','Pinterest Ads','Reddit','Twitter'], colors: { Meta:'#1877f2', TikTok:'#fe2c55', Snapchat:'#fffc00', 'Pinterest Ads':'#e60023', Reddit:'#ff4500', Twitter:'#1d9bf0' }},
+  search: { label: 'Search', channels: ['Google Ads','Microsoft Ads'], colors: { 'Google Ads':'#4285f4', 'Microsoft Ads':'#00a4ef' }},
+  native: { label: 'Native', channels: ['Taboola','Outbrain','Criteo','StackAdapt','Adroll'], colors: { Taboola:'#005baa', Outbrain:'#e6420b', Criteo:'#f4811f', StackAdapt:'#6c3dc7', Adroll:'#0dadf1' }},
+  marketplace: { label: 'Marketplace', channels: ['Amazon'], colors: { Amazon:'#ff9900' }},
+  other: { label: 'Other', channels: ['Axon','AfterSell','Vibe','Mountain','Yotpo SMS and Email'], colors: { Axon:'#00c4b4', AfterSell:'#7c3aed', Vibe:'#6366f1', Mountain:'#22c55e', 'Yotpo SMS and Email':'#3b82f6' }}
+};
+
+const ALL_CHANNELS_COLOR = {};
+for (const g of Object.values(CHANNEL_GROUPS)) for (const [c,col] of Object.entries(g.colors)) ALL_CHANNELS_COLOR[c] = col;
+
 const SUPER_CATEGORIES = {
-  'Health & Medical': ['health_and_beauty','health_and_wellness','healthcare_providers','medical_devices_and_equipment','pharmaceuticals_and_biotech','senior_care'],
-  'Finance & Business': ['accounting_and_tax_services','financial_services','insurance','investment_and_wealth_management','consulting_and_professional_services','business_supplies_and_equipment'],
-  'Tech & Software': ['software_and_saas','technology_services','consumer_electronics','emerging_technology','telecommunications','gaming_and_apps'],
-  'Retail & Commerce': ['apparel_and_accessories','lifestyle_and_boutique','internet_and_ecommerce','toys_art_and_collectibles','baby','sports_and_outdoors'],
-  'Home & Living': ['home_and_garden','food_and_beverage','pets_and_animals','agriculture_and_food_production'],
-  'Travel & Hospitality': ['hotels_and_accommodation','travel_accessories_and_luggage','transportation_services','events_and_venues'],
-  'Media & Entertainment': ['entertainment','media_and_publishing','arts_and_culture','books_and_music'],
-  'Education & Training': ['elearning_and_online_courses','professional_training_and_coaching'],
-  'Professional Services': ['legal_services','hr_and_recruiting','marketing_and_advertising','real_estate','construction_and_engineering','manufacturing'],
-  'Other': ['nonprofit_and_philanthropy','energy_and_utilities','dating_and_personal_services','automotive','other']
+  'Health & Medical':['health_and_beauty','health_and_wellness','healthcare_providers','medical_devices_and_equipment','pharmaceuticals_and_biotech','senior_care'],
+  'Finance & Business':['accounting_and_tax_services','financial_services','insurance','investment_and_wealth_management','consulting_and_professional_services','business_supplies_and_equipment'],
+  'Tech & Software':['software_and_saas','technology_services','consumer_electronics','emerging_technology','telecommunications','gaming_and_apps'],
+  'Retail & Commerce':['apparel_and_accessories','lifestyle_and_boutique','internet_and_ecommerce','toys_art_and_collectibles','baby','sports_and_outdoors'],
+  'Home & Living':['home_and_garden','food_and_beverage','pets_and_animals','agriculture_and_food_production'],
+  'Travel & Hospitality':['hotels_and_accommodation','travel_accessories_and_luggage','transportation_services','events_and_venues'],
+  'Media & Entertainment':['entertainment','media_and_publishing','arts_and_culture','books_and_music'],
+  'Education & Training':['elearning_and_online_courses','professional_training_and_coaching'],
+  'Professional Services':['legal_services','hr_and_recruiting','marketing_and_advertising','real_estate','construction_and_engineering','manufacturing'],
+  'Other':['nonprofit_and_philanthropy','energy_and_utilities','dating_and_personal_services','automotive','other']
 };
 
-const PLATFORM_STYLES = {
-  'All':               { bg: '#30363d', fg: '#e6edf3', label: 'All' },
-  'Meta':              { bg: '#1877f2', fg: '#fff', label: 'Meta' },
-  'Google Ads':        { bg: '#4285f4', fg: '#fff', label: 'Google' },
-  'TikTok':            { bg: '#1a1a1a', fg: '#fe2c55', label: 'TikTok' },
-  'Amazon':            { bg: '#ff9900', fg: '#000', label: 'Amazon' },
-  'Microsoft Ads':     { bg: '#00a4ef', fg: '#fff', label: 'MSFT' },
-  'Pinterest Ads':     { bg: '#e60023', fg: '#fff', label: 'Pinterest' },
-  'Snapchat':          { bg: '#fffc00', fg: '#000', label: 'Snap' },
-  'Reddit':            { bg: '#ff4500', fg: '#fff', label: 'Reddit' },
-  'Twitter':           { bg: '#1d9bf0', fg: '#fff', label: 'X' },
-  'Criteo':            { bg: '#f4811f', fg: '#fff', label: 'Criteo' },
-  'Taboola':           { bg: '#005baa', fg: '#fff', label: 'Taboola' },
-  'Outbrain':          { bg: '#e6420b', fg: '#fff', label: 'Outbrain' },
-  'StackAdapt':        { bg: '#6c3dc7', fg: '#fff', label: 'StackAdapt' },
-  'Axon':              { bg: '#00c4b4', fg: '#000', label: 'Axon' },
-  'Adroll':            { bg: '#0dadf1', fg: '#fff', label: 'AdRoll' },
-  'AfterSell':         { bg: '#7c3aed', fg: '#fff', label: 'AfterSell' },
-  'Vibe':              { bg: '#6366f1', fg: '#fff', label: 'Vibe' },
-  'Mountain':          { bg: '#22c55e', fg: '#000', label: 'Mountain' },
-  'Yotpo SMS and Email':{ bg: '#3b82f6', fg: '#fff', label: 'Yotpo' },
-};
+const MONTH_ORDER = {};
+const MN = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+for(let y=22;y<=26;y++) for(let m=0;m<12;m++) MONTH_ORDER[`${MN[m]} ${y}`]=y*12+m;
+function sortM(a,b){return(MONTH_ORDER[a]||0)-(MONTH_ORDER[b]||0)}
+const DAY_NAMES=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
 
-const MONTH_ORDER_MAP = {};
-const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-for (let y = 22; y <= 26; y++) {
-  for (let m = 0; m < 12; m++) {
-    MONTH_ORDER_MAP[`${monthNames[m]} ${y}`] = y * 12 + m;
-  }
-}
-
-function parseMonthKey(m) { return MONTH_ORDER_MAP[m] || 0; }
-function sortMonths(a, b) { return parseMonthKey(a) - parseMonthKey(b); }
-
-const DAY_NAMES = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-
-// ========== DATA STRUCTURES ==========
-let monthlyData = {};   // industry -> channel -> month -> metrics
-let dowData = {};       // industry -> channel -> dayOfWeek -> metrics
-let womData = {};       // industry -> channel -> weekOfMonth -> metrics
-let domData = {};       // industry -> channel -> dayOfMonth -> metrics
+// =========== STATE ===========
+let currentRegion = 'global';
+let currentGroup = 'all';
+let selectedChannels = new Set(); // empty = all in group
+let globalData = {}; // industry -> channel -> month -> metrics
+let usData = {};     // industry -> channel -> metrics (single snapshot)
+let dowData = {};
+let womData = {};
+let domData = {};
 let allIndustries = new Set();
 let allChannels = new Set();
-let allMonths = new Set();
 let totalRows = 0;
+const charts = {};
 
-// ========== PARSING HELPERS ==========
-function cleanNum(v) {
-  if (!v || v === '' || v === '-') return null;
-  let s = String(v).replace(/[$,%]/g, '').replace(/,/g, '').trim();
-  let n = parseFloat(s);
-  return isNaN(n) ? null : n;
+// =========== PARSE ===========
+function cleanNum(v){
+  if(!v||v===''||v==='-') return null;
+  let s=String(v).replace(/[$,%x]/g,'').replace(/,/g,'').trim();
+  let n=parseFloat(s); return isNaN(n)?null:n;
 }
+function parseRow(r){return{cpm:cleanNum(r.CPM),cpc:cleanNum(r.CPC),ctr:cleanNum(r.CTR),cpa:cleanNum(r.CPA),cvr:cleanNum(r.Cvr),roas:cleanNum(r.ROAS),aov:cleanNum(r.AOV),mer:cleanNum(r.Mer)}}
+function nest(o,ks){let c=o;for(const k of ks){if(!c[k])c[k]={};c=c[k]}return c}
 
-function parseRow(row) {
-  return {
-    cpm: cleanNum(row.CPM),
-    cpc: cleanNum(row.CPC),
-    ctr: cleanNum(row.CTR),
-    cpa: cleanNum(row.CPA),
-    cvr: cleanNum(row.Cvr),
-    roas: cleanNum(row.ROAS),
-    aov: cleanNum(row.AOV),
-    mer: cleanNum(row.Mer),
-  };
-}
+async function loadCSV(f){const r=await fetch(f);const t=await r.text();return Papa.parse(t,{header:true,delimiter:'\t',skipEmptyLines:true}).data}
 
-function ensureNested(obj, keys) {
-  let cur = obj;
-  for (const k of keys) {
-    if (!cur[k]) cur[k] = {};
-    cur = cur[k];
-  }
-  return cur;
-}
-
-// ========== LOAD DATA ==========
-async function loadCSV(filename) {
-  const resp = await fetch(filename);
-  const text = await resp.text();
-  return Papa.parse(text, { header: true, delimiter: '\t', skipEmptyLines: true }).data;
-}
-
-async function loadAllData() {
-  const [monthly, dow, wom, dom] = await Promise.all([
+async function loadAll(){
+  const [monthly,us,dow,wom,dom] = await Promise.all([
     loadCSV('monthly_benchmarks.csv'),
+    loadCSV('us_benchmarks.csv'),
     loadCSV('benchmarks_by_day_of_week.csv'),
     loadCSV('benchmarks_by_week_of_month.csv'),
     loadCSV('benchmarks_by_day_of_month.csv'),
   ]);
-
-  // Monthly
-  for (const row of monthly) {
-    const ind = row.Industry, ch = row.Channel, mo = row.Month;
-    if (!ind || !ch || !mo) continue;
-    allIndustries.add(ind);
-    allChannels.add(ch);
-    allMonths.add(mo);
-    totalRows++;
-    const bucket = ensureNested(monthlyData, [ind, ch]);
-    bucket[mo] = parseRow(row);
+  for(const r of monthly){
+    const i=r.Industry,c=r.Channel,m=r.Month;
+    if(!i||!c||!m)continue;
+    allIndustries.add(i);allChannels.add(c);totalRows++;
+    nest(globalData,[i,c])[m]=parseRow(r);
   }
-
-  // Day of week
-  for (const row of dow) {
-    const ind = row.Industry, ch = row.Channel, d = row.Day_of_Week;
-    if (!ind || !ch || !d) continue;
-    totalRows++;
-    const bucket = ensureNested(dowData, [ind, ch]);
-    bucket[d] = parseRow(row);
+  for(const r of us){
+    const i=r.Industry,c=r.Channel;
+    if(!i||!c)continue;totalRows++;
+    nest(usData,[i])[c]=parseRow(r);
   }
-
-  // Week of month
-  for (const row of wom) {
-    const ind = row.Industry, ch = row.Channel, w = row.Week_of_Month;
-    if (!ind || !ch || !w) continue;
-    totalRows++;
-    const bucket = ensureNested(womData, [ind, ch]);
-    bucket[w] = parseRow(row);
-  }
-
-  // Day of month
-  for (const row of dom) {
-    const ind = row.Industry, ch = row.Channel, d = row.Day_of_Month;
-    if (!ind || !ch || !d) continue;
-    totalRows++;
-    const bucket = ensureNested(domData, [ind, ch]);
-    bucket[d] = parseRow(row);
-  }
+  for(const r of dow){const i=r.Industry,c=r.Channel,d=r.Day_of_Week;if(!i||!c||!d)continue;totalRows++;nest(dowData,[i,c])[d]=parseRow(r)}
+  for(const r of wom){const i=r.Industry,c=r.Channel,w=r.Week_of_Month;if(!i||!c||!w)continue;totalRows++;nest(womData,[i,c])[w]=parseRow(r)}
+  for(const r of dom){const i=r.Industry,c=r.Channel,d=r.Day_of_Month;if(!i||!c||!d)continue;totalRows++;nest(domData,[i,c])[d]=parseRow(r)}
 }
 
-// ========== METRIC HELPERS ==========
-function avgMetrics(metricsArr) {
-  const result = {};
-  const keys = ['cpm','cpc','ctr','cpa','cvr','roas','aov','mer'];
-  for (const k of keys) {
-    const vals = metricsArr.map(m => m[k]).filter(v => v !== null && v !== undefined);
-    result[k] = vals.length > 0 ? vals.reduce((a, b) => a + b, 0) / vals.length : null;
+// =========== DATA ACCESS ===========
+function getActiveChannels(){
+  if(currentGroup==='all') return null; // all channels
+  const grp = CHANNEL_GROUPS[currentGroup];
+  if(!grp) return null;
+  if(selectedChannels.size>0) return [...selectedChannels];
+  return grp.channels;
+}
+
+function filterChannels(channelObj){
+  const active = getActiveChannels();
+  if(!active) return channelObj;
+  const out={};
+  for(const c of active) if(channelObj[c]) out[c]=channelObj[c];
+  return out;
+}
+
+function avgMetrics(arr){
+  const r={};
+  for(const k of ['cpm','cpc','ctr','cpa','cvr','roas','aov','mer']){
+    const v=arr.map(m=>m[k]).filter(v=>v!=null);
+    r[k]=v.length?v.reduce((a,b)=>a+b,0)/v.length:null;
   }
-  return result;
+  return r;
 }
 
-function getBlendedMonth(industry, month) {
-  const channels = monthlyData[industry];
-  if (!channels) return null;
-  const metrics = [];
-  for (const ch in channels) {
-    if (channels[ch][month]) metrics.push(channels[ch][month]);
+function getLatestGlobal(industry){
+  const chs=globalData[industry];if(!chs)return null;
+  const filtered=filterChannels(chs);
+  const months=new Set();
+  for(const c in filtered)for(const m in filtered[c])months.add(m);
+  const sorted=[...months].sort(sortM);
+  if(!sorted.length)return null;
+  const latest=sorted[sorted.length-1];
+  const mets=[];
+  for(const c in filtered)if(filtered[c][latest])mets.push(filtered[c][latest]);
+  return mets.length?avgMetrics(mets):null;
+}
+
+function getLatestUS(industry){
+  const chs=usData[industry];if(!chs)return null;
+  const filtered=filterChannels(chs);
+  const mets=Object.values(filtered);
+  return mets.length?avgMetrics(mets):null;
+}
+
+function getLatestMetrics(industry){
+  return currentRegion==='us'?getLatestUS(industry):getLatestGlobal(industry);
+}
+
+function getChannelsFor(industry){
+  if(currentRegion==='us'){
+    return usData[industry]?Object.keys(usData[industry]).sort():[];
   }
-  return metrics.length > 0 ? avgMetrics(metrics) : null;
+  return globalData[industry]?Object.keys(globalData[industry]).sort():[];
 }
 
-function getLatestMetrics(industry, channel) {
-  const months = getSortedMonths(industry, channel);
-  if (months.length === 0) return null;
-  const latest = months[months.length - 1];
-  if (channel === 'All') return getBlendedMonth(industry, latest);
-  return monthlyData[industry]?.[channel]?.[latest] || null;
-}
+function hasUSData(industry){ return !!(usData[industry]&&Object.keys(usData[industry]).length) }
 
-function getSortedMonths(industry, channel) {
-  if (channel === 'All') {
-    const months = new Set();
-    const channels = monthlyData[industry];
-    if (!channels) return [];
-    for (const ch in channels) {
-      for (const m in channels[ch]) months.add(m);
-    }
-    return [...months].sort(sortMonths);
-  }
-  const data = monthlyData[industry]?.[channel];
-  if (!data) return [];
-  return Object.keys(data).sort(sortMonths);
-}
-
-function getMonthlyTrend(industry, channel, metric, count) {
-  const months = getSortedMonths(industry, channel);
-  const recent = months.slice(-count);
-  return recent.map(m => {
-    let met;
-    if (channel === 'All') met = getBlendedMonth(industry, m);
-    else met = monthlyData[industry]?.[channel]?.[m];
-    return { month: m, value: met?.[metric] ?? null };
+function getGlobalMonthlyTrend(industry,metric,n){
+  const chs=globalData[industry];if(!chs)return[];
+  const filtered=filterChannels(chs);
+  const months=new Set();
+  for(const c in filtered)for(const m in filtered[c])months.add(m);
+  const sorted=[...months].sort(sortM).slice(-n);
+  return sorted.map(m=>{
+    const mets=[];
+    for(const c in filtered)if(filtered[c][m])mets.push(filtered[c][m]);
+    const avg=mets.length?avgMetrics(mets):null;
+    return{month:m,value:avg?avg[metric]:null};
   });
 }
 
-function getChannelsForIndustry(industry) {
-  const channels = monthlyData[industry];
-  if (!channels) return [];
-  return Object.keys(channels).sort();
-}
-
-function getTimeDimData(dataStore, industry, channel, dimKeys) {
-  if (channel === 'All') {
-    // Average across channels
-    return dimKeys.map(dk => {
-      const channels = dataStore[industry];
-      if (!channels) return null;
-      const metrics = [];
-      for (const ch in channels) {
-        if (channels[ch][dk]) metrics.push(channels[ch][dk]);
-      }
-      return metrics.length > 0 ? avgMetrics(metrics) : null;
-    });
-  }
-  const chData = dataStore[industry]?.[channel];
-  if (!chData) return dimKeys.map(() => null);
-  return dimKeys.map(dk => chData[dk] || null);
-}
-
-// ========== FORMATTING ==========
-function fmt(val, type) {
-  if (val === null || val === undefined) return '—';
-  switch (type) {
-    case '$': return '$' + val.toFixed(2);
-    case '%': return val.toFixed(2) + '%';
-    case 'x': return val.toFixed(2) + 'x';
-    default: return val.toFixed(2);
-  }
-}
-
-function formatIndustry(slug) {
-  return slug.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
-    .replace(/\bAnd\b/g, '&').replace(/\bSaas\b/g, 'SaaS').replace(/\bHr\b/g, 'HR')
-    .replace(/\bElearning\b/g, 'eLearning').replace(/\bEcommerce\b/g, 'eCommerce');
-}
-
-// ========== CHART HELPERS ==========
-const chartInstances = {};
-
-function destroyChart(id) {
-  if (chartInstances[id]) {
-    chartInstances[id].destroy();
-    delete chartInstances[id];
-  }
-}
-
-function createSparkline(canvasId, data, color) {
-  destroyChart(canvasId);
-  const canvas = document.getElementById(canvasId);
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  chartInstances[canvasId] = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: data.map(d => d.month),
-      datasets: [{
-        data: data.map(d => d.value),
-        borderColor: color || '#58a6ff',
-        backgroundColor: (color || '#58a6ff') + '22',
-        borderWidth: 2,
-        fill: true,
-        tension: 0.3,
-        pointRadius: 0,
-        pointHitRadius: 8,
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend: { display: false }, tooltip: {
-        callbacks: { label: ctx => '$' + (ctx.parsed.y?.toFixed(2) || '—') }
-      }},
-      scales: {
-        x: { display: false },
-        y: { display: false }
-      },
-      interaction: { mode: 'index', intersect: false },
-    }
+function getTimeDim(store,industry,keys){
+  const chs=store[industry];if(!chs)return keys.map(()=>null);
+  const filtered=filterChannels(chs);
+  return keys.map(k=>{
+    const mets=[];
+    for(const c in filtered)if(filtered[c]&&filtered[c][k])mets.push(filtered[c][k]);
+    return mets.length?avgMetrics(mets):null;
   });
 }
 
-function createBarChart(canvasId, labels, dataPoints, metric, color, title) {
-  destroyChart(canvasId);
-  const canvas = document.getElementById(canvasId);
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  const metricType = { cpm: '$', cpc: '$', ctr: '%', cpa: '$', cvr: '%', roas: 'x', aov: '$', mer: '' };
-  chartInstances[canvasId] = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: labels,
-      datasets: [{
-        data: dataPoints,
-        backgroundColor: color + '88',
-        borderColor: color,
-        borderWidth: 1,
-        borderRadius: 3,
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          callbacks: {
-            label: ctx => fmt(ctx.parsed.y, metricType[metric] || '')
-          }
-        }
-      },
-      scales: {
-        x: {
-          ticks: { color: '#8b949e', font: { size: 10 } },
-          grid: { display: false },
-        },
-        y: {
-          ticks: { color: '#6e7681', font: { size: 10 } },
-          grid: { color: '#30363d33' },
-        }
-      }
-    }
-  });
+// =========== FORMAT ===========
+function fmt(v,t){
+  if(v==null)return'—';
+  switch(t){case'$':return'$'+v.toFixed(2);case'%':return v.toFixed(2)+'%';case'x':return v.toFixed(2)+'x';default:return v.toFixed(2)}
+}
+function fmtInd(s){
+  return s.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase())
+    .replace(/\bAnd\b/g,'&').replace(/\bSaas\b/g,'SaaS').replace(/\bHr\b/g,'HR')
+    .replace(/\bElearning\b/g,'eLearning').replace(/\bEcommerce\b/g,'eCommerce');
 }
 
-// ========== RENDER ==========
-function renderDashboard() {
-  document.getElementById('statIndustries').textContent = allIndustries.size;
-  document.getElementById('statChannels').textContent = allChannels.size;
-  document.getElementById('statMonths').textContent = allMonths.size;
-  document.getElementById('statDataPoints').textContent = totalRows.toLocaleString();
+function metricClass(metric,value){
+  if(value==null)return'';
+  if(metric==='roas') return value>=2.5?'highlight':value>=1?'warn':'bad';
+  if(metric==='mer') return value<0.5?'highlight':value<1?'warn':'bad';
+  return'';
+}
 
-  const content = document.getElementById('content');
-  content.innerHTML = '';
+// =========== CHARTS ===========
+function destroyChart(id){if(charts[id]){charts[id].destroy();delete charts[id]}}
 
-  for (const [catName, industries] of Object.entries(SUPER_CATEGORIES)) {
-    const available = industries.filter(ind => allIndustries.has(ind));
-    if (available.length === 0) continue;
+function sparkline(id,data,color,label){
+  destroyChart(id);const c=document.getElementById(id);if(!c)return;
+  charts[id]=new Chart(c.getContext('2d'),{type:'line',data:{labels:data.map(d=>d.month||d.label||''),datasets:[{data:data.map(d=>d.value),borderColor:color||'#3b82f6',backgroundColor:(color||'#3b82f6')+'22',borderWidth:2,fill:true,tension:.35,pointRadius:0,pointHitRadius:8}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>(label||'')+c.parsed.y?.toFixed(2)}}},scales:{x:{display:false},y:{display:false}},interaction:{mode:'index',intersect:false}}});
+}
 
-    const section = document.createElement('div');
-    section.className = 'super-category';
-    section.innerHTML = `
-      <div class="super-category-header" onclick="toggleCategory(this)">
-        <span class="arrow">&#9660;</span>
-        <h2>${catName}</h2>
-        <span class="count">${available.length} industries</span>
+function barChart(id,labels,values,color,valFmt){
+  destroyChart(id);const c=document.getElementById(id);if(!c)return;
+  charts[id]=new Chart(c.getContext('2d'),{type:'bar',data:{labels,datasets:[{data:values,backgroundColor:color+'88',borderColor:color,borderWidth:1,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>fmt(c.parsed.y,valFmt)}}},scales:{x:{ticks:{color:'#64748b',font:{size:10}},grid:{display:false}},y:{ticks:{color:'#475569',font:{size:10}},grid:{color:'#1e293b44'}}}}});
+}
+
+// =========== RENDER ===========
+function render(){
+  document.getElementById('sI').textContent=allIndustries.size;
+  document.getElementById('sC').textContent=allChannels.size;
+  document.getElementById('sR').textContent=totalRows.toLocaleString();
+
+  const main=document.getElementById('main');main.innerHTML='';
+
+  for(const[cat,inds]of Object.entries(SUPER_CATEGORIES)){
+    const avail=inds.filter(i=>allIndustries.has(i));
+    if(!avail.length)continue;
+    const sec=document.createElement('div');sec.className='super-cat';
+    sec.innerHTML=`<div class="super-cat-hdr" onclick="toggleCat(this)"><span class="arr">&#9660;</span><h2>${cat}</h2><span class="cnt">${avail.length}</span></div><div class="grid" id="g-${cat.replace(/\W/g,'')}">${avail.map(i=>cardHTML(i)).join('')}</div>`;
+    main.appendChild(sec);
+  }
+  requestAnimationFrame(()=>{for(const i of allIndustries)updateCard(i)});
+}
+
+function cardHTML(ind){
+  const id=ind.replace(/\W/g,'');
+  const chs=getChannelsFor(ind);
+  const noUS=currentRegion==='us'&&!hasUSData(ind);
+  const chText=chs.length?chs.slice(0,6).join(', ')+(chs.length>6?` +${chs.length-6} more`:''):'No data';
+
+  return`<div class="card" id="c-${id}">
+    <div class="card-top">
+      <h3>${fmtInd(ind)}${noUS?'<span class="no-us">No US data</span>':''}</h3>
+      <div class="card-channels" id="cch-${id}">${chText}</div>
+      <div class="metrics" id="met-${id}">
+        <div class="metric" id="m-cpm-${id}"><div class="label">CPM</div><div class="val">—</div><div class="sub">Cost per 1K</div></div>
+        <div class="metric" id="m-cpc-${id}"><div class="label">CPC</div><div class="val">—</div><div class="sub">Cost per Click</div></div>
+        <div class="metric" id="m-ctr-${id}"><div class="label">CTR</div><div class="val">—</div><div class="sub">Click-through</div></div>
+        <div class="metric" id="m-cpa-${id}"><div class="label">CPA</div><div class="val">—</div><div class="sub">Cost per Acq.</div></div>
+        <div class="metric" id="m-roas-${id}"><div class="label">ROAS</div><div class="val">—</div><div class="sub">Return on Spend</div></div>
+        <div class="metric" id="m-aov-${id}"><div class="label">AOV</div><div class="val">—</div><div class="sub">Avg. Order</div></div>
+        <div class="metric" id="m-cvr-${id}"><div class="label">CVR</div><div class="val">—</div><div class="sub">Conversion</div></div>
+        <div class="metric" id="m-mer-${id}"><div class="label">MER</div><div class="val">—</div><div class="sub">Efficiency</div></div>
       </div>
-      <div class="industry-grid" id="grid-${catName.replace(/[^a-z]/gi,'')}">${available.map(ind => renderCard(ind)).join('')}</div>
-    `;
-    content.appendChild(section);
-  }
-
-  // Initialize sparklines after DOM is ready
-  requestAnimationFrame(() => {
-    for (const ind of allIndustries) {
-      updateCardData(ind, 'All');
-    }
-  });
-}
-
-function renderCard(industry) {
-  const channels = getChannelsForIndustry(industry);
-  const id = industry.replace(/[^a-z_]/gi, '');
-
-  let badges = `<span class="platform-badge selected" style="background:${PLATFORM_STYLES.All.bg};color:${PLATFORM_STYLES.All.fg}" data-channel="All" data-industry="${industry}" onclick="selectPlatform(this)">All</span>`;
-  for (const ch of channels) {
-    const style = PLATFORM_STYLES[ch] || { bg: '#555', fg: '#fff', label: ch.substring(0, 8) };
-    badges += `<span class="platform-badge" style="background:${style.bg};color:${style.fg}" data-channel="${ch}" data-industry="${industry}" onclick="selectPlatform(this)">${style.label}</span>`;
-  }
-
-  return `
-    <div class="industry-card" id="card-${id}">
-      <div class="card-main">
-        <h3>${formatIndustry(industry)}</h3>
-        <div class="platform-row" id="platforms-${id}">${badges}</div>
-        <div class="kpi-grid" id="kpis-${id}">
-          <div class="kpi-item"><div class="kpi-label">CPM</div><div class="kpi-value" id="kpi-cpm-${id}">—</div></div>
-          <div class="kpi-item"><div class="kpi-label">CPC</div><div class="kpi-value" id="kpi-cpc-${id}">—</div></div>
-          <div class="kpi-item"><div class="kpi-label">CTR</div><div class="kpi-value" id="kpi-ctr-${id}">—</div></div>
-          <div class="kpi-item"><div class="kpi-label">CPA</div><div class="kpi-value" id="kpi-cpa-${id}">—</div></div>
-          <div class="kpi-item"><div class="kpi-label">ROAS</div><div class="kpi-value" id="kpi-roas-${id}" style="color:var(--green)">—</div></div>
-          <div class="kpi-item"><div class="kpi-label">AOV</div><div class="kpi-value" id="kpi-aov-${id}">—</div></div>
-        </div>
-        <div class="sparkline-container"><canvas id="spark-${id}"></canvas></div>
+      <div class="spark-row">
+        <div class="spark-box"><div class="spark-label">CPM Trend</div><canvas id="sp-cpm-${id}"></canvas></div>
+        <div class="spark-box"><div class="spark-label">ROAS Trend</div><canvas id="sp-roas-${id}"></canvas></div>
       </div>
-      <button class="see-more-btn" onclick="toggleDetail('${id}','${industry}')">
-        <span id="toggle-text-${id}">See More &#9660;</span>
-      </button>
-      <div class="card-detail" id="detail-${id}"></div>
     </div>
-  `;
+    <button class="expand-btn" onclick="toggleDetail('${id}','${ind}')"><span id="exp-${id}">See More &#9660;</span></button>
+    <div class="detail" id="det-${id}"></div>
+  </div>`;
 }
 
-function updateCardData(industry, channel) {
-  const id = industry.replace(/[^a-z_]/gi, '');
-  const metrics = getLatestMetrics(industry, channel);
+function updateCard(ind){
+  const id=ind.replace(/\W/g,'');
+  const m=getLatestMetrics(ind);
 
-  document.getElementById(`kpi-cpm-${id}`).textContent = fmt(metrics?.cpm, '$');
-  document.getElementById(`kpi-cpc-${id}`).textContent = fmt(metrics?.cpc, '$');
-  document.getElementById(`kpi-ctr-${id}`).textContent = fmt(metrics?.ctr, '%');
-  document.getElementById(`kpi-cpa-${id}`).textContent = fmt(metrics?.cpa, '$');
-  document.getElementById(`kpi-roas-${id}`).textContent = fmt(metrics?.roas, 'x');
-  document.getElementById(`kpi-aov-${id}`).textContent = fmt(metrics?.aov, '$');
+  setMetric(id,'cpm',m?.cpm,'$');
+  setMetric(id,'cpc',m?.cpc,'$');
+  setMetric(id,'ctr',m?.ctr,'%');
+  setMetric(id,'cpa',m?.cpa,'$');
+  setMetric(id,'roas',m?.roas,'x','roas');
+  setMetric(id,'aov',m?.aov,'$');
+  setMetric(id,'cvr',m?.cvr,'%');
+  setMetric(id,'mer',m?.mer,'','mer');
 
-  // Color ROAS
-  const roasEl = document.getElementById(`kpi-roas-${id}`);
-  if (metrics?.roas !== null && metrics?.roas !== undefined) {
-    roasEl.style.color = metrics.roas >= 2 ? 'var(--green)' : metrics.roas >= 1 ? 'var(--orange)' : 'var(--highlight)';
-  }
+  // Update channel list
+  const chs=getChannelsFor(ind);
+  const chEl=document.getElementById(`cch-${id}`);
+  if(chEl) chEl.textContent=chs.length?chs.slice(0,6).join(', ')+(chs.length>6?` +${chs.length-6} more`:''):'No data';
 
-  // Sparkline: CPM trend last 6 months
-  const trend = getMonthlyTrend(industry, channel, 'cpm', 6);
-  createSparkline(`spark-${id}`, trend, '#58a6ff');
-
-  // If detail is open, re-render it
-  const detail = document.getElementById(`detail-${id}`);
-  if (detail.classList.contains('open')) {
-    renderDetail(id, industry, channel);
-  }
-}
-
-// ========== PLATFORM SELECTION ==========
-function selectPlatform(el) {
-  const industry = el.dataset.industry;
-  const channel = el.dataset.channel;
-  const id = industry.replace(/[^a-z_]/gi, '');
-
-  // Update badges
-  const row = document.getElementById(`platforms-${id}`);
-  row.querySelectorAll('.platform-badge').forEach(b => b.classList.remove('selected'));
-  el.classList.add('selected');
-
-  // Store selected channel
-  el.closest('.industry-card').dataset.selectedChannel = channel;
-
-  updateCardData(industry, channel);
-}
-
-function getSelectedChannel(id) {
-  const card = document.getElementById(`card-${id}`);
-  return card?.dataset.selectedChannel || 'All';
-}
-
-// ========== DETAIL VIEW ==========
-function toggleDetail(id, industry) {
-  const detail = document.getElementById(`detail-${id}`);
-  const text = document.getElementById(`toggle-text-${id}`);
-  if (detail.classList.contains('open')) {
-    detail.classList.remove('open');
-    text.innerHTML = 'See More &#9660;';
+  // Sparklines (global only since US is single snapshot)
+  if(currentRegion==='global'){
+    const cpmT=getGlobalMonthlyTrend(ind,'cpm',8);
+    const roasT=getGlobalMonthlyTrend(ind,'roas',8);
+    sparkline(`sp-cpm-${id}`,cpmT,'#3b82f6','$');
+    sparkline(`sp-roas-${id}`,roasT,'#22c55e','');
   } else {
-    detail.classList.add('open');
-    text.innerHTML = 'See Less &#9650;';
-    const channel = getSelectedChannel(id);
-    renderDetail(id, industry, channel);
+    // For US, show global trend as context
+    const cpmT=getGlobalMonthlyTrend(ind,'cpm',8);
+    const roasT=getGlobalMonthlyTrend(ind,'roas',8);
+    sparkline(`sp-cpm-${id}`,cpmT,'#64748b','$');
+    sparkline(`sp-roas-${id}`,roasT,'#64748b','');
   }
+
+  // If detail open, refresh
+  const det=document.getElementById(`det-${id}`);
+  if(det&&det.classList.contains('open')) renderDetail(id,ind);
 }
 
-function renderDetail(id, industry, channel) {
-  const detail = document.getElementById(`detail-${id}`);
+function setMetric(id,key,val,fmt_type,classKey){
+  const el=document.getElementById(`m-${key}-${id}`);
+  if(!el)return;
+  el.querySelector('.val').textContent=fmt(val,fmt_type);
+  el.className='metric '+(classKey?metricClass(classKey,val):'');
+}
 
-  // Monthly table (last 12 months)
-  const months = getSortedMonths(industry, channel).slice(-12);
-  let tableRows = '';
-  for (const m of months) {
-    let met;
-    if (channel === 'All') met = getBlendedMonth(industry, m);
-    else met = monthlyData[industry]?.[channel]?.[m];
-    if (!met) continue;
-    tableRows += `<tr>
-      <td>${m}</td>
-      <td>${fmt(met.cpm,'$')}</td>
-      <td>${fmt(met.cpc,'$')}</td>
-      <td>${fmt(met.ctr,'%')}</td>
-      <td>${fmt(met.cpa,'$')}</td>
-      <td>${fmt(met.cvr,'%')}</td>
-      <td>${fmt(met.roas,'x')}</td>
-      <td>${fmt(met.aov,'$')}</td>
-      <td>${fmt(met.mer,'')}</td>
-    </tr>`;
+// =========== DETAIL ===========
+function toggleDetail(id,ind){
+  const det=document.getElementById(`det-${id}`);
+  const exp=document.getElementById(`exp-${id}`);
+  if(det.classList.contains('open')){det.classList.remove('open');exp.innerHTML='See More &#9660;'}
+  else{det.classList.add('open');exp.innerHTML='See Less &#9650;';renderDetail(id,ind)}
+}
+
+function renderDetail(id,ind){
+  const det=document.getElementById(`det-${id}`);
+  const isUS=currentRegion==='us';
+
+  // Per-channel breakdown table
+  let rows='';
+  if(isUS){
+    const chs=usData[ind];
+    if(chs){
+      const filtered=filterChannels(chs);
+      for(const[ch,m]of Object.entries(filtered).sort((a,b)=>a[0].localeCompare(b[0]))){
+        const color=ALL_CHANNELS_COLOR[ch]||'#64748b';
+        rows+=`<tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${color};margin-right:6px"></span>${ch}</td><td>${fmt(m.cpm,'$')}</td><td>${fmt(m.cpc,'$')}</td><td>${fmt(m.ctr,'%')}</td><td>${fmt(m.cpa,'$')}</td><td>${fmt(m.cvr,'%')}</td><td>${fmt(m.roas,'x')}</td><td>${fmt(m.aov,'$')}</td><td>${fmt(m.mer,'')}</td></tr>`;
+      }
+    }
+  } else {
+    // Latest month per channel
+    const chs=globalData[ind];
+    if(chs){
+      const filtered=filterChannels(chs);
+      const months=new Set();
+      for(const c in filtered)for(const m in filtered[c])months.add(m);
+      const sorted=[...months].sort(sortM);
+      const latest=sorted[sorted.length-1];
+      for(const[ch,mData]of Object.entries(filtered).sort((a,b)=>a[0].localeCompare(b[0]))){
+        const m=mData[latest];if(!m)continue;
+        const color=ALL_CHANNELS_COLOR[ch]||'#64748b';
+        rows+=`<tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${color};margin-right:6px"></span>${ch}</td><td>${fmt(m.cpm,'$')}</td><td>${fmt(m.cpc,'$')}</td><td>${fmt(m.ctr,'%')}</td><td>${fmt(m.cpa,'$')}</td><td>${fmt(m.cvr,'%')}</td><td>${fmt(m.roas,'x')}</td><td>${fmt(m.aov,'$')}</td><td>${fmt(m.mer,'')}</td></tr>`;
+      }
+    }
   }
 
-  const dowChartId = `dow-chart-${id}`;
-  const womChartId = `wom-chart-${id}`;
-  const domChartId = `dom-chart-${id}`;
-  const roasChartId = `roas-trend-${id}`;
+  const dowId=`dow-${id}`,womId=`wom-${id}`,domId=`dom-${id}`,trendId=`trend-${id}`;
 
-  detail.innerHTML = `
+  det.innerHTML=`
     <div class="detail-section">
-      <h4>Monthly Trends (Last 12 Months) ${channel !== 'All' ? '— ' + channel : '— Blended Average'}</h4>
-      <table class="monthly-table">
-        <thead><tr><th>Month</th><th>CPM</th><th>CPC</th><th>CTR</th><th>CPA</th><th>CVR</th><th>ROAS</th><th>AOV</th><th>MER</th></tr></thead>
-        <tbody>${tableRows || '<tr><td colspan="9" style="text-align:center;color:var(--text-muted)">No data</td></tr>'}</tbody>
-      </table>
+      <h4>Channel Breakdown${isUS?' (US)':' (Global, Latest Month)'}</h4>
+      ${rows?`<table class="tbl"><thead><tr><th>Channel</th><th>CPM</th><th>CPC</th><th>CTR</th><th>CPA</th><th>CVR</th><th>ROAS</th><th>AOV</th><th>MER</th></tr></thead><tbody>${rows}</tbody></table>`:'<div style="color:var(--text3);font-size:12px;padding:12px">No data for current selection</div>'}
     </div>
+    ${!isUS?`<div class="detail-section"><h4>ROAS Trend (12 Months)</h4><div class="chart-box"><canvas id="${trendId}"></canvas></div></div>`:''}
     <div class="detail-section">
-      <h4>ROAS Trend (Last 12 Months)</h4>
-      <div class="chart-box"><canvas id="${roasChartId}"></canvas></div>
-    </div>
-    <div class="detail-section">
-      <h4>Time Dimension Patterns</h4>
+      <h4>Time Patterns (Global)</h4>
       <div class="chart-row">
-        <div class="chart-box">
-          <h5>Day of Week (1=Mon, 7=Sun) — CPA</h5>
-          <canvas id="${dowChartId}"></canvas>
-        </div>
-        <div class="chart-box">
-          <h5>Week of Month — CPA</h5>
-          <canvas id="${womChartId}"></canvas>
-        </div>
+        <div class="chart-box"><h5>CPA by Day of Week</h5><canvas id="${dowId}"></canvas></div>
+        <div class="chart-box"><h5>CPA by Week of Month</h5><canvas id="${womId}"></canvas></div>
       </div>
-      <div class="chart-row" style="margin-top:12px;">
-        <div class="chart-box" style="grid-column: 1 / -1;">
-          <h5>Day of Month — CPA (Days 10-16 only, partial data)</h5>
-          <canvas id="${domChartId}"></canvas>
-        </div>
+      <div class="chart-row" style="margin-top:12px">
+        <div class="chart-box" style="grid-column:1/-1"><h5>CPA by Day of Month (Days 10-16, partial)</h5><canvas id="${domId}"></canvas></div>
       </div>
-    </div>
-  `;
+    </div>`;
 
-  // Render charts after DOM update
-  requestAnimationFrame(() => {
-    // ROAS trend
-    const roasTrend = getMonthlyTrend(industry, channel, 'roas', 12);
-    createBarChart(roasChartId, roasTrend.map(d => d.month), roasTrend.map(d => d.value), 'roas', '#3fb950', 'ROAS');
-
-    // Day of week
-    const dowKeys = ['1','2','3','4','5','6','7'];
-    const dowMetrics = getTimeDimData(dowData, industry, channel, dowKeys);
-    const dowVals = dowMetrics.map(m => m?.cpa ?? null);
-    if (dowVals.some(v => v !== null)) {
-      createBarChart(dowChartId, DAY_NAMES, dowVals, 'cpa', '#58a6ff', 'CPA by Day');
+  requestAnimationFrame(()=>{
+    if(!isUS){
+      const roasT=getGlobalMonthlyTrend(ind,'roas',12);
+      barChart(trendId,roasT.map(d=>d.month),roasT.map(d=>d.value),'#22c55e','x');
     }
+    const dowK=['1','2','3','4','5','6','7'];
+    const dowM=getTimeDim(dowData,ind,dowK);
+    const dowV=dowM.map(m=>m?.cpa??null);
+    if(dowV.some(v=>v!=null))barChart(dowId,DAY_NAMES,dowV,'#3b82f6','$');
 
-    // Week of month
-    const womKeys = ['1','2','3','4','5'];
-    const womMetrics = getTimeDimData(womData, industry, channel, womKeys);
-    const womVals = womMetrics.map(m => m?.cpa ?? null);
-    if (womVals.some(v => v !== null)) {
-      createBarChart(womChartId, ['Week 1','Week 2','Week 3','Week 4','Week 5'], womVals, 'cpa', '#bc8cff', 'CPA by Week');
-    }
+    const womK=['1','2','3','4','5'];
+    const womM=getTimeDim(womData,ind,womK);
+    const womV=womM.map(m=>m?.cpa??null);
+    if(womV.some(v=>v!=null))barChart(womId,['Wk 1','Wk 2','Wk 3','Wk 4','Wk 5'],womV,'#a78bfa','$');
 
-    // Day of month
-    const domKeys = [];
-    for (let d = 10; d <= 16; d++) domKeys.push(String(d));
-    const domMetrics = getTimeDimData(domData, industry, channel, domKeys);
-    const domVals = domMetrics.map(m => m?.cpa ?? null);
-    if (domVals.some(v => v !== null)) {
-      createBarChart(domChartId, domKeys.map(d => 'Day ' + d), domVals, 'cpa', '#d29922', 'CPA by Day of Month');
-    }
+    const domK=[];for(let d=10;d<=16;d++)domK.push(String(d));
+    const domM=getTimeDim(domData,ind,domK);
+    const domV=domM.map(m=>m?.cpa??null);
+    if(domV.some(v=>v!=null))barChart(domId,domK.map(d=>'Day '+d),domV,'#f59e0b','$');
   });
 }
 
-// ========== CATEGORY TOGGLE ==========
-function toggleCategory(header) {
-  const grid = header.nextElementSibling;
-  header.classList.toggle('collapsed');
-  grid.classList.toggle('hidden');
+// =========== CATEGORY TOGGLE ===========
+function toggleCat(hdr){
+  hdr.classList.toggle('collapsed');
+  hdr.nextElementSibling.classList.toggle('hidden');
 }
 
-// ========== SEARCH ==========
-document.getElementById('searchInput').addEventListener('input', function() {
-  const q = this.value.toLowerCase().trim();
-  document.querySelectorAll('.super-category').forEach(cat => {
-    const cards = cat.querySelectorAll('.industry-card');
-    let anyVisible = false;
-    cards.forEach(card => {
-      const name = card.querySelector('h3').textContent.toLowerCase();
-      const match = !q || name.includes(q);
-      card.style.display = match ? '' : 'none';
-      if (match) anyVisible = true;
+// =========== REGION TOGGLE ===========
+document.getElementById('regionToggle').addEventListener('click',e=>{
+  const btn=e.target.closest('.region-btn');if(!btn)return;
+  document.querySelectorAll('.region-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  currentRegion=btn.dataset.region;
+  render();
+});
+
+// =========== CHANNEL GROUP ===========
+document.getElementById('chGroupBar').addEventListener('click',e=>{
+  const btn=e.target.closest('.ch-group-btn');if(!btn)return;
+  document.querySelectorAll('.ch-group-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  currentGroup=btn.dataset.group;
+  selectedChannels.clear();
+  renderSubChannels();
+  refreshAllCards();
+});
+
+function renderSubChannels(){
+  const sub=document.getElementById('chSubBar');
+  if(currentGroup==='all'){sub.innerHTML='';return}
+  const grp=CHANNEL_GROUPS[currentGroup];
+  if(!grp){sub.innerHTML='';return}
+  sub.innerHTML=grp.channels.map(ch=>{
+    const col=grp.colors[ch]||'#666';
+    const sel=selectedChannels.size===0||selectedChannels.has(ch);
+    return`<button class="ch-sub-btn${sel?' selected':''}" style="background:${col}${sel?'':'44'};color:${sel?'#fff':'#999'}" data-ch="${ch}" onclick="toggleSubCh(this)">${ch}</button>`;
+  }).join('');
+}
+
+function toggleSubCh(btn){
+  const ch=btn.dataset.ch;
+  const grp=CHANNEL_GROUPS[currentGroup];
+  if(!grp)return;
+
+  if(selectedChannels.size===0){
+    // First click: select only this one
+    selectedChannels.clear();
+    selectedChannels.add(ch);
+  } else if(selectedChannels.has(ch)){
+    selectedChannels.delete(ch);
+    if(selectedChannels.size===0){
+      // Back to all selected
+    }
+  } else {
+    selectedChannels.add(ch);
+    // If all selected, clear (means all)
+    if(selectedChannels.size===grp.channels.length) selectedChannels.clear();
+  }
+  renderSubChannels();
+  refreshAllCards();
+}
+
+function refreshAllCards(){
+  for(const i of allIndustries) updateCard(i);
+}
+
+// =========== SEARCH ===========
+document.getElementById('searchInput').addEventListener('input',function(){
+  const q=this.value.toLowerCase().trim();
+  document.querySelectorAll('.super-cat').forEach(cat=>{
+    const cards=cat.querySelectorAll('.card');
+    let any=false;
+    cards.forEach(c=>{
+      const n=c.querySelector('h3').textContent.toLowerCase();
+      const match=!q||n.includes(q);
+      c.style.display=match?'':'none';
+      if(match)any=true;
     });
-    cat.style.display = anyVisible ? '' : 'none';
-    // Ensure grid is visible when searching
-    if (q && anyVisible) {
-      const grid = cat.querySelector('.industry-grid');
-      const header = cat.querySelector('.super-category-header');
-      grid.classList.remove('hidden');
-      header.classList.remove('collapsed');
+    cat.style.display=any?'':'none';
+    if(q&&any){
+      cat.querySelector('.grid').classList.remove('hidden');
+      cat.querySelector('.super-cat-hdr').classList.remove('collapsed');
     }
   });
 });
 
-// ========== INIT ==========
-(async function() {
-  try {
-    await loadAllData();
-    document.getElementById('loading').style.display = 'none';
-    document.getElementById('content').style.display = 'block';
-    renderDashboard();
-  } catch (err) {
-    document.getElementById('loading').innerHTML = `<div style="color:var(--highlight)">Error loading data: ${err.message}<br><br>Make sure dashboard.html is served via HTTP (e.g., python3 -m http.server) and CSV files are in the same directory.</div>`;
+// =========== INIT ===========
+(async()=>{
+  try{
+    await loadAll();
+    document.getElementById('loading').style.display='none';
+    document.getElementById('main').style.display='block';
+    render();
+  }catch(err){
+    document.getElementById('loading').innerHTML=`<div style="color:#ef4444">Error: ${err.message}<br><br>Serve via HTTP: python3 -m http.server 8765</div>`;
     console.error(err);
   }
 })();
