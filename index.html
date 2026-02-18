@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Industry Benchmarks Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg-dark: #0d1117;
+    --bg-card: #161b22;
+    --bg-card-hover: #1c2333;
+    --bg-expand: #0d1117;
+    --border: #30363d;
+    --text-primary: #e6edf3;
+    --text-secondary: #8b949e;
+    --text-muted: #6e7681;
+    --accent: #58a6ff;
+    --accent-dim: #1f6feb33;
+    --highlight: #f85149;
+    --green: #3fb950;
+    --orange: #d29922;
+    --purple: #bc8cff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    min-height: 100vh;
+  }
+
+  /* Header */
+  .header {
+    padding: 32px 24px 20px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, #161b2288, transparent);
+  }
+  .header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+  .header .subtitle {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-top: 6px;
+  }
+  .search-bar {
+    max-width: 480px;
+    margin: 16px auto 0;
+    position: relative;
+  }
+  .search-bar input {
+    width: 100%;
+    padding: 10px 16px 10px 40px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-bar input:focus { border-color: var(--accent); }
+  .search-bar::before {
+    content: '\1F50D';
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+  }
+
+  /* Stats bar */
+  .stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    padding: 14px 24px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+  .stats-bar span strong {
+    color: var(--text-primary);
+    font-size: 15px;
+  }
+
+  /* Loading */
+  .loading {
+    text-align: center;
+    padding: 80px 24px;
+    color: var(--text-secondary);
+    font-size: 16px;
+  }
+  .loading .spinner {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-bottom: 12px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Main content */
+  .content { padding: 24px; max-width: 1440px; margin: 0 auto; }
+
+  /* Super-category */
+  .super-category {
+    margin-bottom: 24px;
+  }
+  .super-category-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 4px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .super-category-header:hover { color: var(--accent); }
+  .super-category-header .arrow {
+    font-size: 12px;
+    transition: transform 0.2s;
+    color: var(--text-secondary);
+  }
+  .super-category-header.collapsed .arrow { transform: rotate(-90deg); }
+  .super-category-header h2 {
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .super-category-header .count {
+    color: var(--text-muted);
+    font-size: 12px;
+  }
+
+  /* Industry cards grid */
+  .industry-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 16px;
+  }
+  .industry-grid.hidden { display: none; }
+
+  /* Industry card */
+  .industry-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .industry-card:hover { border-color: var(--accent); }
+  .card-main { padding: 16px; }
+  .card-main h3 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  /* Platform selector */
+  .platform-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 12px;
+  }
+  .platform-badge {
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .platform-badge:hover { opacity: 0.85; }
+  .platform-badge.selected { border-color: #fff; box-shadow: 0 0 6px rgba(255,255,255,0.15); }
+
+  /* KPI grid */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .kpi-item {
+    text-align: center;
+    padding: 6px 4px;
+    background: var(--bg-dark);
+    border-radius: 6px;
+  }
+  .kpi-label {
+    font-size: 10px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .kpi-value {
+    font-size: 16px;
+    font-weight: 700;
+    margin-top: 2px;
+  }
+
+  /* Sparkline */
+  .sparkline-container {
+    height: 48px;
+    margin: 8px 0 4px;
+  }
+
+  /* See more button */
+  .see-more-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 8px;
+    background: none;
+    border: none;
+    border-top: 1px solid var(--border);
+    color: var(--text-secondary);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .see-more-btn:hover { color: var(--accent); background: var(--accent-dim); }
+
+  /* Expanded detail */
+  .card-detail {
+    display: none;
+    padding: 16px;
+    border-top: 1px solid var(--border);
+    background: var(--bg-expand);
+  }
+  .card-detail.open { display: block; }
+  .detail-section {
+    margin-bottom: 20px;
+  }
+  .detail-section h4 {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Monthly table */
+  .monthly-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    overflow-x: auto;
+    display: block;
+  }
+  .monthly-table th, .monthly-table td {
+    padding: 5px 6px;
+    text-align: right;
+    white-space: nowrap;
+  }
+  .monthly-table th {
+    color: var(--text-muted);
+    font-weight: 500;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: var(--bg-expand);
+  }
+  .monthly-table td:first-child, .monthly-table th:first-child { text-align: left; }
+  .monthly-table tr:hover td { background: var(--bg-card); }
+
+  /* Chart containers in detail */
+  .chart-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .chart-box {
+    background: var(--bg-card);
+    border-radius: 8px;
+    padding: 12px;
+  }
+  .chart-box h5 {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+  }
+  .chart-box canvas { width: 100% !important; height: 180px !important; }
+
+  /* No data */
+  .no-data {
+    color: var(--text-muted);
+    font-size: 12px;
+    font-style: italic;
+    text-align: center;
+    padding: 16px;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .industry-grid { grid-template-columns: 1fr; }
+    .chart-row { grid-template-columns: 1fr; }
+    .header h1 { font-size: 22px; }
+    .stats-bar { flex-wrap: wrap; gap: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Industry Benchmarks Dashboard</h1>
+  <p class="subtitle">49 Industries &middot; 19 Channels &middot; Data from Nov 2022 &ndash; Feb 2026</p>
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search industries...">
+  </div>
+</div>
+
+<div class="stats-bar" id="statsBar">
+  <span><strong id="statIndustries">0</strong> Industries</span>
+  <span><strong id="statChannels">0</strong> Channels</span>
+  <span><strong id="statMonths">0</strong> Months</span>
+  <span><strong id="statDataPoints">0</strong> Data Points</span>
+</div>
+
+<div class="loading" id="loading">
+  <div class="spinner"></div>
+  <div>Loading benchmark data...</div>
+</div>
+
+<div class="content" id="content" style="display:none;"></div>
+
+<script>
+// ========== CONFIGURATION ==========
+const SUPER_CATEGORIES = {
+  'Health & Medical': ['health_and_beauty','health_and_wellness','healthcare_providers','medical_devices_and_equipment','pharmaceuticals_and_biotech','senior_care'],
+  'Finance & Business': ['accounting_and_tax_services','financial_services','insurance','investment_and_wealth_management','consulting_and_professional_services','business_supplies_and_equipment'],
+  'Tech & Software': ['software_and_saas','technology_services','consumer_electronics','emerging_technology','telecommunications','gaming_and_apps'],
+  'Retail & Commerce': ['apparel_and_accessories','lifestyle_and_boutique','internet_and_ecommerce','toys_art_and_collectibles','baby','sports_and_outdoors'],
+  'Home & Living': ['home_and_garden','food_and_beverage','pets_and_animals','agriculture_and_food_production'],
+  'Travel & Hospitality': ['hotels_and_accommodation','travel_accessories_and_luggage','transportation_services','events_and_venues'],
+  'Media & Entertainment': ['entertainment','media_and_publishing','arts_and_culture','books_and_music'],
+  'Education & Training': ['elearning_and_online_courses','professional_training_and_coaching'],
+  'Professional Services': ['legal_services','hr_and_recruiting','marketing_and_advertising','real_estate','construction_and_engineering','manufacturing'],
+  'Other': ['nonprofit_and_philanthropy','energy_and_utilities','dating_and_personal_services','automotive','other']
+};
+
+const PLATFORM_STYLES = {
+  'All':               { bg: '#30363d', fg: '#e6edf3', label: 'All' },
+  'Meta':              { bg: '#1877f2', fg: '#fff', label: 'Meta' },
+  'Google Ads':        { bg: '#4285f4', fg: '#fff', label: 'Google' },
+  'TikTok':            { bg: '#1a1a1a', fg: '#fe2c55', label: 'TikTok' },
+  'Amazon':            { bg: '#ff9900', fg: '#000', label: 'Amazon' },
+  'Microsoft Ads':     { bg: '#00a4ef', fg: '#fff', label: 'MSFT' },
+  'Pinterest Ads':     { bg: '#e60023', fg: '#fff', label: 'Pinterest' },
+  'Snapchat':          { bg: '#fffc00', fg: '#000', label: 'Snap' },
+  'Reddit':            { bg: '#ff4500', fg: '#fff', label: 'Reddit' },
+  'Twitter':           { bg: '#1d9bf0', fg: '#fff', label: 'X' },
+  'Criteo':            { bg: '#f4811f', fg: '#fff', label: 'Criteo' },
+  'Taboola':           { bg: '#005baa', fg: '#fff', label: 'Taboola' },
+  'Outbrain':          { bg: '#e6420b', fg: '#fff', label: 'Outbrain' },
+  'StackAdapt':        { bg: '#6c3dc7', fg: '#fff', label: 'StackAdapt' },
+  'Axon':              { bg: '#00c4b4', fg: '#000', label: 'Axon' },
+  'Adroll':            { bg: '#0dadf1', fg: '#fff', label: 'AdRoll' },
+  'AfterSell':         { bg: '#7c3aed', fg: '#fff', label: 'AfterSell' },
+  'Vibe':              { bg: '#6366f1', fg: '#fff', label: 'Vibe' },
+  'Mountain':          { bg: '#22c55e', fg: '#000', label: 'Mountain' },
+  'Yotpo SMS and Email':{ bg: '#3b82f6', fg: '#fff', label: 'Yotpo' },
+};
+
+const MONTH_ORDER_MAP = {};
+const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+for (let y = 22; y <= 26; y++) {
+  for (let m = 0; m < 12; m++) {
+    MONTH_ORDER_MAP[`${monthNames[m]} ${y}`] = y * 12 + m;
+  }
+}
+
+function parseMonthKey(m) { return MONTH_ORDER_MAP[m] || 0; }
+function sortMonths(a, b) { return parseMonthKey(a) - parseMonthKey(b); }
+
+const DAY_NAMES = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+
+// ========== DATA STRUCTURES ==========
+let monthlyData = {};   // industry -> channel -> month -> metrics
+let dowData = {};       // industry -> channel -> dayOfWeek -> metrics
+let womData = {};       // industry -> channel -> weekOfMonth -> metrics
+let domData = {};       // industry -> channel -> dayOfMonth -> metrics
+let allIndustries = new Set();
+let allChannels = new Set();
+let allMonths = new Set();
+let totalRows = 0;
+
+// ========== PARSING HELPERS ==========
+function cleanNum(v) {
+  if (!v || v === '' || v === '-') return null;
+  let s = String(v).replace(/[$,%]/g, '').replace(/,/g, '').trim();
+  let n = parseFloat(s);
+  return isNaN(n) ? null : n;
+}
+
+function parseRow(row) {
+  return {
+    cpm: cleanNum(row.CPM),
+    cpc: cleanNum(row.CPC),
+    ctr: cleanNum(row.CTR),
+    cpa: cleanNum(row.CPA),
+    cvr: cleanNum(row.Cvr),
+    roas: cleanNum(row.ROAS),
+    aov: cleanNum(row.AOV),
+    mer: cleanNum(row.Mer),
+  };
+}
+
+function ensureNested(obj, keys) {
+  let cur = obj;
+  for (const k of keys) {
+    if (!cur[k]) cur[k] = {};
+    cur = cur[k];
+  }
+  return cur;
+}
+
+// ========== LOAD DATA ==========
+async function loadCSV(filename) {
+  const resp = await fetch(filename);
+  const text = await resp.text();
+  return Papa.parse(text, { header: true, delimiter: '\t', skipEmptyLines: true }).data;
+}
+
+async function loadAllData() {
+  const [monthly, dow, wom, dom] = await Promise.all([
+    loadCSV('monthly_benchmarks.csv'),
+    loadCSV('benchmarks_by_day_of_week.csv'),
+    loadCSV('benchmarks_by_week_of_month.csv'),
+    loadCSV('benchmarks_by_day_of_month.csv'),
+  ]);
+
+  // Monthly
+  for (const row of monthly) {
+    const ind = row.Industry, ch = row.Channel, mo = row.Month;
+    if (!ind || !ch || !mo) continue;
+    allIndustries.add(ind);
+    allChannels.add(ch);
+    allMonths.add(mo);
+    totalRows++;
+    const bucket = ensureNested(monthlyData, [ind, ch]);
+    bucket[mo] = parseRow(row);
+  }
+
+  // Day of week
+  for (const row of dow) {
+    const ind = row.Industry, ch = row.Channel, d = row.Day_of_Week;
+    if (!ind || !ch || !d) continue;
+    totalRows++;
+    const bucket = ensureNested(dowData, [ind, ch]);
+    bucket[d] = parseRow(row);
+  }
+
+  // Week of month
+  for (const row of wom) {
+    const ind = row.Industry, ch = row.Channel, w = row.Week_of_Month;
+    if (!ind || !ch || !w) continue;
+    totalRows++;
+    const bucket = ensureNested(womData, [ind, ch]);
+    bucket[w] = parseRow(row);
+  }
+
+  // Day of month
+  for (const row of dom) {
+    const ind = row.Industry, ch = row.Channel, d = row.Day_of_Month;
+    if (!ind || !ch || !d) continue;
+    totalRows++;
+    const bucket = ensureNested(domData, [ind, ch]);
+    bucket[d] = parseRow(row);
+  }
+}
+
+// ========== METRIC HELPERS ==========
+function avgMetrics(metricsArr) {
+  const result = {};
+  const keys = ['cpm','cpc','ctr','cpa','cvr','roas','aov','mer'];
+  for (const k of keys) {
+    const vals = metricsArr.map(m => m[k]).filter(v => v !== null && v !== undefined);
+    result[k] = vals.length > 0 ? vals.reduce((a, b) => a + b, 0) / vals.length : null;
+  }
+  return result;
+}
+
+function getBlendedMonth(industry, month) {
+  const channels = monthlyData[industry];
+  if (!channels) return null;
+  const metrics = [];
+  for (const ch in channels) {
+    if (channels[ch][month]) metrics.push(channels[ch][month]);
+  }
+  return metrics.length > 0 ? avgMetrics(metrics) : null;
+}
+
+function getLatestMetrics(industry, channel) {
+  const months = getSortedMonths(industry, channel);
+  if (months.length === 0) return null;
+  const latest = months[months.length - 1];
+  if (channel === 'All') return getBlendedMonth(industry, latest);
+  return monthlyData[industry]?.[channel]?.[latest] || null;
+}
+
+function getSortedMonths(industry, channel) {
+  if (channel === 'All') {
+    const months = new Set();
+    const channels = monthlyData[industry];
+    if (!channels) return [];
+    for (const ch in channels) {
+      for (const m in channels[ch]) months.add(m);
+    }
+    return [...months].sort(sortMonths);
+  }
+  const data = monthlyData[industry]?.[channel];
+  if (!data) return [];
+  return Object.keys(data).sort(sortMonths);
+}
+
+function getMonthlyTrend(industry, channel, metric, count) {
+  const months = getSortedMonths(industry, channel);
+  const recent = months.slice(-count);
+  return recent.map(m => {
+    let met;
+    if (channel === 'All') met = getBlendedMonth(industry, m);
+    else met = monthlyData[industry]?.[channel]?.[m];
+    return { month: m, value: met?.[metric] ?? null };
+  });
+}
+
+function getChannelsForIndustry(industry) {
+  const channels = monthlyData[industry];
+  if (!channels) return [];
+  return Object.keys(channels).sort();
+}
+
+function getTimeDimData(dataStore, industry, channel, dimKeys) {
+  if (channel === 'All') {
+    // Average across channels
+    return dimKeys.map(dk => {
+      const channels = dataStore[industry];
+      if (!channels) return null;
+      const metrics = [];
+      for (const ch in channels) {
+        if (channels[ch][dk]) metrics.push(channels[ch][dk]);
+      }
+      return metrics.length > 0 ? avgMetrics(metrics) : null;
+    });
+  }
+  const chData = dataStore[industry]?.[channel];
+  if (!chData) return dimKeys.map(() => null);
+  return dimKeys.map(dk => chData[dk] || null);
+}
+
+// ========== FORMATTING ==========
+function fmt(val, type) {
+  if (val === null || val === undefined) return '—';
+  switch (type) {
+    case '$': return '$' + val.toFixed(2);
+    case '%': return val.toFixed(2) + '%';
+    case 'x': return val.toFixed(2) + 'x';
+    default: return val.toFixed(2);
+  }
+}
+
+function formatIndustry(slug) {
+  return slug.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+    .replace(/\bAnd\b/g, '&').replace(/\bSaas\b/g, 'SaaS').replace(/\bHr\b/g, 'HR')
+    .replace(/\bElearning\b/g, 'eLearning').replace(/\bEcommerce\b/g, 'eCommerce');
+}
+
+// ========== CHART HELPERS ==========
+const chartInstances = {};
+
+function destroyChart(id) {
+  if (chartInstances[id]) {
+    chartInstances[id].destroy();
+    delete chartInstances[id];
+  }
+}
+
+function createSparkline(canvasId, data, color) {
+  destroyChart(canvasId);
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  chartInstances[canvasId] = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: data.map(d => d.month),
+      datasets: [{
+        data: data.map(d => d.value),
+        borderColor: color || '#58a6ff',
+        backgroundColor: (color || '#58a6ff') + '22',
+        borderWidth: 2,
+        fill: true,
+        tension: 0.3,
+        pointRadius: 0,
+        pointHitRadius: 8,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: {
+        callbacks: { label: ctx => '$' + (ctx.parsed.y?.toFixed(2) || '—') }
+      }},
+      scales: {
+        x: { display: false },
+        y: { display: false }
+      },
+      interaction: { mode: 'index', intersect: false },
+    }
+  });
+}
+
+function createBarChart(canvasId, labels, dataPoints, metric, color, title) {
+  destroyChart(canvasId);
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const metricType = { cpm: '$', cpc: '$', ctr: '%', cpa: '$', cvr: '%', roas: 'x', aov: '$', mer: '' };
+  chartInstances[canvasId] = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        data: dataPoints,
+        backgroundColor: color + '88',
+        borderColor: color,
+        borderWidth: 1,
+        borderRadius: 3,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => fmt(ctx.parsed.y, metricType[metric] || '')
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: '#8b949e', font: { size: 10 } },
+          grid: { display: false },
+        },
+        y: {
+          ticks: { color: '#6e7681', font: { size: 10 } },
+          grid: { color: '#30363d33' },
+        }
+      }
+    }
+  });
+}
+
+// ========== RENDER ==========
+function renderDashboard() {
+  document.getElementById('statIndustries').textContent = allIndustries.size;
+  document.getElementById('statChannels').textContent = allChannels.size;
+  document.getElementById('statMonths').textContent = allMonths.size;
+  document.getElementById('statDataPoints').textContent = totalRows.toLocaleString();
+
+  const content = document.getElementById('content');
+  content.innerHTML = '';
+
+  for (const [catName, industries] of Object.entries(SUPER_CATEGORIES)) {
+    const available = industries.filter(ind => allIndustries.has(ind));
+    if (available.length === 0) continue;
+
+    const section = document.createElement('div');
+    section.className = 'super-category';
+    section.innerHTML = `
+      <div class="super-category-header" onclick="toggleCategory(this)">
+        <span class="arrow">&#9660;</span>
+        <h2>${catName}</h2>
+        <span class="count">${available.length} industries</span>
+      </div>
+      <div class="industry-grid" id="grid-${catName.replace(/[^a-z]/gi,'')}">${available.map(ind => renderCard(ind)).join('')}</div>
+    `;
+    content.appendChild(section);
+  }
+
+  // Initialize sparklines after DOM is ready
+  requestAnimationFrame(() => {
+    for (const ind of allIndustries) {
+      updateCardData(ind, 'All');
+    }
+  });
+}
+
+function renderCard(industry) {
+  const channels = getChannelsForIndustry(industry);
+  const id = industry.replace(/[^a-z_]/gi, '');
+
+  let badges = `<span class="platform-badge selected" style="background:${PLATFORM_STYLES.All.bg};color:${PLATFORM_STYLES.All.fg}" data-channel="All" data-industry="${industry}" onclick="selectPlatform(this)">All</span>`;
+  for (const ch of channels) {
+    const style = PLATFORM_STYLES[ch] || { bg: '#555', fg: '#fff', label: ch.substring(0, 8) };
+    badges += `<span class="platform-badge" style="background:${style.bg};color:${style.fg}" data-channel="${ch}" data-industry="${industry}" onclick="selectPlatform(this)">${style.label}</span>`;
+  }
+
+  return `
+    <div class="industry-card" id="card-${id}">
+      <div class="card-main">
+        <h3>${formatIndustry(industry)}</h3>
+        <div class="platform-row" id="platforms-${id}">${badges}</div>
+        <div class="kpi-grid" id="kpis-${id}">
+          <div class="kpi-item"><div class="kpi-label">CPM</div><div class="kpi-value" id="kpi-cpm-${id}">—</div></div>
+          <div class="kpi-item"><div class="kpi-label">CPC</div><div class="kpi-value" id="kpi-cpc-${id}">—</div></div>
+          <div class="kpi-item"><div class="kpi-label">CTR</div><div class="kpi-value" id="kpi-ctr-${id}">—</div></div>
+          <div class="kpi-item"><div class="kpi-label">CPA</div><div class="kpi-value" id="kpi-cpa-${id}">—</div></div>
+          <div class="kpi-item"><div class="kpi-label">ROAS</div><div class="kpi-value" id="kpi-roas-${id}" style="color:var(--green)">—</div></div>
+          <div class="kpi-item"><div class="kpi-label">AOV</div><div class="kpi-value" id="kpi-aov-${id}">—</div></div>
+        </div>
+        <div class="sparkline-container"><canvas id="spark-${id}"></canvas></div>
+      </div>
+      <button class="see-more-btn" onclick="toggleDetail('${id}','${industry}')">
+        <span id="toggle-text-${id}">See More &#9660;</span>
+      </button>
+      <div class="card-detail" id="detail-${id}"></div>
+    </div>
+  `;
+}
+
+function updateCardData(industry, channel) {
+  const id = industry.replace(/[^a-z_]/gi, '');
+  const metrics = getLatestMetrics(industry, channel);
+
+  document.getElementById(`kpi-cpm-${id}`).textContent = fmt(metrics?.cpm, '$');
+  document.getElementById(`kpi-cpc-${id}`).textContent = fmt(metrics?.cpc, '$');
+  document.getElementById(`kpi-ctr-${id}`).textContent = fmt(metrics?.ctr, '%');
+  document.getElementById(`kpi-cpa-${id}`).textContent = fmt(metrics?.cpa, '$');
+  document.getElementById(`kpi-roas-${id}`).textContent = fmt(metrics?.roas, 'x');
+  document.getElementById(`kpi-aov-${id}`).textContent = fmt(metrics?.aov, '$');
+
+  // Color ROAS
+  const roasEl = document.getElementById(`kpi-roas-${id}`);
+  if (metrics?.roas !== null && metrics?.roas !== undefined) {
+    roasEl.style.color = metrics.roas >= 2 ? 'var(--green)' : metrics.roas >= 1 ? 'var(--orange)' : 'var(--highlight)';
+  }
+
+  // Sparkline: CPM trend last 6 months
+  const trend = getMonthlyTrend(industry, channel, 'cpm', 6);
+  createSparkline(`spark-${id}`, trend, '#58a6ff');
+
+  // If detail is open, re-render it
+  const detail = document.getElementById(`detail-${id}`);
+  if (detail.classList.contains('open')) {
+    renderDetail(id, industry, channel);
+  }
+}
+
+// ========== PLATFORM SELECTION ==========
+function selectPlatform(el) {
+  const industry = el.dataset.industry;
+  const channel = el.dataset.channel;
+  const id = industry.replace(/[^a-z_]/gi, '');
+
+  // Update badges
+  const row = document.getElementById(`platforms-${id}`);
+  row.querySelectorAll('.platform-badge').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+
+  // Store selected channel
+  el.closest('.industry-card').dataset.selectedChannel = channel;
+
+  updateCardData(industry, channel);
+}
+
+function getSelectedChannel(id) {
+  const card = document.getElementById(`card-${id}`);
+  return card?.dataset.selectedChannel || 'All';
+}
+
+// ========== DETAIL VIEW ==========
+function toggleDetail(id, industry) {
+  const detail = document.getElementById(`detail-${id}`);
+  const text = document.getElementById(`toggle-text-${id}`);
+  if (detail.classList.contains('open')) {
+    detail.classList.remove('open');
+    text.innerHTML = 'See More &#9660;';
+  } else {
+    detail.classList.add('open');
+    text.innerHTML = 'See Less &#9650;';
+    const channel = getSelectedChannel(id);
+    renderDetail(id, industry, channel);
+  }
+}
+
+function renderDetail(id, industry, channel) {
+  const detail = document.getElementById(`detail-${id}`);
+
+  // Monthly table (last 12 months)
+  const months = getSortedMonths(industry, channel).slice(-12);
+  let tableRows = '';
+  for (const m of months) {
+    let met;
+    if (channel === 'All') met = getBlendedMonth(industry, m);
+    else met = monthlyData[industry]?.[channel]?.[m];
+    if (!met) continue;
+    tableRows += `<tr>
+      <td>${m}</td>
+      <td>${fmt(met.cpm,'$')}</td>
+      <td>${fmt(met.cpc,'$')}</td>
+      <td>${fmt(met.ctr,'%')}</td>
+      <td>${fmt(met.cpa,'$')}</td>
+      <td>${fmt(met.cvr,'%')}</td>
+      <td>${fmt(met.roas,'x')}</td>
+      <td>${fmt(met.aov,'$')}</td>
+      <td>${fmt(met.mer,'')}</td>
+    </tr>`;
+  }
+
+  const dowChartId = `dow-chart-${id}`;
+  const womChartId = `wom-chart-${id}`;
+  const domChartId = `dom-chart-${id}`;
+  const roasChartId = `roas-trend-${id}`;
+
+  detail.innerHTML = `
+    <div class="detail-section">
+      <h4>Monthly Trends (Last 12 Months) ${channel !== 'All' ? '— ' + channel : '— Blended Average'}</h4>
+      <table class="monthly-table">
+        <thead><tr><th>Month</th><th>CPM</th><th>CPC</th><th>CTR</th><th>CPA</th><th>CVR</th><th>ROAS</th><th>AOV</th><th>MER</th></tr></thead>
+        <tbody>${tableRows || '<tr><td colspan="9" style="text-align:center;color:var(--text-muted)">No data</td></tr>'}</tbody>
+      </table>
+    </div>
+    <div class="detail-section">
+      <h4>ROAS Trend (Last 12 Months)</h4>
+      <div class="chart-box"><canvas id="${roasChartId}"></canvas></div>
+    </div>
+    <div class="detail-section">
+      <h4>Time Dimension Patterns</h4>
+      <div class="chart-row">
+        <div class="chart-box">
+          <h5>Day of Week (1=Mon, 7=Sun) — CPA</h5>
+          <canvas id="${dowChartId}"></canvas>
+        </div>
+        <div class="chart-box">
+          <h5>Week of Month — CPA</h5>
+          <canvas id="${womChartId}"></canvas>
+        </div>
+      </div>
+      <div class="chart-row" style="margin-top:12px;">
+        <div class="chart-box" style="grid-column: 1 / -1;">
+          <h5>Day of Month — CPA (Days 10-16 only, partial data)</h5>
+          <canvas id="${domChartId}"></canvas>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Render charts after DOM update
+  requestAnimationFrame(() => {
+    // ROAS trend
+    const roasTrend = getMonthlyTrend(industry, channel, 'roas', 12);
+    createBarChart(roasChartId, roasTrend.map(d => d.month), roasTrend.map(d => d.value), 'roas', '#3fb950', 'ROAS');
+
+    // Day of week
+    const dowKeys = ['1','2','3','4','5','6','7'];
+    const dowMetrics = getTimeDimData(dowData, industry, channel, dowKeys);
+    const dowVals = dowMetrics.map(m => m?.cpa ?? null);
+    if (dowVals.some(v => v !== null)) {
+      createBarChart(dowChartId, DAY_NAMES, dowVals, 'cpa', '#58a6ff', 'CPA by Day');
+    }
+
+    // Week of month
+    const womKeys = ['1','2','3','4','5'];
+    const womMetrics = getTimeDimData(womData, industry, channel, womKeys);
+    const womVals = womMetrics.map(m => m?.cpa ?? null);
+    if (womVals.some(v => v !== null)) {
+      createBarChart(womChartId, ['Week 1','Week 2','Week 3','Week 4','Week 5'], womVals, 'cpa', '#bc8cff', 'CPA by Week');
+    }
+
+    // Day of month
+    const domKeys = [];
+    for (let d = 10; d <= 16; d++) domKeys.push(String(d));
+    const domMetrics = getTimeDimData(domData, industry, channel, domKeys);
+    const domVals = domMetrics.map(m => m?.cpa ?? null);
+    if (domVals.some(v => v !== null)) {
+      createBarChart(domChartId, domKeys.map(d => 'Day ' + d), domVals, 'cpa', '#d29922', 'CPA by Day of Month');
+    }
+  });
+}
+
+// ========== CATEGORY TOGGLE ==========
+function toggleCategory(header) {
+  const grid = header.nextElementSibling;
+  header.classList.toggle('collapsed');
+  grid.classList.toggle('hidden');
+}
+
+// ========== SEARCH ==========
+document.getElementById('searchInput').addEventListener('input', function() {
+  const q = this.value.toLowerCase().trim();
+  document.querySelectorAll('.super-category').forEach(cat => {
+    const cards = cat.querySelectorAll('.industry-card');
+    let anyVisible = false;
+    cards.forEach(card => {
+      const name = card.querySelector('h3').textContent.toLowerCase();
+      const match = !q || name.includes(q);
+      card.style.display = match ? '' : 'none';
+      if (match) anyVisible = true;
+    });
+    cat.style.display = anyVisible ? '' : 'none';
+    // Ensure grid is visible when searching
+    if (q && anyVisible) {
+      const grid = cat.querySelector('.industry-grid');
+      const header = cat.querySelector('.super-category-header');
+      grid.classList.remove('hidden');
+      header.classList.remove('collapsed');
+    }
+  });
+});
+
+// ========== INIT ==========
+(async function() {
+  try {
+    await loadAllData();
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('content').style.display = 'block';
+    renderDashboard();
+  } catch (err) {
+    document.getElementById('loading').innerHTML = `<div style="color:var(--highlight)">Error loading data: ${err.message}<br><br>Make sure dashboard.html is served via HTTP (e.g., python3 -m http.server) and CSV files are in the same directory.</div>`;
+    console.error(err);
+  }
+})();
+</script>
+</body>
+</html>
