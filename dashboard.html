@@ -19,10 +19,12 @@
   --purple:#a78bfa;
 }
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-
-/* Top bar */
-.topbar{position:sticky;top:0;z-index:100;background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.topbar{position:sticky;top:0;z-index:100;background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
 .topbar h1{font-size:18px;font-weight:700;white-space:nowrap}
+.main-tabs{display:flex;background:var(--bg);border-radius:8px;overflow:hidden;border:1px solid var(--border)}
+.main-tab{padding:7px 18px;font-size:13px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--text3);transition:all .15s}
+.main-tab.active{background:var(--accent);color:#fff}
+.main-tab:hover:not(.active){background:var(--bg3);color:var(--text2)}
 .region-toggle{display:flex;background:var(--bg);border-radius:8px;overflow:hidden;border:1px solid var(--border)}
 .region-btn{padding:7px 16px;font-size:13px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--text3);transition:all .15s}
 .region-btn.active{background:var(--accent);color:#fff}
@@ -33,8 +35,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .search-wrap::before{content:'\1F50D';position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:12px;opacity:.5}
 .stats{display:flex;gap:16px;font-size:12px;color:var(--text3);margin-left:auto}
 .stats strong{color:var(--text2)}
-
-/* Channel group bar */
 .channel-bar{background:var(--bg2);border-bottom:1px solid var(--border);padding:10px 24px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .channel-bar-label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-right:4px;font-weight:600}
 .ch-group{display:flex;align-items:center;gap:2px;background:var(--bg);border-radius:8px;padding:3px;border:1px solid var(--border)}
@@ -45,16 +45,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .ch-sub-btn{padding:3px 10px;border-radius:12px;font-size:11px;cursor:pointer;border:1px solid transparent;transition:all .15s;white-space:nowrap}
 .ch-sub-btn.selected{border-color:rgba(255,255,255,.3);box-shadow:0 0 4px rgba(255,255,255,.1)}
 .ch-sub-btn:hover{opacity:.8}
-
-/* Loading */
 .loading{text-align:center;padding:80px;color:var(--text3)}
 .spinner{display:inline-block;width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;margin-bottom:12px}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* Main */
 .main{padding:24px;max-width:1600px;margin:0 auto}
-
-/* Super-category */
 .super-cat{margin-bottom:28px}
 .super-cat-hdr{display:flex;align-items:center;gap:10px;padding:8px 0;cursor:pointer;user-select:none}
 .super-cat-hdr:hover h2{color:var(--accent2)}
@@ -62,19 +56,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .super-cat-hdr.collapsed .arr{transform:rotate(-90deg)}
 .super-cat-hdr h2{font-size:15px;font-weight:600}
 .super-cat-hdr .cnt{font-size:11px;color:var(--text3);padding:2px 8px;background:var(--bg3);border-radius:10px}
-
-/* Cards grid — 2 columns, larger */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(580px,1fr));gap:16px}
 .grid.hidden{display:none}
-
-/* Card */
 .card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color .2s}
 .card:hover{border-color:var(--border2)}
 .card-top{padding:20px 24px 16px}
 .card-top h3{font-size:17px;font-weight:700;margin-bottom:4px}
 .card-top .card-channels{font-size:11px;color:var(--text3);margin-bottom:14px}
-
-/* Metrics grid — 2 rows of 4 */
 .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
 .metric{background:var(--bg);border-radius:8px;padding:12px;text-align:center;border:1px solid var(--border)}
 .metric .label{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);margin-bottom:4px;font-weight:600}
@@ -83,18 +71,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .metric.highlight{border-color:var(--green);background:var(--green-bg)}
 .metric.warn{border-color:var(--orange);background:var(--orange-bg)}
 .metric.bad{border-color:var(--red);background:var(--red-bg)}
-
-/* Spark row */
 .spark-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:6px}
 .spark-box{background:var(--bg);border-radius:8px;padding:10px 12px}
 .spark-box .spark-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin-bottom:4px}
 .spark-box canvas{height:50px!important;width:100%!important}
-
-/* Expand */
 .expand-btn{display:flex;align-items:center;justify-content:center;width:100%;padding:10px;background:none;border:none;border-top:1px solid var(--border);color:var(--text3);font-size:12px;cursor:pointer;transition:all .15s;font-weight:500}
 .expand-btn:hover{color:var(--accent2);background:rgba(59,130,246,.05)}
-
-/* Detail */
 .detail{display:none;padding:20px 24px;border-top:1px solid var(--border);background:var(--bg)}
 .detail.open{display:block}
 .detail h4{font-size:12px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
@@ -108,19 +90,55 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .chart-box{background:var(--bg2);border-radius:8px;padding:14px}
 .chart-box h5{font-size:11px;color:var(--text3);margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:.3px}
 .chart-box canvas{width:100%!important;height:170px!important}
-
-/* No data badge */
 .no-us{display:inline-block;padding:2px 8px;font-size:10px;background:var(--bg3);color:var(--text3);border-radius:4px;margin-left:8px}
 
-/* Responsive */
+/* === META ADS TAB STYLES === */
+.meta-nav{background:var(--bg2);border-bottom:1px solid var(--border);padding:10px 24px;display:flex;gap:4px;flex-wrap:wrap}
+.meta-nav-btn{padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:1px solid transparent;background:transparent;color:var(--text3);transition:all .15s}
+.meta-nav-btn.active{background:var(--bg3);color:var(--text);border-color:var(--border2)}
+.meta-nav-btn:hover:not(.active){color:var(--text2);background:var(--bg3)}
+.meta-main{padding:24px;max-width:1600px;margin:0 auto}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-bottom:28px}
+.kpi-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px;text-align:center}
+.kpi-card .kpi-label{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);margin-bottom:6px;font-weight:600}
+.kpi-card .kpi-val{font-size:28px;font-weight:800;margin-bottom:4px}
+.kpi-card .kpi-sub{font-size:11px;color:var(--text3)}
+.kpi-card .kpi-range{font-size:10px;color:var(--text3);margin-top:4px}
+.sources-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.src-badge{padding:4px 12px;border-radius:14px;font-size:11px;font-weight:600;border:1px solid var(--border);color:var(--text2)}
+.data-tbl{width:100%;border-collapse:collapse;font-size:13px}
+.data-tbl th{padding:10px 12px;text-align:left;color:var(--text3);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid var(--border);cursor:pointer;user-select:none;white-space:nowrap}
+.data-tbl th:hover{color:var(--accent2)}
+.data-tbl th.sorted-asc::after{content:' \\2191';color:var(--accent)}
+.data-tbl th.sorted-desc::after{content:' \\2193';color:var(--accent)}
+.data-tbl td{padding:8px 12px;border-bottom:1px solid var(--border);white-space:nowrap}
+.data-tbl tr:hover td{background:var(--bg3)}
+.data-tbl td.num{text-align:right;font-variant-numeric:tabular-nums;font-weight:500}
+.data-tbl .src-tag{display:inline-block;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:600;margin-left:4px}
+.section-title{font-size:16px;font-weight:700;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.meta-chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:28px}
+.meta-chart-box{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px}
+.meta-chart-box.wide{grid-column:1/-1}
+.meta-chart-box h5{font-size:12px;color:var(--text3);margin-bottom:10px;font-weight:600;text-transform:uppercase;letter-spacing:.3px}
+.meta-chart-box canvas{width:100%!important;height:250px!important}
+.meta-search{margin-bottom:16px}
+.meta-search input{width:100%;max-width:400px;padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;outline:none}
+.meta-search input:focus{border-color:var(--accent)}
+.insight-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-bottom:28px}
+.insight{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px}
+.insight h6{font-size:11px;text-transform:uppercase;color:var(--text3);letter-spacing:.5px;margin-bottom:6px;font-weight:600}
+.insight .val{font-size:18px;font-weight:700;margin-bottom:4px}
+.insight .desc{font-size:12px;color:var(--text3)}
 @media(max-width:768px){
   .grid{grid-template-columns:1fr}
   .metrics{grid-template-columns:repeat(2,1fr)}
-  .chart-row{grid-template-columns:1fr}
+  .chart-row,.meta-chart-grid{grid-template-columns:1fr}
   .topbar{padding:10px 16px}
-  .channel-bar{padding:8px 16px}
-  .main{padding:16px}
+  .channel-bar,.meta-nav{padding:8px 16px}
+  .main,.meta-main{padding:16px}
   .stats{display:none}
+  .kpi-grid{grid-template-columns:repeat(2,1fr)}
+  .meta-chart-box.wide{grid-column:auto}
 }
 </style>
 </head>
@@ -128,48 +146,68 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 
 <div class="topbar">
   <h1>Industry Benchmarks</h1>
-  <div class="region-toggle" id="regionToggle">
-    <button class="region-btn active" data-region="global">All Markets</button>
-    <button class="region-btn" data-region="us">$1M-$10M GMV</button>
+  <div class="main-tabs" id="mainTabs">
+    <button class="main-tab active" data-tab="tw">Multi-Channel</button>
+    <button class="main-tab" data-tab="meta">Meta Ads</button>
   </div>
-  <div class="search-wrap"><input type="text" id="searchInput" placeholder="Search industries..."></div>
-  <div class="stats">
-    <span><strong id="sI">0</strong> Industries</span>
-    <span><strong id="sC">0</strong> Channels</span>
-    <span><strong id="sR">0</strong> Records</span>
+  <div id="twControls" style="display:contents">
+    <div class="region-toggle" id="regionToggle">
+      <button class="region-btn active" data-region="global">All Markets</button>
+      <button class="region-btn" data-region="us">$1M-$10M GMV</button>
+    </div>
+    <div class="search-wrap"><input type="text" id="searchInput" placeholder="Search industries..."></div>
+    <div class="stats">
+      <span><strong id="sI">0</strong> Industries</span>
+      <span><strong id="sC">0</strong> Channels</span>
+      <span><strong id="sR">0</strong> Records</span>
+    </div>
   </div>
 </div>
 
-<div class="channel-bar">
-  <span class="channel-bar-label">Channels:</span>
-  <div class="ch-group" id="chGroupBar">
-    <button class="ch-group-btn active" data-group="all">All</button>
-    <button class="ch-group-btn" data-group="social">Social</button>
-    <button class="ch-group-btn" data-group="search">Search</button>
-    <button class="ch-group-btn" data-group="native">Native</button>
-    <button class="ch-group-btn" data-group="marketplace">Marketplace</button>
-    <button class="ch-group-btn" data-group="other">Other</button>
+<!-- ===== TRIPLE WHALE VIEW ===== -->
+<div id="twView">
+  <div class="channel-bar">
+    <span class="channel-bar-label">Channels:</span>
+    <div class="ch-group" id="chGroupBar">
+      <button class="ch-group-btn active" data-group="all">All</button>
+      <button class="ch-group-btn" data-group="social">Social</button>
+      <button class="ch-group-btn" data-group="search">Search</button>
+      <button class="ch-group-btn" data-group="native">Native</button>
+      <button class="ch-group-btn" data-group="marketplace">Marketplace</button>
+      <button class="ch-group-btn" data-group="other">Other</button>
+    </div>
+    <div class="ch-sub" id="chSubBar"></div>
   </div>
-  <div class="ch-sub" id="chSubBar"></div>
+  <div class="loading" id="loading"><div class="spinner"></div><div>Loading benchmarks...</div></div>
+  <div class="main" id="main" style="display:none"></div>
 </div>
 
-<div class="loading" id="loading"><div class="spinner"></div><div>Loading benchmarks...</div></div>
-<div class="main" id="main" style="display:none"></div>
+<!-- ===== META ADS VIEW ===== -->
+<div id="metaView" style="display:none">
+  <div class="meta-nav" id="metaNav">
+    <button class="meta-nav-btn active" data-meta="overview">Overview</button>
+    <button class="meta-nav-btn" data-meta="industry">By Industry</button>
+    <button class="meta-nav-btn" data-meta="country">By Country</button>
+    <button class="meta-nav-btn" data-meta="trends">Weekly Trends</button>
+    <button class="meta-nav-btn" data-meta="objectives">Objectives & Placements</button>
+  </div>
+  <div class="meta-main" id="metaMain"></div>
+</div>
 
 <script>
-// =========== CONFIG ===========
+// =============================================
+// TRIPLE WHALE MULTI-CHANNEL (existing logic)
+// =============================================
 const CHANNEL_GROUPS = {
-  social: { label: 'Social', channels: ['Meta','TikTok','Snapchat','Pinterest Ads','Reddit','Twitter'], colors: { Meta:'#1877f2', TikTok:'#fe2c55', Snapchat:'#fffc00', 'Pinterest Ads':'#e60023', Reddit:'#ff4500', Twitter:'#1d9bf0' }},
-  search: { label: 'Search', channels: ['Google Ads','Microsoft Ads'], colors: { 'Google Ads':'#4285f4', 'Microsoft Ads':'#00a4ef' }},
-  native: { label: 'Native', channels: ['Taboola','Outbrain','Criteo','StackAdapt','Adroll'], colors: { Taboola:'#005baa', Outbrain:'#e6420b', Criteo:'#f4811f', StackAdapt:'#6c3dc7', Adroll:'#0dadf1' }},
-  marketplace: { label: 'Marketplace', channels: ['Amazon'], colors: { Amazon:'#ff9900' }},
-  other: { label: 'Other', channels: ['Axon','AfterSell','Vibe','Mountain','Yotpo SMS and Email'], colors: { Axon:'#00c4b4', AfterSell:'#7c3aed', Vibe:'#6366f1', Mountain:'#22c55e', 'Yotpo SMS and Email':'#3b82f6' }}
+  social:{label:'Social',channels:['Meta','TikTok','Snapchat','Pinterest Ads','Reddit','Twitter'],colors:{Meta:'#1877f2',TikTok:'#fe2c55',Snapchat:'#fffc00','Pinterest Ads':'#e60023',Reddit:'#ff4500',Twitter:'#1d9bf0'}},
+  search:{label:'Search',channels:['Google Ads','Microsoft Ads'],colors:{'Google Ads':'#4285f4','Microsoft Ads':'#00a4ef'}},
+  native:{label:'Native',channels:['Taboola','Outbrain','Criteo','StackAdapt','Adroll'],colors:{Taboola:'#005baa',Outbrain:'#e6420b',Criteo:'#f4811f',StackAdapt:'#6c3dc7',Adroll:'#0dadf1'}},
+  marketplace:{label:'Marketplace',channels:['Amazon'],colors:{Amazon:'#ff9900'}},
+  other:{label:'Other',channels:['Axon','AfterSell','Vibe','Mountain','Yotpo SMS and Email'],colors:{Axon:'#00c4b4',AfterSell:'#7c3aed',Vibe:'#6366f1',Mountain:'#22c55e','Yotpo SMS and Email':'#3b82f6'}}
 };
-
-const ALL_CHANNELS_COLOR = {};
-for (const g of Object.values(CHANNEL_GROUPS)) for (const [c,col] of Object.entries(g.colors)) ALL_CHANNELS_COLOR[c] = col;
-
-const SUPER_CATEGORIES = {
+const ALL_CHANNELS_COLOR={};
+for(const g of Object.values(CHANNEL_GROUPS))for(const[c,col]of Object.entries(g.colors))ALL_CHANNELS_COLOR[c]=col;
+const SUPER_CATEGORIES={
   'Health & Medical':['health_and_beauty','health_and_wellness','healthcare_providers','medical_devices_and_equipment','pharmaceuticals_and_biotech','senior_care'],
   'Finance & Business':['accounting_and_tax_services','financial_services','insurance','investment_and_wealth_management','consulting_and_professional_services','business_supplies_and_equipment'],
   'Tech & Software':['software_and_saas','technology_services','consumer_electronics','emerging_technology','telecommunications','gaming_and_apps'],
@@ -181,187 +219,57 @@ const SUPER_CATEGORIES = {
   'Professional Services':['legal_services','hr_and_recruiting','marketing_and_advertising','real_estate','construction_and_engineering','manufacturing'],
   'Other':['nonprofit_and_philanthropy','energy_and_utilities','dating_and_personal_services','automotive','other']
 };
-
-const MONTH_ORDER = {};
-const MN = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-for(let y=22;y<=26;y++) for(let m=0;m<12;m++) MONTH_ORDER[`${MN[m]} ${y}`]=y*12+m;
+const MONTH_ORDER={};const MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+for(let y=22;y<=26;y++)for(let m=0;m<12;m++)MONTH_ORDER[`${MN[m]} ${y}`]=y*12+m;
 function sortM(a,b){return(MONTH_ORDER[a]||0)-(MONTH_ORDER[b]||0)}
 const DAY_NAMES=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
 
-// =========== STATE ===========
-let currentRegion = 'global';
-let currentGroup = 'all';
-let selectedChannels = new Set(); // empty = all in group
-let globalData = {}; // industry -> channel -> month -> metrics
-let usData = {};     // industry -> channel -> metrics (single snapshot)
-let dowData = {};
-let womData = {};
-let domData = {};
-let allIndustries = new Set();
-let allChannels = new Set();
-let totalRows = 0;
-const charts = {};
+let currentRegion='global',currentGroup='all',selectedChannels=new Set();
+let globalData={},usData={},dowData={},womData={},domData={};
+let allIndustries=new Set(),allChannels=new Set(),totalRows=0;
+const charts={};
 
-// =========== PARSE ===========
-function cleanNum(v){
-  if(!v||v===''||v==='-') return null;
-  let s=String(v).replace(/[$,%x]/g,'').replace(/,/g,'').trim();
-  let n=parseFloat(s); return isNaN(n)?null:n;
-}
+function cleanNum(v){if(!v||v===''||v==='-')return null;let s=String(v).replace(/[$,%x]/g,'').replace(/,/g,'').trim();let n=parseFloat(s);return isNaN(n)?null:n}
 function parseRow(r){return{cpm:cleanNum(r.CPM),cpc:cleanNum(r.CPC),ctr:cleanNum(r.CTR),cpa:cleanNum(r.CPA),cvr:cleanNum(r.Cvr),roas:cleanNum(r.ROAS),aov:cleanNum(r.AOV),mer:cleanNum(r.Mer)}}
 function nest(o,ks){let c=o;for(const k of ks){if(!c[k])c[k]={};c=c[k]}return c}
 
 async function loadCSV(f){const r=await fetch(f);const t=await r.text();return Papa.parse(t,{header:true,delimiter:'\t',skipEmptyLines:true}).data}
 
 async function loadAll(){
-  const [monthly,us,dow,wom,dom] = await Promise.all([
-    loadCSV('monthly_benchmarks.csv'),
-    loadCSV('us_benchmarks.csv'),
-    loadCSV('benchmarks_by_day_of_week.csv'),
-    loadCSV('benchmarks_by_week_of_month.csv'),
-    loadCSV('benchmarks_by_day_of_month.csv'),
-  ]);
-  for(const r of monthly){
-    const i=r.Industry,c=r.Channel,m=r.Month;
-    if(!i||!c||!m)continue;
-    allIndustries.add(i);allChannels.add(c);totalRows++;
-    nest(globalData,[i,c])[m]=parseRow(r);
-  }
-  for(const r of us){
-    const i=r.Industry,c=r.Channel;
-    if(!i||!c)continue;totalRows++;
-    nest(usData,[i])[c]=parseRow(r);
-  }
+  const[monthly,us,dow,wom,dom]=await Promise.all([loadCSV('monthly_benchmarks.csv'),loadCSV('us_benchmarks.csv'),loadCSV('benchmarks_by_day_of_week.csv'),loadCSV('benchmarks_by_week_of_month.csv'),loadCSV('benchmarks_by_day_of_month.csv')]);
+  for(const r of monthly){const i=r.Industry,c=r.Channel,m=r.Month;if(!i||!c||!m)continue;allIndustries.add(i);allChannels.add(c);totalRows++;nest(globalData,[i,c])[m]=parseRow(r)}
+  for(const r of us){const i=r.Industry,c=r.Channel;if(!i||!c)continue;totalRows++;nest(usData,[i])[c]=parseRow(r)}
   for(const r of dow){const i=r.Industry,c=r.Channel,d=r.Day_of_Week;if(!i||!c||!d)continue;totalRows++;nest(dowData,[i,c])[d]=parseRow(r)}
   for(const r of wom){const i=r.Industry,c=r.Channel,w=r.Week_of_Month;if(!i||!c||!w)continue;totalRows++;nest(womData,[i,c])[w]=parseRow(r)}
   for(const r of dom){const i=r.Industry,c=r.Channel,d=r.Day_of_Month;if(!i||!c||!d)continue;totalRows++;nest(domData,[i,c])[d]=parseRow(r)}
 }
 
-// =========== DATA ACCESS ===========
-function getActiveChannels(){
-  if(currentGroup==='all') return null; // all channels
-  const grp = CHANNEL_GROUPS[currentGroup];
-  if(!grp) return null;
-  if(selectedChannels.size>0) return [...selectedChannels];
-  return grp.channels;
-}
+function getActiveChannels(){if(currentGroup==='all')return null;const g=CHANNEL_GROUPS[currentGroup];if(!g)return null;if(selectedChannels.size>0)return[...selectedChannels];return g.channels}
+function filterChannels(co){const a=getActiveChannels();if(!a)return co;const o={};for(const c of a)if(co[c])o[c]=co[c];return o}
+function avgMetrics(arr){const r={};for(const k of['cpm','cpc','ctr','cpa','cvr','roas','aov','mer']){const v=arr.map(m=>m[k]).filter(v=>v!=null);r[k]=v.length?v.reduce((a,b)=>a+b,0)/v.length:null}return r}
+function getLatestGlobal(ind){const c=globalData[ind];if(!c)return null;const f=filterChannels(c);const ms=new Set();for(const ch in f)for(const m in f[ch])ms.add(m);const s=[...ms].sort(sortM);if(!s.length)return null;const l=s[s.length-1];const mets=[];for(const ch in f)if(f[ch][l])mets.push(f[ch][l]);return mets.length?avgMetrics(mets):null}
+function getLatestUS(ind){const c=usData[ind];if(!c)return null;const f=filterChannels(c);return Object.values(f).length?avgMetrics(Object.values(f)):null}
+function getLatestMetrics(ind){return currentRegion==='us'?getLatestUS(ind):getLatestGlobal(ind)}
+function getChannelsFor(ind){if(currentRegion==='us')return usData[ind]?Object.keys(usData[ind]).sort():[];return globalData[ind]?Object.keys(globalData[ind]).sort():[]}
+function hasSegmentData(ind){return!!(usData[ind]&&Object.keys(usData[ind]).length)}
+function getGlobalMonthlyTrend(ind,metric,n){const c=globalData[ind];if(!c)return[];const f=filterChannels(c);const ms=new Set();for(const ch in f)for(const m in f[ch])ms.add(m);const s=[...ms].sort(sortM).slice(-n);return s.map(m=>{const mets=[];for(const ch in f)if(f[ch][m])mets.push(f[ch][m]);const a=mets.length?avgMetrics(mets):null;return{month:m,value:a?a[metric]:null}})}
+function getTimeDim(store,ind,keys){const c=store[ind];if(!c)return keys.map(()=>null);const f=filterChannels(c);return keys.map(k=>{const mets=[];for(const ch in f)if(f[ch]&&f[ch][k])mets.push(f[ch][k]);return mets.length?avgMetrics(mets):null})}
 
-function filterChannels(channelObj){
-  const active = getActiveChannels();
-  if(!active) return channelObj;
-  const out={};
-  for(const c of active) if(channelObj[c]) out[c]=channelObj[c];
-  return out;
-}
+function fmt(v,t){if(v==null)return'—';switch(t){case'$':return'$'+v.toFixed(2);case'%':return v.toFixed(2)+'%';case'x':return v.toFixed(2)+'x';default:return v.toFixed(2)}}
+function fmtInd(s){return s.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase()).replace(/\bAnd\b/g,'&').replace(/\bSaas\b/g,'SaaS').replace(/\bHr\b/g,'HR').replace(/\bElearning\b/g,'eLearning').replace(/\bEcommerce\b/g,'eCommerce')}
+function metricClass(metric,value){if(value==null)return'';if(metric==='roas')return value>=2.5?'highlight':value>=1?'warn':'bad';if(metric==='mer')return value<0.5?'highlight':value<1?'warn':'bad';return''}
 
-function avgMetrics(arr){
-  const r={};
-  for(const k of ['cpm','cpc','ctr','cpa','cvr','roas','aov','mer']){
-    const v=arr.map(m=>m[k]).filter(v=>v!=null);
-    r[k]=v.length?v.reduce((a,b)=>a+b,0)/v.length:null;
-  }
-  return r;
-}
-
-function getLatestGlobal(industry){
-  const chs=globalData[industry];if(!chs)return null;
-  const filtered=filterChannels(chs);
-  const months=new Set();
-  for(const c in filtered)for(const m in filtered[c])months.add(m);
-  const sorted=[...months].sort(sortM);
-  if(!sorted.length)return null;
-  const latest=sorted[sorted.length-1];
-  const mets=[];
-  for(const c in filtered)if(filtered[c][latest])mets.push(filtered[c][latest]);
-  return mets.length?avgMetrics(mets):null;
-}
-
-function getLatestUS(industry){
-  const chs=usData[industry];if(!chs)return null;
-  const filtered=filterChannels(chs);
-  const mets=Object.values(filtered);
-  return mets.length?avgMetrics(mets):null;
-}
-
-function getLatestMetrics(industry){
-  return currentRegion==='us'?getLatestUS(industry):getLatestGlobal(industry);
-}
-
-function getChannelsFor(industry){
-  if(currentRegion==='us'){
-    return usData[industry]?Object.keys(usData[industry]).sort():[];
-  }
-  return globalData[industry]?Object.keys(globalData[industry]).sort():[];
-}
-
-function hasSegmentData(industry){ return !!(usData[industry]&&Object.keys(usData[industry]).length) }
-
-function getGlobalMonthlyTrend(industry,metric,n){
-  const chs=globalData[industry];if(!chs)return[];
-  const filtered=filterChannels(chs);
-  const months=new Set();
-  for(const c in filtered)for(const m in filtered[c])months.add(m);
-  const sorted=[...months].sort(sortM).slice(-n);
-  return sorted.map(m=>{
-    const mets=[];
-    for(const c in filtered)if(filtered[c][m])mets.push(filtered[c][m]);
-    const avg=mets.length?avgMetrics(mets):null;
-    return{month:m,value:avg?avg[metric]:null};
-  });
-}
-
-function getTimeDim(store,industry,keys){
-  const chs=store[industry];if(!chs)return keys.map(()=>null);
-  const filtered=filterChannels(chs);
-  return keys.map(k=>{
-    const mets=[];
-    for(const c in filtered)if(filtered[c]&&filtered[c][k])mets.push(filtered[c][k]);
-    return mets.length?avgMetrics(mets):null;
-  });
-}
-
-// =========== FORMAT ===========
-function fmt(v,t){
-  if(v==null)return'—';
-  switch(t){case'$':return'$'+v.toFixed(2);case'%':return v.toFixed(2)+'%';case'x':return v.toFixed(2)+'x';default:return v.toFixed(2)}
-}
-function fmtInd(s){
-  return s.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase())
-    .replace(/\bAnd\b/g,'&').replace(/\bSaas\b/g,'SaaS').replace(/\bHr\b/g,'HR')
-    .replace(/\bElearning\b/g,'eLearning').replace(/\bEcommerce\b/g,'eCommerce');
-}
-
-function metricClass(metric,value){
-  if(value==null)return'';
-  if(metric==='roas') return value>=2.5?'highlight':value>=1?'warn':'bad';
-  if(metric==='mer') return value<0.5?'highlight':value<1?'warn':'bad';
-  return'';
-}
-
-// =========== CHARTS ===========
 function destroyChart(id){if(charts[id]){charts[id].destroy();delete charts[id]}}
+function sparkline(id,data,color,label){destroyChart(id);const c=document.getElementById(id);if(!c)return;charts[id]=new Chart(c.getContext('2d'),{type:'line',data:{labels:data.map(d=>d.month||d.label||''),datasets:[{data:data.map(d=>d.value),borderColor:color||'#3b82f6',backgroundColor:(color||'#3b82f6')+'22',borderWidth:2,fill:true,tension:.35,pointRadius:0,pointHitRadius:8}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>(label||'')+c.parsed.y?.toFixed(2)}}},scales:{x:{display:false},y:{display:false}},interaction:{mode:'index',intersect:false}}})}
+function barChart(id,labels,values,color,valFmt){destroyChart(id);const c=document.getElementById(id);if(!c)return;charts[id]=new Chart(c.getContext('2d'),{type:'bar',data:{labels,datasets:[{data:values,backgroundColor:color+'88',borderColor:color,borderWidth:1,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>fmt(c.parsed.y,valFmt)}}},scales:{x:{ticks:{color:'#64748b',font:{size:10}},grid:{display:false}},y:{ticks:{color:'#475569',font:{size:10}},grid:{color:'#1e293b44'}}}}})}
 
-function sparkline(id,data,color,label){
-  destroyChart(id);const c=document.getElementById(id);if(!c)return;
-  charts[id]=new Chart(c.getContext('2d'),{type:'line',data:{labels:data.map(d=>d.month||d.label||''),datasets:[{data:data.map(d=>d.value),borderColor:color||'#3b82f6',backgroundColor:(color||'#3b82f6')+'22',borderWidth:2,fill:true,tension:.35,pointRadius:0,pointHitRadius:8}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>(label||'')+c.parsed.y?.toFixed(2)}}},scales:{x:{display:false},y:{display:false}},interaction:{mode:'index',intersect:false}}});
-}
-
-function barChart(id,labels,values,color,valFmt){
-  destroyChart(id);const c=document.getElementById(id);if(!c)return;
-  charts[id]=new Chart(c.getContext('2d'),{type:'bar',data:{labels,datasets:[{data:values,backgroundColor:color+'88',borderColor:color,borderWidth:1,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>fmt(c.parsed.y,valFmt)}}},scales:{x:{ticks:{color:'#64748b',font:{size:10}},grid:{display:false}},y:{ticks:{color:'#475569',font:{size:10}},grid:{color:'#1e293b44'}}}}});
-}
-
-// =========== RENDER ===========
 function render(){
   document.getElementById('sI').textContent=allIndustries.size;
   document.getElementById('sC').textContent=allChannels.size;
   document.getElementById('sR').textContent=totalRows.toLocaleString();
-
   const main=document.getElementById('main');main.innerHTML='';
-
   for(const[cat,inds]of Object.entries(SUPER_CATEGORIES)){
-    const avail=inds.filter(i=>allIndustries.has(i));
-    if(!avail.length)continue;
+    const avail=inds.filter(i=>allIndustries.has(i));if(!avail.length)continue;
     const sec=document.createElement('div');sec.className='super-cat';
     sec.innerHTML=`<div class="super-cat-hdr" onclick="toggleCat(this)"><span class="arr">&#9660;</span><h2>${cat}</h2><span class="cnt">${avail.length}</span></div><div class="grid" id="g-${cat.replace(/\W/g,'')}">${avail.map(i=>cardHTML(i)).join('')}</div>`;
     main.appendChild(sec);
@@ -370,246 +278,451 @@ function render(){
 }
 
 function cardHTML(ind){
-  const id=ind.replace(/\W/g,'');
-  const chs=getChannelsFor(ind);
-  const noUS=currentRegion==='us'&&!hasSegmentData(ind);
+  const id=ind.replace(/\W/g,''),chs=getChannelsFor(ind),noUS=currentRegion==='us'&&!hasSegmentData(ind);
   const chText=chs.length?chs.slice(0,6).join(', ')+(chs.length>6?` +${chs.length-6} more`:''):'No data';
-
-  return`<div class="card" id="c-${id}">
-    <div class="card-top">
-      <h3>${fmtInd(ind)}${noUS?'<span class="no-us">No segment data</span>':''}</h3>
-      <div class="card-channels" id="cch-${id}">${chText}</div>
-      <div class="metrics" id="met-${id}">
-        <div class="metric" id="m-cpm-${id}"><div class="label">CPM</div><div class="val">—</div><div class="sub">Cost per 1K</div></div>
-        <div class="metric" id="m-cpc-${id}"><div class="label">CPC</div><div class="val">—</div><div class="sub">Cost per Click</div></div>
-        <div class="metric" id="m-ctr-${id}"><div class="label">CTR</div><div class="val">—</div><div class="sub">Click-through</div></div>
-        <div class="metric" id="m-cpa-${id}"><div class="label">CPA</div><div class="val">—</div><div class="sub">Cost per Acq.</div></div>
-        <div class="metric" id="m-roas-${id}"><div class="label">ROAS</div><div class="val">—</div><div class="sub">Return on Spend</div></div>
-        <div class="metric" id="m-aov-${id}"><div class="label">AOV</div><div class="val">—</div><div class="sub">Avg. Order</div></div>
-        <div class="metric" id="m-cvr-${id}"><div class="label">CVR</div><div class="val">—</div><div class="sub">Conversion</div></div>
-        <div class="metric" id="m-mer-${id}"><div class="label">MER</div><div class="val">—</div><div class="sub">Efficiency</div></div>
-      </div>
-      <div class="spark-row">
-        <div class="spark-box"><div class="spark-label">CPM Trend</div><canvas id="sp-cpm-${id}"></canvas></div>
-        <div class="spark-box"><div class="spark-label">ROAS Trend</div><canvas id="sp-roas-${id}"></canvas></div>
-      </div>
-    </div>
-    <button class="expand-btn" onclick="toggleDetail('${id}','${ind}')"><span id="exp-${id}">See More &#9660;</span></button>
-    <div class="detail" id="det-${id}"></div>
-  </div>`;
+  return`<div class="card" id="c-${id}"><div class="card-top"><h3>${fmtInd(ind)}${noUS?'<span class="no-us">No segment data</span>':''}</h3><div class="card-channels" id="cch-${id}">${chText}</div><div class="metrics" id="met-${id}"><div class="metric" id="m-cpm-${id}"><div class="label">CPM</div><div class="val">—</div><div class="sub">Cost per 1K</div></div><div class="metric" id="m-cpc-${id}"><div class="label">CPC</div><div class="val">—</div><div class="sub">Cost per Click</div></div><div class="metric" id="m-ctr-${id}"><div class="label">CTR</div><div class="val">—</div><div class="sub">Click-through</div></div><div class="metric" id="m-cpa-${id}"><div class="label">CPA</div><div class="val">—</div><div class="sub">Cost per Acq.</div></div><div class="metric" id="m-roas-${id}"><div class="label">ROAS</div><div class="val">—</div><div class="sub">Return on Spend</div></div><div class="metric" id="m-aov-${id}"><div class="label">AOV</div><div class="val">—</div><div class="sub">Avg. Order</div></div><div class="metric" id="m-cvr-${id}"><div class="label">CVR</div><div class="val">—</div><div class="sub">Conversion</div></div><div class="metric" id="m-mer-${id}"><div class="label">MER</div><div class="val">—</div><div class="sub">Efficiency</div></div></div><div class="spark-row"><div class="spark-box"><div class="spark-label">CPM Trend</div><canvas id="sp-cpm-${id}"></canvas></div><div class="spark-box"><div class="spark-label">ROAS Trend</div><canvas id="sp-roas-${id}"></canvas></div></div></div><button class="expand-btn" onclick="toggleDetail('${id}','${ind}')"><span id="exp-${id}">See More &#9660;</span></button><div class="detail" id="det-${id}"></div></div>`;
 }
 
 function updateCard(ind){
-  const id=ind.replace(/\W/g,'');
-  const m=getLatestMetrics(ind);
-
-  setMetric(id,'cpm',m?.cpm,'$');
-  setMetric(id,'cpc',m?.cpc,'$');
-  setMetric(id,'ctr',m?.ctr,'%');
-  setMetric(id,'cpa',m?.cpa,'$');
-  setMetric(id,'roas',m?.roas,'x','roas');
-  setMetric(id,'aov',m?.aov,'$');
-  setMetric(id,'cvr',m?.cvr,'%');
-  setMetric(id,'mer',m?.mer,'','mer');
-
-  // Update channel list
-  const chs=getChannelsFor(ind);
-  const chEl=document.getElementById(`cch-${id}`);
-  if(chEl) chEl.textContent=chs.length?chs.slice(0,6).join(', ')+(chs.length>6?` +${chs.length-6} more`:''):'No data';
-
-  // Sparklines (global only since US is single snapshot)
-  if(currentRegion==='global'){
-    const cpmT=getGlobalMonthlyTrend(ind,'cpm',8);
-    const roasT=getGlobalMonthlyTrend(ind,'roas',8);
-    sparkline(`sp-cpm-${id}`,cpmT,'#3b82f6','$');
-    sparkline(`sp-roas-${id}`,roasT,'#22c55e','');
-  } else {
-    // For US, show global trend as context
-    const cpmT=getGlobalMonthlyTrend(ind,'cpm',8);
-    const roasT=getGlobalMonthlyTrend(ind,'roas',8);
-    sparkline(`sp-cpm-${id}`,cpmT,'#64748b','$');
-    sparkline(`sp-roas-${id}`,roasT,'#64748b','');
-  }
-
-  // If detail open, refresh
-  const det=document.getElementById(`det-${id}`);
-  if(det&&det.classList.contains('open')) renderDetail(id,ind);
+  const id=ind.replace(/\W/g,''),m=getLatestMetrics(ind);
+  setMetric(id,'cpm',m?.cpm,'$');setMetric(id,'cpc',m?.cpc,'$');setMetric(id,'ctr',m?.ctr,'%');setMetric(id,'cpa',m?.cpa,'$');
+  setMetric(id,'roas',m?.roas,'x','roas');setMetric(id,'aov',m?.aov,'$');setMetric(id,'cvr',m?.cvr,'%');setMetric(id,'mer',m?.mer,'','mer');
+  const chs=getChannelsFor(ind),chEl=document.getElementById(`cch-${id}`);
+  if(chEl)chEl.textContent=chs.length?chs.slice(0,6).join(', ')+(chs.length>6?` +${chs.length-6} more`:''):'No data';
+  if(currentRegion==='global'){sparkline(`sp-cpm-${id}`,getGlobalMonthlyTrend(ind,'cpm',8),'#3b82f6','$');sparkline(`sp-roas-${id}`,getGlobalMonthlyTrend(ind,'roas',8),'#22c55e','')}
+  else{sparkline(`sp-cpm-${id}`,getGlobalMonthlyTrend(ind,'cpm',8),'#64748b','$');sparkline(`sp-roas-${id}`,getGlobalMonthlyTrend(ind,'roas',8),'#64748b','')}
+  const det=document.getElementById(`det-${id}`);if(det&&det.classList.contains('open'))renderDetail(id,ind);
 }
 
-function setMetric(id,key,val,fmt_type,classKey){
-  const el=document.getElementById(`m-${key}-${id}`);
-  if(!el)return;
-  el.querySelector('.val').textContent=fmt(val,fmt_type);
-  el.className='metric '+(classKey?metricClass(classKey,val):'');
-}
+function setMetric(id,key,val,ft,ck){const el=document.getElementById(`m-${key}-${id}`);if(!el)return;el.querySelector('.val').textContent=fmt(val,ft);el.className='metric '+(ck?metricClass(ck,val):'')}
 
-// =========== DETAIL ===========
-function toggleDetail(id,ind){
-  const det=document.getElementById(`det-${id}`);
-  const exp=document.getElementById(`exp-${id}`);
-  if(det.classList.contains('open')){det.classList.remove('open');exp.innerHTML='See More &#9660;'}
-  else{det.classList.add('open');exp.innerHTML='See Less &#9650;';renderDetail(id,ind)}
-}
+function toggleDetail(id,ind){const d=document.getElementById(`det-${id}`),e=document.getElementById(`exp-${id}`);if(d.classList.contains('open')){d.classList.remove('open');e.innerHTML='See More &#9660;'}else{d.classList.add('open');e.innerHTML='See Less &#9650;';renderDetail(id,ind)}}
 
 function renderDetail(id,ind){
-  const det=document.getElementById(`det-${id}`);
-  const isUS=currentRegion==='us';
+  const det=document.getElementById(`det-${id}`),isUS=currentRegion==='us';let rows='';
+  if(isUS){const c=usData[ind];if(c){const f=filterChannels(c);for(const[ch,m]of Object.entries(f).sort((a,b)=>a[0].localeCompare(b[0]))){const col=ALL_CHANNELS_COLOR[ch]||'#64748b';rows+=`<tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${col};margin-right:6px"></span>${ch}</td><td>${fmt(m.cpm,'$')}</td><td>${fmt(m.cpc,'$')}</td><td>${fmt(m.ctr,'%')}</td><td>${fmt(m.cpa,'$')}</td><td>${fmt(m.cvr,'%')}</td><td>${fmt(m.roas,'x')}</td><td>${fmt(m.aov,'$')}</td><td>${fmt(m.mer,'')}</td></tr>`}}}
+  else{const c=globalData[ind];if(c){const f=filterChannels(c);const ms=new Set();for(const ch in f)for(const m in f[ch])ms.add(m);const s=[...ms].sort(sortM);const l=s[s.length-1];for(const[ch,mD]of Object.entries(f).sort((a,b)=>a[0].localeCompare(b[0]))){const m=mD[l];if(!m)continue;const col=ALL_CHANNELS_COLOR[ch]||'#64748b';rows+=`<tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${col};margin-right:6px"></span>${ch}</td><td>${fmt(m.cpm,'$')}</td><td>${fmt(m.cpc,'$')}</td><td>${fmt(m.ctr,'%')}</td><td>${fmt(m.cpa,'$')}</td><td>${fmt(m.cvr,'%')}</td><td>${fmt(m.roas,'x')}</td><td>${fmt(m.aov,'$')}</td><td>${fmt(m.mer,'')}</td></tr>`}}}
+  const dowId=`dow-${id}`,womId=`wom-${id}`,domId=`dom-${id}`,trendId=`trend-${id}`;
+  det.innerHTML=`<div class="detail-section"><h4>Channel Breakdown${isUS?' ($1M-$10M GMV Tier)':' (All Markets, Latest Month)'}</h4>${rows?`<table class="tbl"><thead><tr><th>Channel</th><th>CPM</th><th>CPC</th><th>CTR</th><th>CPA</th><th>CVR</th><th>ROAS</th><th>AOV</th><th>MER</th></tr></thead><tbody>${rows}</tbody></table>`:'<div style="color:var(--text3);font-size:12px;padding:12px">No data for current selection</div>'}</div>${!isUS?`<div class="detail-section"><h4>ROAS Trend (12 Months)</h4><div class="chart-box"><canvas id="${trendId}"></canvas></div></div>`:''}<div class="detail-section"><h4>Time Patterns (Global)</h4><div class="chart-row"><div class="chart-box"><h5>CPA by Day of Week</h5><canvas id="${dowId}"></canvas></div><div class="chart-box"><h5>CPA by Week of Month</h5><canvas id="${womId}"></canvas></div></div><div class="chart-row" style="margin-top:12px"><div class="chart-box" style="grid-column:1/-1"><h5>CPA by Day of Month (Days 10-16, partial)</h5><canvas id="${domId}"></canvas></div></div></div>`;
+  requestAnimationFrame(()=>{
+    if(!isUS){const rt=getGlobalMonthlyTrend(ind,'roas',12);barChart(trendId,rt.map(d=>d.month),rt.map(d=>d.value),'#22c55e','x')}
+    const dk=['1','2','3','4','5','6','7'],dm=getTimeDim(dowData,ind,dk),dv=dm.map(m=>m?.cpa??null);if(dv.some(v=>v!=null))barChart(dowId,DAY_NAMES,dv,'#3b82f6','$');
+    const wk=['1','2','3','4','5'],wm=getTimeDim(womData,ind,wk),wv=wm.map(m=>m?.cpa??null);if(wv.some(v=>v!=null))barChart(womId,['Wk 1','Wk 2','Wk 3','Wk 4','Wk 5'],wv,'#a78bfa','$');
+    const domK=[];for(let d=10;d<=16;d++)domK.push(String(d));const domM=getTimeDim(domData,ind,domK),domV=domM.map(m=>m?.cpa??null);if(domV.some(v=>v!=null))barChart(domId,domK.map(d=>'Day '+d),domV,'#f59e0b','$');
+  });
+}
 
-  // Per-channel breakdown table
-  let rows='';
-  if(isUS){
-    const chs=usData[ind];
-    if(chs){
-      const filtered=filterChannels(chs);
-      for(const[ch,m]of Object.entries(filtered).sort((a,b)=>a[0].localeCompare(b[0]))){
-        const color=ALL_CHANNELS_COLOR[ch]||'#64748b';
-        rows+=`<tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${color};margin-right:6px"></span>${ch}</td><td>${fmt(m.cpm,'$')}</td><td>${fmt(m.cpc,'$')}</td><td>${fmt(m.ctr,'%')}</td><td>${fmt(m.cpa,'$')}</td><td>${fmt(m.cvr,'%')}</td><td>${fmt(m.roas,'x')}</td><td>${fmt(m.aov,'$')}</td><td>${fmt(m.mer,'')}</td></tr>`;
-      }
+function toggleCat(hdr){hdr.classList.toggle('collapsed');hdr.nextElementSibling.classList.toggle('hidden')}
+
+document.getElementById('regionToggle').addEventListener('click',e=>{const b=e.target.closest('.region-btn');if(!b)return;document.querySelectorAll('.region-btn').forEach(b=>b.classList.remove('active'));b.classList.add('active');currentRegion=b.dataset.region;render()});
+document.getElementById('chGroupBar').addEventListener('click',e=>{const b=e.target.closest('.ch-group-btn');if(!b)return;document.querySelectorAll('.ch-group-btn').forEach(b=>b.classList.remove('active'));b.classList.add('active');currentGroup=b.dataset.group;selectedChannels.clear();renderSubChannels();refreshAllCards()});
+
+function renderSubChannels(){const s=document.getElementById('chSubBar');if(currentGroup==='all'){s.innerHTML='';return}const g=CHANNEL_GROUPS[currentGroup];if(!g){s.innerHTML='';return}s.innerHTML=g.channels.map(ch=>{const c=g.colors[ch]||'#666';const sel=selectedChannels.size===0||selectedChannels.has(ch);return`<button class="ch-sub-btn${sel?' selected':''}" style="background:${c}${sel?'':'44'};color:${sel?'#fff':'#999'}" data-ch="${ch}" onclick="toggleSubCh(this)">${ch}</button>`}).join('')}
+function toggleSubCh(btn){const ch=btn.dataset.ch,g=CHANNEL_GROUPS[currentGroup];if(!g)return;if(selectedChannels.size===0){selectedChannels.add(ch)}else if(selectedChannels.has(ch)){selectedChannels.delete(ch)}else{selectedChannels.add(ch);if(selectedChannels.size===g.channels.length)selectedChannels.clear()}renderSubChannels();refreshAllCards()}
+function refreshAllCards(){for(const i of allIndustries)updateCard(i)}
+
+document.getElementById('searchInput').addEventListener('input',function(){const q=this.value.toLowerCase().trim();document.querySelectorAll('.super-cat').forEach(cat=>{const cards=cat.querySelectorAll('.card');let any=false;cards.forEach(c=>{const n=c.querySelector('h3').textContent.toLowerCase();const match=!q||n.includes(q);c.style.display=match?'':'none';if(match)any=true});cat.style.display=any?'':'none';if(q&&any){cat.querySelector('.grid').classList.remove('hidden');cat.querySelector('.super-cat-hdr').classList.remove('collapsed')}})});
+
+// =============================================
+// META ADS MULTI-SOURCE DATA
+// =============================================
+const N=null;
+const SRC_COLORS={Superads:'#10b981',Vaizle:'#8b5cf6',WordStream:'#f59e0b','WS Leads':'#ef4444',Databox:'#3b82f6',Madgicx:'#ec4899','ADCostly+':'#06b6d4',Revealbot:'#f97316'};
+
+// [industry, source, cpm, cpc, ctr, cpa, cvr, roas]
+const MI=[
+['Agriculture','Superads',8.96,0.51,2.51,N,N,N],['Arts','Superads',14.70,0.61,2.64,N,N,N],['Construction','Superads',23.39,1.41,1.74,N,N,N],
+['Consulting','Superads',43.40,1.31,3.69,N,N,N],['Consumer Goods','Superads',20.02,1.30,1.68,N,N,N],['Crypto & Blockchain','Superads',20.15,2.51,0.74,N,N,N],
+['Design','Superads',38.70,2.82,1.88,N,N,N],['E-commerce','Superads',17.88,0.98,1.94,N,N,N],['Education','Superads',16.90,1.05,1.66,N,N,N],
+['Energy & Mining','Superads',34.94,1.59,2.24,N,N,N],['Entertainment','Superads',9.27,0.38,2.43,N,N,N],['Finance','Superads',27.80,1.44,1.87,N,N,N],
+['Fitness & Training','Superads',19.95,1.24,1.80,N,N,N],['Gaming','Superads',12.33,1.41,0.94,N,N,N],['Hardware & Networking','Superads',12.22,0.77,1.85,N,N,N],
+['Healthcare','Superads',27.30,1.66,1.69,N,N,N],['HR & Staffing','Superads',19.91,1.86,1.34,N,N,N],['IT Services','Superads',42.17,1.52,2.91,N,N,N],
+['Legal','Superads',49.70,2.68,1.82,N,N,N],['Manufacturing','Superads',10.17,0.69,1.57,N,N,N],['Marketing & Advertising','Superads',34.50,1.31,2.30,N,N,N],
+['Marketplaces','Superads',9.58,0.56,2.17,N,N,N],['Media','Superads',17.12,0.53,3.40,N,N,N],['Nonprofit','Superads',15.36,0.39,3.95,N,N,N],
+['Public Administration','Superads',5.88,0.48,1.35,N,N,N],['Public Safety','Superads',18.90,1.21,1.82,N,N,N],['Real Estate','Superads',29.85,1.17,2.75,N,N,N],
+['Recreation & Travel','Superads',10.74,0.57,1.95,N,N,N],['Retail','Superads',15.72,0.86,1.95,N,N,N],['SaaS & Cloud','Superads',24.46,1.97,1.20,N,N,N],
+['Software Development','Superads',10.00,0.70,2.00,N,N,N],['Textiles','Superads',13.54,0.67,2.48,N,N,N],['Transportation','Superads',15.43,0.98,1.64,N,N,N],
+['Venture Capital','Superads',47.80,2.16,2.47,N,N,N],['Wellness','Superads',27.35,1.39,1.99,N,N,N],['Wine & Spirits','Superads',14.10,1.02,1.75,N,N,N],
+// Vaizle (5,200+ Meta accounts, Aug 2025)
+['E-commerce','Vaizle',10.76,1.37,2.46,N,N,2.00],['Education','Vaizle',5.25,0.70,1.20,N,N,1.50],['Finance & Insurance','Vaizle',18.45,2.34,2.31,N,N,3.50],
+['Food & Beverage','Vaizle',2.82,0.36,3.67,N,N,0.50],['Health & Wellness','Vaizle',4.76,1.48,2.59,N,N,1.80],['Real Estate','Vaizle',5.13,1.20,1.89,N,N,2.10],
+['Technology','Vaizle',6.94,1.10,1.91,N,N,2.30],['Marketing & Advertising','Vaizle',8.11,1.45,1.33,N,N,0.90],['Travel & Hospitality','Vaizle',7.23,1.88,2.09,N,N,1.00],
+['Retail','Vaizle',9.02,0.82,2.88,N,N,2.50],
+// WordStream 2025 Traffic campaigns
+['Animals & Pets','WordStream',N,0.78,1.64,N,N,N],['Apparel & Fashion','WordStream',N,0.86,1.29,N,N,N],['Arts & Entertainment','WordStream',N,0.49,2.10,N,N,N],
+['Legal Services','WordStream',N,0.86,1.76,N,N,N],['Automotive','WordStream',N,0.79,1.48,N,N,N],['Beauty & Personal Care','WordStream',N,0.74,1.81,N,N,N],
+['Business Services','WordStream',N,0.75,1.38,N,N,N],['Education','WordStream',N,0.86,1.45,N,N,N],['Finance & Insurance','WordStream',N,1.22,0.98,N,N,N],
+['Furniture','WordStream',N,0.85,1.39,N,N,N],['Health & Fitness','WordStream',N,0.80,1.63,N,N,N],['Home Improvement','WordStream',N,0.99,1.28,N,N,N],
+['Industrial','WordStream',N,0.86,1.36,N,N,N],['Personal Services','WordStream',N,1.00,1.70,N,N,N],['Healthcare','WordStream',N,0.82,0.83,N,N,N],
+['Real Estate','WordStream',N,0.91,1.68,N,N,N],['Restaurants & Food','WordStream',N,0.72,1.67,N,N,N],['Shopping & Gifts','WordStream',N,0.34,4.13,N,N,N],
+['Sports & Recreation','WordStream',N,0.41,2.60,N,N,N],['Travel','WordStream',N,0.51,2.76,N,N,N],
+// WordStream 2025 Lead campaigns
+['Arts & Entertainment','WS Leads',N,1.08,3.92,18.17,9.34,N],['Legal Services','WS Leads',N,4.10,2.11,18.17,10.53,N],
+['Beauty & Personal Care','WS Leads',N,3.06,2.55,51.42,5.29,N],['Education','WS Leads',N,1.65,1.86,28.22,10.08,N],
+['Health & Fitness','WS Leads',N,2.64,1.72,52.98,5.63,N],['Home Improvement','WS Leads',N,2.23,1.94,41.26,5.22,N],
+['Industrial','WS Leads',N,1.80,2.08,37.34,9.34,N],['Personal Services','WS Leads',N,2.08,1.99,30.57,6.51,N],
+['Healthcare','WS Leads',N,2.23,3.02,47.47,4.51,N],['Real Estate','WS Leads',N,1.57,3.75,16.61,9.53,N],
+['Restaurants & Food','WS Leads',N,0.74,2.97,3.16,18.25,N],['Sports & Recreation','WS Leads',N,1.07,3.41,19.30,5.48,N],
+['Furniture','WS Leads',N,2.18,1.48,40.04,3.77,N],['Dentists','WS Leads',N,9.78,1.05,76.71,6.38,N],
+['Career & Employment','WS Leads',N,0.86,2.81,17.64,5.77,N],
+// Madgicx (Sep 2025 - Jan 2026)
+['Fashion & Apparel','Madgicx',10.14,0.40,2.64,N,N,N],['Electronics & Tech','Madgicx',6.94,1.10,1.91,N,N,N],
+['Beauty & Cosmetics','Madgicx',12.78,0.77,1.58,N,5.93,N],['Home Improvement','Madgicx',N,0.67,1.72,N,8.87,N],
+['Health & Fitness','Madgicx',N,0.71,1.70,N,5.78,N],['Real Estate','Madgicx',10.97,1.81,N,N,N,N],
+['Sports & Fitness','Madgicx',14.02,1.90,N,N,N,N],
+// Databox CTR by industry (Focus Digital citing Databox, 2025-2026)
+['Arts & Entertainment','Databox',N,N,2.64,N,N,N],['Real Estate','Databox',N,N,2.60,N,N,N],['Travel & Hospitality','Databox',N,N,2.29,N,N,N],
+['Food & Restaurants','Databox',N,N,2.19,N,N,N],['Apparel & Footwear','Databox',N,N,2.06,N,N,N],['Animals & Pets','Databox',N,N,1.87,N,N,N],
+['E-commerce','Databox',N,N,1.75,N,N,N],['Health & Fitness','Databox',N,N,1.61,N,N,N],['Legal Services','Databox',N,N,1.61,N,N,N],
+['Retail','Databox',N,N,1.59,N,N,N],['Consulting','Databox',N,N,1.37,N,N,N],['Education','Databox',N,N,1.29,N,N,N],
+['SaaS','Databox',N,N,1.12,N,N,N],['Technology','Databox',N,N,1.04,N,N,N],['Finance & Insurance','Databox',N,N,0.85,N,N,N],['Healthcare','Databox',N,N,0.73,N,N,N]
+];
+
+// [country, source, cpm, cpc, ctr]
+const MC=[
+// Superads (Feb 2025-Jan 2026, $3B+ spend)
+['United States','Superads',22.20,1.24,1.91],['United Kingdom','Superads',19.60,1.17,1.73],['New Zealand','Superads',19.05,0.89,2.08],
+['Singapore','Superads',21.50,1.61,1.33],['UAE','Superads',19.20,1.30,1.39],['Australia','Superads',15.73,1.01,1.78],
+['Germany','Superads',14.27,0.92,1.57],['Norway','Superads',14.03,0.84,1.63],['Canada','Superads',12.90,0.92,1.45],
+['Sweden','Superads',11.00,0.86,1.29],['Netherlands','Superads',11.18,0.73,1.53],['Italy','Superads',9.56,0.47,2.05],
+['France','Superads',9.67,0.76,1.33],['Denmark','Superads',8.61,0.76,1.57],['Israel','Superads',8.38,0.57,1.48],
+['Spain','Superads',6.06,0.36,1.80],['Argentina','Superads',3.74,0.23,2.20],['Brazil','Superads',3.33,0.35,1.07],
+['South Africa','Superads',2.82,0.22,1.50],['Colombia','Superads',1.96,0.19,1.73],['India','Superads',1.81,0.17,1.31],
+['Philippines','Superads',1.33,0.16,1.93],
+// Vaizle (5,200+ accounts, Aug 2025)
+['United States','Vaizle',19.66,1.67,3.49],['United Kingdom','Vaizle',23.79,2.04,N],['Australia','Vaizle',15.65,1.47,N],
+['Europe','Vaizle',4.90,1.18,N],['UAE','Vaizle',7.47,1.06,N],['India','Vaizle',2.51,0.41,3.71],
+['Canada','Vaizle',7.15,2.97,N],['SE Asia','Vaizle',5.93,0.56,3.05],['Africa','Vaizle',1.76,0.24,N],['Egypt','Vaizle',1.94,0.34,N],
+// ADCostly/SRZone/Enhencer composite (2024-2025) - selected countries not in Superads
+['Iceland','ADCostly+',17.00,2.80,1.20],['Kazakhstan','ADCostly+',11.50,1.90,1.30],['South Africa','ADCostly+',12.50,2.20,1.30],
+['Ireland','ADCostly+',11.08,1.90,1.40],['Philippines','ADCostly+',10.19,1.60,1.20],['Portugal','ADCostly+',9.39,2.20,1.30],
+['Switzerland','ADCostly+',9.26,2.40,1.25],['Poland','ADCostly+',8.94,1.80,1.35],['Belgium','ADCostly+',8.72,2.20,1.30],
+['Austria','ADCostly+',8.20,2.10,1.30],['Hong Kong','ADCostly+',8.12,2.00,1.15],['Luxembourg','ADCostly+',7.80,2.30,1.25],
+['South Korea','ADCostly+',7.72,2.50,1.10],['Japan','ADCostly+',6.74,3.10,1.05],['Finland','ADCostly+',6.53,2.50,1.25],
+['Mexico','ADCostly+',5.26,1.90,1.60],['Russia','ADCostly+',5.04,1.80,1.30],['Hungary','ADCostly+',4.85,1.70,1.35],
+['Croatia','ADCostly+',4.82,1.60,1.40],['Greece','ADCostly+',3.93,1.50,1.45],['Slovenia','ADCostly+',3.62,1.40,1.40],
+['Malaysia','ADCostly+',3.42,1.80,1.30],['Nigeria','ADCostly+',3.00,1.20,1.50],['Ukraine','ADCostly+',2.80,1.40,1.35],
+['Saudi Arabia','ADCostly+',1.60,2.30,1.15],['Indonesia','ADCostly+',1.80,1.50,1.50],['Czech Republic','ADCostly+',1.00,1.90,1.40],
+['Kenya','ADCostly+',1.00,0.80,1.55],['Turkey','ADCostly+',0.89,0.10,0.88],['Taiwan','ADCostly+',0.80,1.50,1.35],
+['Chile','ADCostly+',0.80,2.00,1.45],['Costa Rica','ADCostly+',0.80,1.60,1.50],['Thailand','ADCostly+',0.60,1.60,1.45],
+['Morocco','ADCostly+',0.60,0.50,1.45],['Argentina','ADCostly+',0.60,2.10,1.40],['Egypt','ADCostly+',0.59,0.04,1.58],
+['Pakistan','ADCostly+',0.60,0.08,1.45],['Bangladesh','ADCostly+',0.40,0.15,1.80],['Peru','ADCostly+',0.40,1.70,1.50],
+['Colombia','ADCostly+',0.40,1.80,1.55],['Vietnam','ADCostly+',0.20,1.40,1.50],['Jordan','ADCostly+',0.80,0.60,1.40]
+];
+
+// Overall benchmarks from each source
+const META_OVERALL={
+  'Databox (2,800+ co.)':{cpm:7.13,cpc:0.35,ctr:1.91,roas:2.89,cpp:10.18},
+  'Superads ($3B spend)':{cpm:19.81,cpc:1.11,ctr:1.86,roas:N,cpp:N},
+  'Vaizle (5,200 accts)':{cpm:5.97,cpc:0.82,ctr:2.46,roas:2.33,cpp:N},
+  'Revealbot (US, Feb 26)':{cpm:14.38,cpc:0.86,ctr:N,roas:N,cpp:N}
+};
+
+// Revealbot monthly FB/IG trends
+const RB_MONTHS=['Feb 25','Mar 25','Apr 25','May 25','Jun 25','Jul 25','Aug 25','Sep 25','Oct 25','Nov 25','Dec 25','Jan 26','Feb 26'];
+const RB_FB_CPM=[13.33,14.24,15.32,15.89,15.04,16.03,15.93,15.98,15.94,16.56,16.18,14.97,14.38];
+const RB_FB_CPC=[0.76,0.83,0.84,0.85,0.74,0.80,0.80,0.88,0.90,0.96,0.84,0.88,0.86];
+const RB_IG_CPM=[13.56,13.56,13.84,14.12,13.17,13.18,12.83,13.87,14.97,17.23,16.76,15.56,14.71];
+
+// CTR by campaign objective (Databox/Focus Digital)
+const OBJ_CTR=[['Lead Gen',2.53],['Traffic',1.57],['Engagement',1.42],['Conversions',1.38],['Video Views',1.21],['Brand Awareness',0.94],['Reach',0.87]];
+
+// CTR by placement (Databox/Focus Digital)
+const PLACE_CTR=[['IG Stories',1.34],['FB Feed',1.11],['IG Feed',1.01],['FB Reels',0.94],['FB Stories',0.83],['IG Reels',0.76],['Audience Net.',0.58],['Right Column',0.41]];
+
+// Revealbot CPM by objective (monthly averages)
+const RB_OBJ_CPM_LABELS=['App Install','Brand Aware.','Catalog Sales','Conversions','Lead Gen','Traffic','Video Views'];
+const RB_OBJ_CPM_LATEST=[3.25,2.24,16.19,6.34,17.53,8.78,2.65]; // Feb 2026
+
+// =============================================
+// META ADS RENDERING
+// =============================================
+let metaView='overview',metaSortCol=null,metaSortAsc=true;
+
+function renderMeta(){
+  const v=metaView;
+  if(v==='overview')renderMetaOverview();
+  else if(v==='industry')renderMetaIndustry();
+  else if(v==='country')renderMetaCountry();
+  else if(v==='trends')renderMetaTrends();
+  else if(v==='objectives')renderMetaObjectives();
+}
+
+function renderMetaOverview(){
+  const mm=document.getElementById('metaMain');
+  let h=`<div class="section-title">Meta Ads Benchmarks Overview</div>`;
+  h+=`<div class="sources-bar">`;
+  for(const[s,c]of Object.entries(SRC_COLORS))h+=`<span class="src-badge" style="border-color:${c};color:${c}">${s}</span>`;
+  h+=`</div>`;
+
+  // KPI cards from each source
+  h+=`<div class="kpi-grid">`;
+  const kpis=[
+    {label:'Median CPM',vals:[['$7.13','Databox'],['$19.81','Superads'],['$5.97','Vaizle'],['$14.38','Revealbot']]},
+    {label:'Median CPC',vals:[['$0.35','Databox'],['$1.11','Superads'],['$0.82','Vaizle'],['$0.86','Revealbot']]},
+    {label:'Avg CTR',vals:[['1.91%','Databox'],['1.86%','Superads'],['2.46%','Vaizle'],['1.71%','WordStream']]},
+    {label:'Median ROAS',vals:[['2.89x','Databox'],['2.33x','Vaizle']]},
+    {label:'Cost per Purchase',vals:[['$10.18','Databox']]},
+    {label:'Data Sources',vals:[['7 sources',''],['100+ industries',''],['60+ countries','']]}
+  ];
+  for(const k of kpis){
+    h+=`<div class="kpi-card"><div class="kpi-label">${k.label}</div>`;
+    if(k.vals.length===1){h+=`<div class="kpi-val">${k.vals[0][0]}</div><div class="kpi-sub">${k.vals[0][1]}</div>`}
+    else{
+      h+=`<div class="kpi-val" style="font-size:20px">${k.vals[0][0]}</div><div class="kpi-range">`;
+      h+=k.vals.map(v=>`<span style="font-size:10px">${v[0]} <span style="color:var(--text3)">${v[1]}</span></span>`).join(' · ');
+      h+=`</div>`;
     }
-  } else {
-    // Latest month per channel
-    const chs=globalData[ind];
-    if(chs){
-      const filtered=filterChannels(chs);
-      const months=new Set();
-      for(const c in filtered)for(const m in filtered[c])months.add(m);
-      const sorted=[...months].sort(sortM);
-      const latest=sorted[sorted.length-1];
-      for(const[ch,mData]of Object.entries(filtered).sort((a,b)=>a[0].localeCompare(b[0]))){
-        const m=mData[latest];if(!m)continue;
-        const color=ALL_CHANNELS_COLOR[ch]||'#64748b';
-        rows+=`<tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${color};margin-right:6px"></span>${ch}</td><td>${fmt(m.cpm,'$')}</td><td>${fmt(m.cpc,'$')}</td><td>${fmt(m.ctr,'%')}</td><td>${fmt(m.cpa,'$')}</td><td>${fmt(m.cvr,'%')}</td><td>${fmt(m.roas,'x')}</td><td>${fmt(m.aov,'$')}</td><td>${fmt(m.mer,'')}</td></tr>`;
-      }
-    }
+    h+=`</div>`;
+  }
+  h+=`</div>`;
+
+  // Key insights
+  h+=`<div class="section-title" style="margin-top:12px">Key Insights</div>`;
+  h+=`<div class="insight-cards">`;
+  const insights=[
+    {t:'Most Expensive Industry',v:'Legal $49.70 CPM',d:'Superads data. 2.5x the global average.'},
+    {t:'Cheapest Industry',v:'Public Admin $5.88 CPM',d:'Superads data. 70% below average.'},
+    {t:'Highest CTR Industry',v:'Nonprofit 3.95%',d:'Superads. Shopping & Gifts 4.13% (WordStream).'},
+    {t:'Cheapest Country',v:'Philippines $1.33 CPM',d:'Superads. Vietnam $0.20 (ADCostly).'},
+    {t:'Most Expensive Country',v:'US $22.20 CPM',d:'Superads. Singapore $21.50 close behind.'},
+    {t:'Best Lead CVR',v:'Restaurants 18.25%',d:'WordStream lead campaigns. CPA only $3.16.'},
+    {t:'Q4 CPM Spike',v:'$18.40 peak (Nov)',d:'Revealbot. Black Friday week 42% above January.'},
+    {t:'FB vs IG CPM',v:'IG 3% higher avg',d:'Revealbot. IG $14.71 vs FB $14.38 (Feb 2026).'}
+  ];
+  for(const i of insights)h+=`<div class="insight"><h6>${i.t}</h6><div class="val">${i.v}</div><div class="desc">${i.d}</div></div>`;
+  h+=`</div>`;
+
+  // Mini trend chart
+  h+=`<div class="meta-chart-grid"><div class="meta-chart-box wide"><h5>Facebook vs Instagram CPM Trend (Revealbot, US)</h5><canvas id="mc-overview-trend"></canvas></div></div>`;
+  mm.innerHTML=h;
+  requestAnimationFrame(()=>{
+    const c=document.getElementById('mc-overview-trend');if(!c)return;
+    destroyChart('mc-overview-trend');
+    charts['mc-overview-trend']=new Chart(c.getContext('2d'),{type:'line',data:{labels:RB_MONTHS,datasets:[
+      {label:'Facebook CPM',data:RB_FB_CPM,borderColor:'#1877f2',backgroundColor:'#1877f222',borderWidth:2,fill:true,tension:.3,pointRadius:3},
+      {label:'Instagram CPM',data:RB_IG_CPM,borderColor:'#e4405f',backgroundColor:'#e4405f22',borderWidth:2,fill:true,tension:.3,pointRadius:3}
+    ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#94a3b8',font:{size:11}}}},scales:{x:{ticks:{color:'#64748b',font:{size:10}},grid:{color:'#1e293b44'}},y:{ticks:{color:'#475569',font:{size:10},callback:v=>'$'+v},grid:{color:'#1e293b44'}}},interaction:{mode:'index',intersect:false}}});
+  });
+}
+
+function renderMetaIndustry(){
+  const mm=document.getElementById('metaMain');
+  // Group data by industry
+  const byInd={};
+  for(const r of MI){
+    const ind=r[0];if(!byInd[ind])byInd[ind]={rows:[],cpm:[],cpc:[],ctr:[],cpa:[],cvr:[],roas:[]};
+    byInd[ind].rows.push(r);
+    if(r[2]!=N)byInd[ind].cpm.push(r[2]);if(r[3]!=N)byInd[ind].cpc.push(r[3]);
+    if(r[4]!=N)byInd[ind].ctr.push(r[4]);if(r[5]!=N)byInd[ind].cpa.push(r[5]);
+    if(r[6]!=N)byInd[ind].cvr.push(r[6]);if(r[7]!=N)byInd[ind].roas.push(r[7]);
+  }
+  let sorted=Object.entries(byInd);
+  if(metaSortCol!=null){
+    const ci={'industry':0,'cpm':1,'cpc':2,'ctr':3,'sources':4}[metaSortCol];
+    sorted.sort((a,b)=>{
+      let va,vb;
+      if(metaSortCol==='industry'){va=a[0].toLowerCase();vb=b[0].toLowerCase();return metaSortAsc?va.localeCompare(vb):vb.localeCompare(va)}
+      if(metaSortCol==='sources'){va=a[1].rows.length;vb=b[1].rows.length}
+      else{const k=metaSortCol;va=a[1][k].length?a[1][k].reduce((s,v)=>s+v,0)/a[1][k].length:-Infinity;vb=b[1][k].length?b[1][k].reduce((s,v)=>s+v,0)/b[1][k].length:-Infinity}
+      return metaSortAsc?va-vb:vb-va;
+    });
   }
 
-  const dowId=`dow-${id}`,womId=`wom-${id}`,domId=`dom-${id}`,trendId=`trend-${id}`;
+  let h=`<div class="section-title">Meta Ads Benchmarks by Industry <span style="font-size:12px;color:var(--text3);font-weight:400">(${Object.keys(byInd).length} industries from 7 sources)</span></div>`;
+  h+=`<div class="meta-search"><input type="text" id="metaIndSearch" placeholder="Search industries..." oninput="filterMetaIndustry(this.value)"></div>`;
+  h+=`<table class="data-tbl" id="metaIndTbl"><thead><tr>`;
+  const cols=[['industry','Industry'],['sources','Src'],['cpm','CPM'],['cpc','CPC'],['ctr','CTR'],['cpa','CPA (Leads)'],['cvr','CVR'],['roas','ROAS']];
+  for(const[k,l]of cols){
+    const cls=metaSortCol===k?(metaSortAsc?'sorted-asc':'sorted-desc'):'';
+    h+=`<th class="${cls}" onclick="sortMetaInd('${k}')">${l}</th>`;
+  }
+  h+=`</tr></thead><tbody>`;
+  for(const[ind,d]of sorted){
+    const avg=(arr)=>arr.length?(arr.reduce((s,v)=>s+v,0)/arr.length):null;
+    const range=(arr)=>arr.length>1?`$${Math.min(...arr).toFixed(2)}-$${Math.max(...arr).toFixed(2)}`:(arr.length?'$'+arr[0].toFixed(2):'—');
+    const rangePct=(arr)=>arr.length>1?`${Math.min(...arr).toFixed(1)}-${Math.max(...arr).toFixed(1)}%`:(arr.length?arr[0].toFixed(2)+'%':'—');
+    const srcs=new Set(d.rows.map(r=>r[1]));
+    const srcBadges=[...srcs].map(s=>`<span class="src-tag" style="background:${SRC_COLORS[s]||'#555'}33;color:${SRC_COLORS[s]||'#999'}">${s}</span>`).join('');
+    h+=`<tr class="meta-ind-row" data-ind="${ind.toLowerCase()}">`;
+    h+=`<td><strong>${ind}</strong></td>`;
+    h+=`<td>${srcBadges}</td>`;
+    h+=`<td class="num">${d.cpm.length?range(d.cpm):'—'}</td>`;
+    h+=`<td class="num">${d.cpc.length?range(d.cpc):'—'}</td>`;
+    h+=`<td class="num">${d.ctr.length?rangePct(d.ctr):'—'}</td>`;
+    h+=`<td class="num">${d.cpa.length?range(d.cpa):'—'}</td>`;
+    h+=`<td class="num">${d.cvr.length?rangePct(d.cvr):'—'}</td>`;
+    h+=`<td class="num">${d.roas.length?(avg(d.roas)).toFixed(2)+'x':'—'}</td>`;
+    h+=`</tr>`;
+  }
+  h+=`</tbody></table>`;
+  mm.innerHTML=h;
+}
 
-  det.innerHTML=`
-    <div class="detail-section">
-      <h4>Channel Breakdown${isUS?' ($1M-$10M GMV Tier)':' (All Markets, Latest Month)'}</h4>
-      ${rows?`<table class="tbl"><thead><tr><th>Channel</th><th>CPM</th><th>CPC</th><th>CTR</th><th>CPA</th><th>CVR</th><th>ROAS</th><th>AOV</th><th>MER</th></tr></thead><tbody>${rows}</tbody></table>`:'<div style="color:var(--text3);font-size:12px;padding:12px">No data for current selection</div>'}
-    </div>
-    ${!isUS?`<div class="detail-section"><h4>ROAS Trend (12 Months)</h4><div class="chart-box"><canvas id="${trendId}"></canvas></div></div>`:''}
-    <div class="detail-section">
-      <h4>Time Patterns (Global)</h4>
-      <div class="chart-row">
-        <div class="chart-box"><h5>CPA by Day of Week</h5><canvas id="${dowId}"></canvas></div>
-        <div class="chart-box"><h5>CPA by Week of Month</h5><canvas id="${womId}"></canvas></div>
-      </div>
-      <div class="chart-row" style="margin-top:12px">
-        <div class="chart-box" style="grid-column:1/-1"><h5>CPA by Day of Month (Days 10-16, partial)</h5><canvas id="${domId}"></canvas></div>
-      </div>
-    </div>`;
+function sortMetaInd(col){if(metaSortCol===col)metaSortAsc=!metaSortAsc;else{metaSortCol=col;metaSortAsc=col==='industry'}renderMetaIndustry()}
+function filterMetaIndustry(q){q=q.toLowerCase();document.querySelectorAll('.meta-ind-row').forEach(r=>{r.style.display=r.dataset.ind.includes(q)?'':'none'})}
+
+function renderMetaCountry(){
+  const mm=document.getElementById('metaMain');
+  // Build unified country table, preferring Superads, then ADCostly+, then Vaizle
+  const byC={};
+  for(const r of MC){
+    const c=r[0];if(!byC[c])byC[c]={sources:{}};
+    byC[c].sources[r[1]]={cpm:r[2],cpc:r[3],ctr:r[4]};
+  }
+  // Sort by Superads CPM desc, then ADCostly+ CPM
+  let sorted=Object.entries(byC).sort((a,b)=>{
+    const ga=(a[1].sources.Superads?.cpm)||(a[1].sources['ADCostly+']?.cpm)||(a[1].sources.Vaizle?.cpm)||0;
+    const gb=(b[1].sources.Superads?.cpm)||(b[1].sources['ADCostly+']?.cpm)||(b[1].sources.Vaizle?.cpm)||0;
+    return gb-ga;
+  });
+  if(metaSortCol){
+    sorted.sort((a,b)=>{
+      if(metaSortCol==='country'){const va=a[0],vb=b[0];return metaSortAsc?va.localeCompare(vb):vb.localeCompare(va)}
+      const getV=(d,k)=>{for(const s of['Superads','ADCostly+','Vaizle']){if(d.sources[s]&&d.sources[s][k]!=null)return d.sources[s][k]}return-Infinity};
+      return metaSortAsc?getV(a[1],metaSortCol)-getV(b[1],metaSortCol):getV(b[1],metaSortCol)-getV(a[1],metaSortCol);
+    });
+  }
+
+  let h=`<div class="section-title">Meta Ads Benchmarks by Country <span style="font-size:12px;color:var(--text3);font-weight:400">(${Object.keys(byC).length} countries/regions)</span></div>`;
+  h+=`<div class="meta-search"><input type="text" id="metaCtrySearch" placeholder="Search countries..." oninput="filterMetaCountry(this.value)"></div>`;
+  h+=`<table class="data-tbl" id="metaCtryTbl"><thead><tr>`;
+  const ccols=[['country','Country'],['cpm','CPM'],['cpc','CPC'],['ctr','CTR'],['sources','Sources']];
+  for(const[k,l]of ccols){
+    const cls=metaSortCol===k?(metaSortAsc?'sorted-asc':'sorted-desc'):'';
+    h+=`<th class="${cls}" onclick="sortMetaCtry('${k}')">${l}</th>`;
+  }
+  h+=`</tr></thead><tbody>`;
+  for(const[country,d]of sorted){
+    // Get best value (prefer Superads)
+    const best=d.sources.Superads||d.sources['ADCostly+']||d.sources.Vaizle||{};
+    const srcNames=Object.keys(d.sources);
+    const srcBadges=srcNames.map(s=>`<span class="src-tag" style="background:${SRC_COLORS[s]||'#555'}33;color:${SRC_COLORS[s]||'#999'}">${s}</span>`).join('');
+    // Color CPM by cost tier
+    const cpm=best.cpm;let cpmCol='var(--text)';
+    if(cpm!=null){if(cpm>=15)cpmCol='var(--red)';else if(cpm>=8)cpmCol='var(--orange)';else if(cpm>=3)cpmCol='var(--text)';else cpmCol='var(--green)'}
+    h+=`<tr class="meta-ctry-row" data-ctry="${country.toLowerCase()}">`;
+    h+=`<td><strong>${country}</strong></td>`;
+    h+=`<td class="num" style="color:${cpmCol}">${cpm!=null?'$'+cpm.toFixed(2):'—'}</td>`;
+    h+=`<td class="num">${best.cpc!=null?'$'+best.cpc.toFixed(2):'—'}</td>`;
+    h+=`<td class="num">${best.ctr!=null?best.ctr.toFixed(2)+'%':'—'}</td>`;
+    h+=`<td>${srcBadges}</td>`;
+    h+=`</tr>`;
+  }
+  h+=`</tbody></table>`;
+  mm.innerHTML=h;
+}
+
+function sortMetaCtry(col){if(metaSortCol===col)metaSortAsc=!metaSortAsc;else{metaSortCol=col;metaSortAsc=col==='country'}renderMetaCountry()}
+function filterMetaCountry(q){q=q.toLowerCase();document.querySelectorAll('.meta-ctry-row').forEach(r=>{r.style.display=r.dataset.ctry.includes(q)?'':'none'})}
+
+function renderMetaTrends(){
+  const mm=document.getElementById('metaMain');
+  let h=`<div class="section-title">Meta Ads Weekly Trends <span style="font-size:12px;color:var(--text3);font-weight:400">(Revealbot/Birch, US campaigns, Feb 2025 - Feb 2026)</span></div>`;
+  h+=`<div class="meta-chart-grid">`;
+  h+=`<div class="meta-chart-box"><h5>Facebook CPM (Monthly Avg)</h5><canvas id="mc-fb-cpm"></canvas></div>`;
+  h+=`<div class="meta-chart-box"><h5>Facebook CPC (Monthly Avg)</h5><canvas id="mc-fb-cpc"></canvas></div>`;
+  h+=`<div class="meta-chart-box"><h5>Instagram CPM (Monthly Avg)</h5><canvas id="mc-ig-cpm"></canvas></div>`;
+  h+=`<div class="meta-chart-box"><h5>Facebook vs Instagram CPM</h5><canvas id="mc-fbig-cpm"></canvas></div>`;
+  h+=`</div>`;
+
+  // Monthly summary table
+  h+=`<div class="section-title" style="margin-top:8px">Monthly Averages (USD)</div>`;
+  h+=`<table class="data-tbl"><thead><tr><th>Month</th><th>FB CPM</th><th>FB CPC</th><th>IG CPM</th><th>FB CPM (Traffic)</th><th>FB CPM (Lead Gen)</th><th>FB CPM (Catalog)</th></tr></thead><tbody>`;
+  const rbTraffic=[4.96,4.89,3.97,4.44,4.12,3.12,4.91,4.74,6.04,6.32,6.31,5.48,8.78];
+  const rbLeadGen=[23.23,16.57,25.30,22.07,24.34,21.50,24.50,17.81,28.65,19.55,30.29,25.44,17.53];
+  const rbCatalog=[11.15,17.38,15.34,14.15,11.49,13.92,15.35,14.46,13.50,9.83,9.42,14.82,16.19];
+  for(let i=0;i<RB_MONTHS.length;i++){
+    h+=`<tr><td>${RB_MONTHS[i]}</td><td class="num">$${RB_FB_CPM[i].toFixed(2)}</td><td class="num">$${RB_FB_CPC[i].toFixed(2)}</td><td class="num">$${RB_IG_CPM[i].toFixed(2)}</td><td class="num">$${rbTraffic[i].toFixed(2)}</td><td class="num">$${rbLeadGen[i].toFixed(2)}</td><td class="num">$${rbCatalog[i].toFixed(2)}</td></tr>`;
+  }
+  h+=`</tbody></table>`;
+  mm.innerHTML=h;
 
   requestAnimationFrame(()=>{
-    if(!isUS){
-      const roasT=getGlobalMonthlyTrend(ind,'roas',12);
-      barChart(trendId,roasT.map(d=>d.month),roasT.map(d=>d.value),'#22c55e','x');
+    function lineC(id,data,color,label,prefix){
+      destroyChart(id);const c=document.getElementById(id);if(!c)return;
+      charts[id]=new Chart(c.getContext('2d'),{type:'line',data:{labels:RB_MONTHS,datasets:[{label,data,borderColor:color,backgroundColor:color+'22',borderWidth:2,fill:true,tension:.3,pointRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>prefix+c.parsed.y?.toFixed(2)}}},scales:{x:{ticks:{color:'#64748b',font:{size:10}},grid:{color:'#1e293b44'}},y:{ticks:{color:'#475569',font:{size:10},callback:v=>prefix+v},grid:{color:'#1e293b44'}}}}});
     }
-    const dowK=['1','2','3','4','5','6','7'];
-    const dowM=getTimeDim(dowData,ind,dowK);
-    const dowV=dowM.map(m=>m?.cpa??null);
-    if(dowV.some(v=>v!=null))barChart(dowId,DAY_NAMES,dowV,'#3b82f6','$');
-
-    const womK=['1','2','3','4','5'];
-    const womM=getTimeDim(womData,ind,womK);
-    const womV=womM.map(m=>m?.cpa??null);
-    if(womV.some(v=>v!=null))barChart(womId,['Wk 1','Wk 2','Wk 3','Wk 4','Wk 5'],womV,'#a78bfa','$');
-
-    const domK=[];for(let d=10;d<=16;d++)domK.push(String(d));
-    const domM=getTimeDim(domData,ind,domK);
-    const domV=domM.map(m=>m?.cpa??null);
-    if(domV.some(v=>v!=null))barChart(domId,domK.map(d=>'Day '+d),domV,'#f59e0b','$');
+    lineC('mc-fb-cpm',RB_FB_CPM,'#1877f2','FB CPM','$');
+    lineC('mc-fb-cpc',RB_FB_CPC,'#22c55e','FB CPC','$');
+    lineC('mc-ig-cpm',RB_IG_CPM,'#e4405f','IG CPM','$');
+    // Combined chart
+    destroyChart('mc-fbig-cpm');const c4=document.getElementById('mc-fbig-cpm');if(c4){
+      charts['mc-fbig-cpm']=new Chart(c4.getContext('2d'),{type:'line',data:{labels:RB_MONTHS,datasets:[
+        {label:'Facebook',data:RB_FB_CPM,borderColor:'#1877f2',backgroundColor:'#1877f222',borderWidth:2,fill:false,tension:.3,pointRadius:3},
+        {label:'Instagram',data:RB_IG_CPM,borderColor:'#e4405f',backgroundColor:'#e4405f22',borderWidth:2,fill:false,tension:.3,pointRadius:3}
+      ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#94a3b8',font:{size:11}}}},scales:{x:{ticks:{color:'#64748b',font:{size:10}},grid:{color:'#1e293b44'}},y:{ticks:{color:'#475569',font:{size:10},callback:v=>'$'+v},grid:{color:'#1e293b44'}}},interaction:{mode:'index',intersect:false}}});
+    }
   });
 }
 
-// =========== CATEGORY TOGGLE ===========
-function toggleCat(hdr){
-  hdr.classList.toggle('collapsed');
-  hdr.nextElementSibling.classList.toggle('hidden');
-}
+function renderMetaObjectives(){
+  const mm=document.getElementById('metaMain');
+  let h=`<div class="section-title">Performance by Campaign Objective & Placement</div>`;
+  h+=`<div class="meta-chart-grid">`;
+  h+=`<div class="meta-chart-box"><h5>CTR by Campaign Objective (Databox)</h5><canvas id="mc-obj-ctr"></canvas></div>`;
+  h+=`<div class="meta-chart-box"><h5>CTR by Placement (Databox)</h5><canvas id="mc-place-ctr"></canvas></div>`;
+  h+=`<div class="meta-chart-box"><h5>CPM by Objective - Feb 2026 (Revealbot)</h5><canvas id="mc-obj-cpm"></canvas></div>`;
+  h+=`<div class="meta-chart-box"><h5>CPC by Objective - Latest (Revealbot)</h5><canvas id="mc-obj-cpc"></canvas></div>`;
+  h+=`</div>`;
 
-// =========== REGION TOGGLE ===========
-document.getElementById('regionToggle').addEventListener('click',e=>{
-  const btn=e.target.closest('.region-btn');if(!btn)return;
-  document.querySelectorAll('.region-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  currentRegion=btn.dataset.region;
-  render();
-});
-
-// =========== CHANNEL GROUP ===========
-document.getElementById('chGroupBar').addEventListener('click',e=>{
-  const btn=e.target.closest('.ch-group-btn');if(!btn)return;
-  document.querySelectorAll('.ch-group-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  currentGroup=btn.dataset.group;
-  selectedChannels.clear();
-  renderSubChannels();
-  refreshAllCards();
-});
-
-function renderSubChannels(){
-  const sub=document.getElementById('chSubBar');
-  if(currentGroup==='all'){sub.innerHTML='';return}
-  const grp=CHANNEL_GROUPS[currentGroup];
-  if(!grp){sub.innerHTML='';return}
-  sub.innerHTML=grp.channels.map(ch=>{
-    const col=grp.colors[ch]||'#666';
-    const sel=selectedChannels.size===0||selectedChannels.has(ch);
-    return`<button class="ch-sub-btn${sel?' selected':''}" style="background:${col}${sel?'':'44'};color:${sel?'#fff':'#999'}" data-ch="${ch}" onclick="toggleSubCh(this)">${ch}</button>`;
-  }).join('');
-}
-
-function toggleSubCh(btn){
-  const ch=btn.dataset.ch;
-  const grp=CHANNEL_GROUPS[currentGroup];
-  if(!grp)return;
-
-  if(selectedChannels.size===0){
-    // First click: select only this one
-    selectedChannels.clear();
-    selectedChannels.add(ch);
-  } else if(selectedChannels.has(ch)){
-    selectedChannels.delete(ch);
-    if(selectedChannels.size===0){
-      // Back to all selected
-    }
-  } else {
-    selectedChannels.add(ch);
-    // If all selected, clear (means all)
-    if(selectedChannels.size===grp.channels.length) selectedChannels.clear();
+  // Objective summary table
+  h+=`<div class="section-title" style="margin-top:8px">Campaign Objective Benchmarks</div>`;
+  h+=`<table class="data-tbl"><thead><tr><th>Objective</th><th>CTR (Databox)</th><th>CPM Feb 26 (Revealbot)</th><th>Notes</th></tr></thead><tbody>`;
+  const objNotes={'Lead Gen':'Highest CTR but highest CPM','Traffic':'Cheapest CPC ($0.22)','Conversions':'Most used objective','Brand Awareness':'Cheapest CPM ($2.24)','Video Views':'Volatile costs','Engagement':'Good for social proof','Reach':'Widest audience, lowest CTR'};
+  for(let i=0;i<OBJ_CTR.length;i++){
+    const[name,ctr]=OBJ_CTR[i];
+    const cpmIdx=RB_OBJ_CPM_LABELS.findIndex(l=>l.startsWith(name.split(' ')[0]));
+    const cpm=cpmIdx>=0?'$'+RB_OBJ_CPM_LATEST[cpmIdx].toFixed(2):'—';
+    h+=`<tr><td><strong>${name}</strong></td><td class="num">${ctr.toFixed(2)}%</td><td class="num">${cpm}</td><td style="color:var(--text3);font-size:12px">${objNotes[name]||''}</td></tr>`;
   }
-  renderSubChannels();
-  refreshAllCards();
-}
+  h+=`</tbody></table>`;
 
-function refreshAllCards(){
-  for(const i of allIndustries) updateCard(i);
-}
+  // Placement table
+  h+=`<div class="section-title" style="margin-top:20px">Placement CTR Benchmarks (Databox)</div>`;
+  h+=`<table class="data-tbl"><thead><tr><th>Placement</th><th>CTR</th><th>Relative</th></tr></thead><tbody>`;
+  const maxP=Math.max(...PLACE_CTR.map(p=>p[1]));
+  for(const[name,ctr]of PLACE_CTR){
+    const pct=Math.round(ctr/maxP*100);
+    h+=`<tr><td><strong>${name}</strong></td><td class="num">${ctr.toFixed(2)}%</td><td><div style="background:var(--accent);height:14px;width:${pct}%;border-radius:3px;min-width:2px"></div></td></tr>`;
+  }
+  h+=`</tbody></table>`;
+  mm.innerHTML=h;
 
-// =========== SEARCH ===========
-document.getElementById('searchInput').addEventListener('input',function(){
-  const q=this.value.toLowerCase().trim();
-  document.querySelectorAll('.super-cat').forEach(cat=>{
-    const cards=cat.querySelectorAll('.card');
-    let any=false;
-    cards.forEach(c=>{
-      const n=c.querySelector('h3').textContent.toLowerCase();
-      const match=!q||n.includes(q);
-      c.style.display=match?'':'none';
-      if(match)any=true;
-    });
-    cat.style.display=any?'':'none';
-    if(q&&any){
-      cat.querySelector('.grid').classList.remove('hidden');
-      cat.querySelector('.super-cat-hdr').classList.remove('collapsed');
-    }
+  requestAnimationFrame(()=>{
+    barChart('mc-obj-ctr',OBJ_CTR.map(o=>o[0]),OBJ_CTR.map(o=>o[1]),'#3b82f6','%');
+    barChart('mc-place-ctr',PLACE_CTR.map(p=>p[0]),PLACE_CTR.map(p=>p[1]),'#a78bfa','%');
+    barChart('mc-obj-cpm',RB_OBJ_CPM_LABELS,RB_OBJ_CPM_LATEST,'#f59e0b','$');
+    const rbObjCpcLatest=[0.20,0.00,1.53,0.51,1.41,0.22,0.00]; // Feb 2026
+    barChart('mc-obj-cpc',RB_OBJ_CPM_LABELS,rbObjCpcLatest,'#22c55e','$');
   });
+}
+
+// =============================================
+// TAB SWITCHING
+// =============================================
+document.getElementById('mainTabs').addEventListener('click',e=>{
+  const b=e.target.closest('.main-tab');if(!b)return;
+  document.querySelectorAll('.main-tab').forEach(t=>t.classList.remove('active'));
+  b.classList.add('active');
+  const tab=b.dataset.tab;
+  document.getElementById('twView').style.display=tab==='tw'?'':'none';
+  document.getElementById('metaView').style.display=tab==='meta'?'':'none';
+  document.getElementById('twControls').style.display=tab==='tw'?'contents':'none';
+  if(tab==='meta'){metaSortCol=null;metaSortAsc=true;renderMeta()}
 });
 
-// =========== INIT ===========
+document.getElementById('metaNav').addEventListener('click',e=>{
+  const b=e.target.closest('.meta-nav-btn');if(!b)return;
+  document.querySelectorAll('.meta-nav-btn').forEach(t=>t.classList.remove('active'));
+  b.classList.add('active');
+  metaView=b.dataset.meta;metaSortCol=null;metaSortAsc=true;
+  renderMeta();
+});
+
+// =============================================
+// INIT
+// =============================================
 (async()=>{
   try{
     await loadAll();

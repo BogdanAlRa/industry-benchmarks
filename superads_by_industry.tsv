@@ -1,0 +1,45 @@
+# Source: Superads (superads.ai)
+# Data period: February 2025 - January 2026 (13-month averages)
+# Based on $3B+ worth of advertising data across thousands of ad accounts
+# Scraped: 2026-02-20
+# URLs: https://www.superads.ai/facebook-ads-costs/cpm-cost-per-mille/{slug}
+#        https://www.superads.ai/facebook-ads-costs/cpc-cost-per-click/{slug}
+#        https://www.superads.ai/facebook-ads-costs/ctr-click-through-rate/{slug}
+# Global benchmarks: CPM $19.81 | CPC $1.11 | CTR 1.86%
+Industry	CPM ($)	CPC ($)	CTR (%)	URL Slug
+Agriculture	8.96	0.51	2.51	agriculture
+Arts	14.70	0.61	2.64	arts
+Construction	23.39	1.41	1.74	construction
+Consulting	43.40	1.31	3.69	consulting
+Consumer Goods	20.02	1.30	1.68	consumer-goods
+Crypto & Blockchain	20.15	2.51	0.74	crypto-blockchain
+Design	38.70	2.82	1.88	design
+E-commerce	17.88	0.98	1.94	e-commerce
+Education	16.90	1.05	1.66	education
+Energy & Mining	34.94	1.59	2.24	energy-and-mining
+Entertainment	9.27	0.38	2.43	entertainment
+Finance	27.80	1.44	1.87	finance
+Fitness & Training Centers	19.95	1.24	1.80	fitness-training-centers
+Gaming	12.33	1.41	0.94	gaming
+Hardware & Networking	12.22	0.77	1.85	hardware-and-networking
+Healthcare	27.30	1.66	1.69	healthcare
+HR & Staffing	19.91	1.86	1.34	hr-staffing
+IT Services & Outsourcing	42.17	1.52	2.91	it-services-outsourcing
+Legal	49.70	2.68	1.82	legal
+Manufacturing	10.17	0.69	1.57	manufacturing
+Marketing & Advertising	34.50	1.31	2.30	marketing-advertising
+Marketplaces	9.58	0.56	2.17	marketplaces
+Media	17.12	0.53	3.40	media
+Nonprofit	15.36	0.39	3.95	nonprofit
+Public Administration	5.88	0.48	1.35	public-administration
+Public Safety	18.90	1.21	1.82	public-safety
+Real Estate	29.85	1.17	2.75	real-estate
+Recreation & Travel	10.74	0.57	1.95	recreation-and-travel
+Retail	15.72	0.86	1.95	retail
+SaaS & Cloud Platforms	24.46	1.97	1.20	saas-cloud-platforms
+Software Development	10.00	0.70	2.00	software-development
+Textiles	13.54	0.67	2.48	textiles
+Transportation & Logistics	15.43	0.98	1.64	transportation-and-logistics
+Venture Capital & Investment	47.80	2.16	2.47	venture-capital-investment
+Wellness & Holistic Health	27.35	1.39	1.99	wellness-holistic-health
+Wine & Spirits	14.10	1.02	1.75	wine-and-spirits

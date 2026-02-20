@@ -1,0 +1,125 @@
+source	data_type	category	segment	metric	value	unit	percentile	sample_info	date_reference	notes
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	CPC (All)	0.35	USD	median	2800+ companies	Feb 2026 (updated monthly)	From benchmarks.databox.com/facebook-benchmarks
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	CPC (All)	0.17	USD	bottom_25pct	2800+ companies	Feb 2026 (updated monthly)	Bottom quartile performers
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	CPC (All)	0.71	USD	top_25pct	2800+ companies	Feb 2026 (updated monthly)	Top quartile performers
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	CPM	7.13	USD	median	2800+ companies	Feb 2026 (updated monthly)	From benchmarks.databox.com/facebook-benchmarks
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	CPM	3.52	USD	bottom_25pct	2800+ companies	Feb 2026 (updated monthly)	Bottom quartile performers
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	CPM	13.00	USD	top_25pct	2800+ companies	Feb 2026 (updated monthly)	Top quartile performers
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	CPP (Cost Per Purchase)	10.18	USD	median	2800+ companies	Feb 2026 (updated monthly)	Cost per purchase proxy
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	CPP (Cost Per Purchase)	4.59	USD	bottom_25pct	2800+ companies	Feb 2026 (updated monthly)	Bottom quartile performers
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	CPP (Cost Per Purchase)	23.11	USD	top_25pct	2800+ companies	Feb 2026 (updated monthly)	Top quartile performers
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	CTR (All)	1.91	%	median	2800+ companies	Feb 2026 (updated monthly)	Includes all click types
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	CTR (All)	1.18	%	bottom_25pct	2800+ companies	Feb 2026 (updated monthly)	Bottom quartile performers
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	CTR (All)	3.20	%	top_25pct	2800+ companies	Feb 2026 (updated monthly)	Top quartile performers
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	CTR (Link Clicks)	1.01	%	median	2800+ companies	Feb 2026 (updated monthly)	Link click-through rate only
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	CTR (Link Clicks)	0.63	%	bottom_25pct	2800+ companies	Feb 2026 (updated monthly)	Bottom quartile performers
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	CTR (Link Clicks)	1.84	%	top_25pct	2800+ companies	Feb 2026 (updated monthly)	Top quartile performers
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	Frequency	2.97	times	median	2800+ companies	Feb 2026 (updated monthly)	Average times ad shown per user
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	Frequency	2.18	times	bottom_25pct	2800+ companies	Feb 2026 (updated monthly)	Bottom quartile performers
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	Frequency	4.27	times	top_25pct	2800+ companies	Feb 2026 (updated monthly)	Top quartile performers
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	Purchase ROAS	2.89	x	median	2800+ companies	Feb 2026 (updated monthly)	Return on ad spend
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	Purchase ROAS	0.04	x	bottom_25pct	2800+ companies	Feb 2026 (updated monthly)	Bottom quartile (near zero return)
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	Purchase ROAS	6.94	x	top_25pct	2800+ companies	Feb 2026 (updated monthly)	Top quartile performers
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	Amount Spent	2641.91	USD	median	2800+ companies	Feb 2026 (updated monthly)	Monthly ad spend
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	Amount Spent	839.07	USD	bottom_25pct	2800+ companies	Feb 2026 (updated monthly)	Bottom quartile spenders
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	Amount Spent	8700.16	USD	top_25pct	2800+ companies	Feb 2026 (updated monthly)	Top quartile spenders
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	Clicks	7105	count	median	2800+ companies	Feb 2026 (updated monthly)	Total clicks per month
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	Clicks	1915	count	bottom_25pct	2800+ companies	Feb 2026 (updated monthly)	Bottom quartile
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	Clicks	24215	count	top_25pct	2800+ companies	Feb 2026 (updated monthly)	Top quartile
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	Link Clicks	3471	count	median	2800+ companies	Feb 2026 (updated monthly)	Website link clicks only
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	Link Clicks	876	count	bottom_25pct	2800+ companies	Feb 2026 (updated monthly)	Bottom quartile
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	Link Clicks	15536	count	top_25pct	2800+ companies	Feb 2026 (updated monthly)	Top quartile
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	Impressions	326408	count	median	2800+ companies	Feb 2026 (updated monthly)	Monthly impressions
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	Impressions	103586	count	bottom_25pct	2800+ companies	Feb 2026 (updated monthly)	Bottom quartile
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	Impressions	1243984	count	top_25pct	2800+ companies	Feb 2026 (updated monthly)	Top quartile
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	Reach	121195.5	count	median	2800+ companies	Feb 2026 (updated monthly)	Unique users reached
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	Reach	45219	count	bottom_25pct	2800+ companies	Feb 2026 (updated monthly)	Bottom quartile
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	Reach	409507	count	top_25pct	2800+ companies	Feb 2026 (updated monthly)	Top quartile
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	Leads	61	count	median	2800+ companies	Feb 2026 (updated monthly)	Lead generation
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	Leads	1	count	bottom_25pct	2800+ companies	Feb 2026 (updated monthly)	Bottom quartile
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	Leads	285	count	top_25pct	2800+ companies	Feb 2026 (updated monthly)	Top quartile
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	Purchases	61.5	count	median	2800+ companies	Feb 2026 (updated monthly)	Purchase conversions
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	Purchases	1	count	bottom_25pct	2800+ companies	Feb 2026 (updated monthly)	Bottom quartile
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	Purchases	276	count	top_25pct	2800+ companies	Feb 2026 (updated monthly)	Top quartile
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	Purchase Conversion Value	28757.06	USD	median	2800+ companies	Feb 2026 (updated monthly)	Revenue from purchases
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	Purchase Conversion Value	8779.61	USD	bottom_25pct	2800+ companies	Feb 2026 (updated monthly)	Bottom quartile
+Databox Benchmark Explorer	all_companies_overall	All Companies	All Industries	Purchase Conversion Value	107059.23	USD	top_25pct	2800+ companies	Feb 2026 (updated monthly)	Top quartile
+Databox PPC Benchmarks	industry_breakdown	Marketing & Advertising	Marketing & Advertising	CPC (All)	0.313	USD	median	Databox crowdsourced	2025-2026	From databox.com/benchmarks/ppc-benchmarks
+Databox PPC Benchmarks	industry_breakdown	Marketing & Advertising	Marketing & Advertising	CPC (All)	0.123	USD	bottom_25pct	Databox crowdsourced	2025-2026	Bottom quartile
+Databox PPC Benchmarks	industry_breakdown	Marketing & Advertising	Marketing & Advertising	CPC (All)	0.562	USD	top_25pct	Databox crowdsourced	2025-2026	Top quartile
+Databox PPC Benchmarks	industry_breakdown	Marketing & Advertising	Marketing & Advertising	CTR (Link Clicks)	0.94	%	median	Databox crowdsourced	2025-2026	Decimal 0.009362 converted to %
+Databox PPC Benchmarks	industry_breakdown	Marketing & Advertising	Marketing & Advertising	CTR (Link Clicks)	0.47	%	bottom_25pct	Databox crowdsourced	2025-2026	Decimal 0.004732 converted to %
+Databox PPC Benchmarks	industry_breakdown	Marketing & Advertising	Marketing & Advertising	CTR (Link Clicks)	1.68	%	top_25pct	Databox crowdsourced	2025-2026	Decimal 0.016844 converted to %
+Databox PPC Benchmarks	industry_breakdown	Technology	Technology	CPC (All)	0.414	USD	median	Databox crowdsourced	2025-2026	From databox.com/benchmarks/ppc-benchmarks
+Databox PPC Benchmarks	industry_breakdown	Technology	Technology	CPC (All)	0.198	USD	bottom_25pct	Databox crowdsourced	2025-2026	Bottom quartile
+Databox PPC Benchmarks	industry_breakdown	Technology	Technology	CPC (All)	1.108	USD	top_25pct	Databox crowdsourced	2025-2026	Top quartile
+Databox PPC Benchmarks	industry_breakdown	Retail	Retail	CPC (All)	0.345	USD	median	Databox crowdsourced	2025-2026	From databox.com/benchmarks/ppc-benchmarks
+Databox PPC Benchmarks	industry_breakdown	Retail	Retail	CPC (All)	0.159	USD	bottom_25pct	Databox crowdsourced	2025-2026	Bottom quartile
+Databox PPC Benchmarks	industry_breakdown	Retail	Retail	CPC (All)	0.529	USD	top_25pct	Databox crowdsourced	2025-2026	Top quartile
+Databox PPC Benchmarks	industry_breakdown	Retail	Retail	CTR (Link Clicks)	1.49	%	median	Databox crowdsourced	2025-2026	Decimal 0.014897 converted to %
+Databox PPC Benchmarks	industry_breakdown	Retail	Retail	CTR (Link Clicks)	1.28	%	bottom_25pct	Databox crowdsourced	2025-2026	Decimal 0.01281 converted to %
+Databox PPC Benchmarks	industry_breakdown	Retail	Retail	CTR (Link Clicks)	2.07	%	top_25pct	Databox crowdsourced	2025-2026	Decimal 0.020691 converted to %
+Databox PPC Benchmarks	industry_breakdown	Restaurants	Restaurants	CPC (All)	0.492	USD	median	Databox crowdsourced	2025-2026	From databox.com/benchmarks/ppc-benchmarks
+Databox PPC Benchmarks	industry_breakdown	Restaurants	Restaurants	CPC (All)	0.194	USD	bottom_25pct	Databox crowdsourced	2025-2026	Bottom quartile
+Databox PPC Benchmarks	industry_breakdown	Restaurants	Restaurants	CPC (All)	0.767	USD	top_25pct	Databox crowdsourced	2025-2026	Top quartile
+Databox PPC Benchmarks	industry_breakdown	Restaurants	Restaurants	CTR (Link Clicks)	1.89	%	median	Databox crowdsourced	2025-2026	Decimal 0.018851 converted to %
+Databox PPC Benchmarks	industry_breakdown	Restaurants	Restaurants	CTR (Link Clicks)	1.53	%	bottom_25pct	Databox crowdsourced	2025-2026	Decimal 0.015311 converted to %
+Databox PPC Benchmarks	industry_breakdown	Restaurants	Restaurants	CTR (Link Clicks)	2.29	%	top_25pct	Databox crowdsourced	2025-2026	Decimal 0.022886 converted to %
+Databox PPC Benchmarks	industry_breakdown	Finance	Finance	CPC (All)	0.325	USD	median	Databox crowdsourced	2025-2026	From databox.com/benchmarks/ppc-benchmarks
+Databox PPC Benchmarks	industry_breakdown	Finance	Finance	CPC (All)	0.091	USD	bottom_25pct	Databox crowdsourced	2025-2026	Bottom quartile
+Databox PPC Benchmarks	industry_breakdown	Finance	Finance	CPC (All)	1.108	USD	top_25pct	Databox crowdsourced	2025-2026	Top quartile
+Databox PPC Benchmarks	industry_breakdown	Apparel	Apparel	CPC (All)	0.256	USD	median	Databox crowdsourced	2025-2026	From databox.com/benchmarks/ppc-benchmarks
+Databox PPC Benchmarks	industry_breakdown	Apparel	Apparel	CPC (All)	0.171	USD	bottom_25pct	Databox crowdsourced	2025-2026	Bottom quartile
+Databox PPC Benchmarks	industry_breakdown	Apparel	Apparel	CPC (All)	0.793	USD	top_25pct	Databox crowdsourced	2025-2026	Top quartile
+Databox Industry Article	industry_breakdown_article	All Industries	All Industries (Mar 2023)	CTR	1.49	%	median	~1250 companies	Mar 2023	From fb-ads-benchmarks-by-industry article
+Databox Industry Article	industry_breakdown_article	All Industries	All Industries (later data)	CTR	1.54	%	median	~1250 companies	2023-2024	Updated figure cited in multiple Databox references
+Databox Industry Article	industry_breakdown_article	All Industries	All Industries (Sep 2023)	CTR	1.44	%	median	~1250 companies	Sep 2023	September 2023 snapshot
+Databox Industry Article	industry_breakdown_article	All Industries	All Industries (Mar 2023)	CPC	0.40	USD	median	Databox crowdsourced	Mar 2023	Overall median CPC
+Databox Industry Article	industry_breakdown_article	All Industries	All Industries (Oct 2023)	CPC	0.44	USD	median	Databox crowdsourced	Oct 2023	October 2023 snapshot
+Databox Industry Article	industry_breakdown_article	All Industries	All Industries (Mar 2023)	CPM	5.61	USD	median	~400 companies	Mar 2023	Overall median CPM
+Databox Industry Article	industry_breakdown_article	All Industries	All Industries (monthly)	CPM	7.20	USD	median	~400 companies	2024-2025	Later monthly figure from Databox
+Databox Industry Article	industry_breakdown_article	Apparel & Footwear	Apparel & Footwear	CTR	1.75	%	median	Databox crowdsourced	2023	Highest CTR industry
+Databox Industry Article	industry_breakdown_article	E-commerce & Marketplaces	E-commerce & Marketplaces	CTR	2.00+	%	median	Databox crowdsourced	2023-2024	Only sector with CTR above 2%
+Databox Industry Article	industry_breakdown_article	Education	Education	CTR	1.31	%	median	Databox crowdsourced	2023	Low CTR industry
+Databox Industry Article	industry_breakdown_article	Technology	Technology	CTR	0.73	%	median	Databox crowdsourced	2023	Tied for lowest CTR
+Databox Industry Article	industry_breakdown_article	Health Care	Health Care	CTR	0.73	%	median	Databox crowdsourced	2023	Tied for lowest CTR
+Databox Industry Article	industry_breakdown_article	Food	Food	CPC	0.14	USD	median	Databox crowdsourced	2023	Lowest CPC industry
+Databox Industry Article	industry_breakdown_article	IT & Software	IT & Software	CPC	0.85	USD	median	Databox crowdsourced	2023	Highest CPC industry
+Databox Industry Article	industry_breakdown_article	Manufacturing	Manufacturing	CPM	2.40	USD	median	Databox crowdsourced	2023	Lowest CPM industry
+Databox Industry Article	industry_breakdown_article	Technology	Technology	CPM	9.89	USD	median	Databox crowdsourced	2023	Highest CPM industry
+Databox Industry Article	industry_breakdown_article	Health & Beauty	Health & Beauty	CPM	8.00	USD	median	Databox crowdsourced	2024-2025	Mid-range CPM
+Databox Industry Article	industry_breakdown_article	Automotive	Automotive	Amount Spent	4046.77	USD	median	Databox crowdsourced	2023	Highest monthly ad spend by industry
+Databox (cited by Focus Digital)	industry_ctrs	Arts & Entertainment	Arts & Entertainment	CTR	2.64	%	average	Databox-sourced	2025-2026	Highest CTR (Focus Digital citing Databox)
+Databox (cited by Focus Digital)	industry_ctrs	Real Estate	Real Estate	CTR	2.60	%	average	Databox-sourced	2025-2026	High CTR industry
+Databox (cited by Focus Digital)	industry_ctrs	Travel & Hospitality	Travel & Hospitality	CTR	2.29	%	average	Databox-sourced	2025-2026	Above average CTR
+Databox (cited by Focus Digital)	industry_ctrs	Food & Restaurants	Food & Restaurants	CTR	2.19	%	average	Databox-sourced	2025-2026	Above average CTR
+Databox (cited by Focus Digital)	industry_ctrs	Apparel & Footwear	Apparel & Footwear	CTR	2.06	%	average	Databox-sourced	2025-2026	Above average CTR
+Databox (cited by Focus Digital)	industry_ctrs	Animals & Pets	Animals & Pets	CTR	1.87	%	average	Databox-sourced	2025-2026	Average tier CTR
+Databox (cited by Focus Digital)	industry_ctrs	eCommerce	eCommerce	CTR	1.75	%	average	Databox-sourced	2025-2026	Average tier CTR
+Databox (cited by Focus Digital)	industry_ctrs	Health & Fitness	Health & Fitness	CTR	1.61	%	average	Databox-sourced	2025-2026	Average tier CTR
+Databox (cited by Focus Digital)	industry_ctrs	Legal Services	Legal Services	CTR	1.61	%	average	Databox-sourced	2025-2026	Average tier CTR
+Databox (cited by Focus Digital)	industry_ctrs	Retail	Retail	CTR	1.59	%	average	Databox-sourced	2025-2026	Average tier CTR
+Databox (cited by Focus Digital)	industry_ctrs	Consulting & Professional Services	Consulting & Professional Services	CTR	1.37	%	average	Databox-sourced	2025-2026	Below average CTR
+Databox (cited by Focus Digital)	industry_ctrs	Education	Education	CTR	1.29	%	average	Databox-sourced	2025-2026	Below average CTR
+Databox (cited by Focus Digital)	industry_ctrs	SaaS	SaaS	CTR	1.12	%	average	Databox-sourced	2025-2026	Below average CTR
+Databox (cited by Focus Digital)	industry_ctrs	Technology	Technology	CTR	1.04	%	average	Databox-sourced	2025-2026	Below average CTR
+Databox (cited by Focus Digital)	industry_ctrs	IT & Software	IT & Software	CTR	0.92	%	average	Databox-sourced	2025-2026	Low CTR
+Databox (cited by Focus Digital)	industry_ctrs	Dental Services	Dental Services	CTR	0.88	%	average	Databox-sourced	2025-2026	Low CTR
+Databox (cited by Focus Digital)	industry_ctrs	Finance & Insurance	Finance & Insurance	CTR	0.85	%	average	Databox-sourced	2025-2026	Low CTR
+Databox (cited by Focus Digital)	industry_ctrs	Healthcare	Healthcare	CTR	0.73	%	average	Databox-sourced	2025-2026	Lowest CTR
+Databox (cited by Focus Digital)	objective_ctrs	Lead Generation	Lead Generation	CTR	2.53	%	average	Databox-sourced	2025-2026	Highest CTR by objective
+Databox (cited by Focus Digital)	objective_ctrs	Traffic / Link Clicks	Traffic / Link Clicks	CTR	1.57	%	average	Databox-sourced	2025-2026	Traffic objective CTR
+Databox (cited by Focus Digital)	objective_ctrs	Engagement	Engagement	CTR	1.42	%	average	Databox-sourced	2025-2026	Engagement objective CTR
+Databox (cited by Focus Digital)	objective_ctrs	Conversions	Conversions	CTR	1.38	%	average	Databox-sourced	2025-2026	Conversions objective CTR
+Databox (cited by Focus Digital)	objective_ctrs	Video Views	Video Views	CTR	1.21	%	average	Databox-sourced	2025-2026	Video views objective CTR
+Databox (cited by Focus Digital)	objective_ctrs	Brand Awareness	Brand Awareness	CTR	0.94	%	average	Databox-sourced	2025-2026	Brand awareness objective CTR
+Databox (cited by Focus Digital)	objective_ctrs	Reach	Reach	CTR	0.87	%	average	Databox-sourced	2025-2026	Reach objective CTR
+Databox (cited by Focus Digital)	placement_ctrs	Instagram Stories	Instagram Stories	CTR	1.34	%	average	Databox-sourced	2025-2026	Placement-level CTR
+Databox (cited by Focus Digital)	placement_ctrs	Facebook Feed	Facebook Feed	CTR	1.11	%	average	Databox-sourced	2025-2026	Placement-level CTR
+Databox (cited by Focus Digital)	placement_ctrs	Instagram Feed	Instagram Feed	CTR	1.01	%	average	Databox-sourced	2025-2026	Placement-level CTR
+Databox (cited by Focus Digital)	placement_ctrs	Facebook Reels	Facebook Reels	CTR	0.94	%	average	Databox-sourced	2025-2026	Placement-level CTR
+Databox (cited by Focus Digital)	placement_ctrs	Facebook Stories	Facebook Stories	CTR	0.83	%	average	Databox-sourced	2025-2026	Placement-level CTR
+Databox (cited by Focus Digital)	placement_ctrs	Instagram Reels	Instagram Reels	CTR	0.76	%	average	Databox-sourced	2025-2026	Placement-level CTR
+Databox (cited by Focus Digital)	placement_ctrs	Audience Network	Audience Network	CTR	0.58	%	average	Databox-sourced	2025-2026	Placement-level CTR
+Databox (cited by Focus Digital)	placement_ctrs	Right Column	Right Column	CTR	0.41	%	average	Databox-sourced	2025-2026	Placement-level CTR
+Databox Expert Survey	survey_data	All Industries	63% of advertisers	CPC	1.00	USD	threshold	60+ marketing experts polled	2022-2023	63% report CPC under $1; from databox.com/facebook-ads-cpc

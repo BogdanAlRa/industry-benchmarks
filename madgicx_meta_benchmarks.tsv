@@ -1,0 +1,39 @@
+# Madgicx Meta/Facebook Ads Benchmarks by Industry
+# Sources:
+#   [1] https://madgicx.com/blog/meta-ads-benchmarking (Sep 2025) - "Meta Ads Benchmarks by Industry: 2025 Guide for E-commerce"
+#   [2] https://madgicx.com/blog/facebook-ads-cost (2025) - "E-commerce Budget Guide: Facebook Ads Cost in 2025"
+#   [3] https://madgicx.com/blog/meta-ads-trend-analysis (2025) - "Meta Ads Trend Analysis: Benchmarks & Optimization Strategies"
+#   [4] https://madgicx.com/blog/average-ctr-for-facebook-ads (Oct 2025) - "What's the Average CTR for Facebook Ads in 2025?"
+#   [5] https://madgicx.com/blog/industry-benchmarks-for-social-media (Jan 2026) - "Industry Benchmarks for Social Media: A Guide for Agencies"
+# Data Year: 2025 (various publication dates Sep 2025 - Jan 2026)
+# Notes: Two Madgicx articles report different CPC/CPM values for overlapping industries (different datasets/methodologies).
+#   Source [1] focuses on e-commerce ad performance benchmarks; Source [2] focuses on ad cost benchmarks.
+#   Where both sources provide data, both are listed as separate rows with source noted.
+#   Some CTR data in source [4] originates from WordStream 2017 data cited by Madgicx.
+# Currency: USD
+# CTR and CVR are percentages (e.g., 2.64 = 2.64%)
+Industry	CPM	CPC	CTR	CPA	ROAS	CVR	Source
+Fashion & Apparel	$10.14	$0.40	2.64%				[1] meta-ads-benchmarking
+Fashion & Apparel	$5.99	$0.45					[2] facebook-ads-cost
+Electronics & Tech	$6.94	$1.10	1.91%				[1] meta-ads-benchmarking
+Beauty & Cosmetics	$12.78	$0.77	1.58%			5.93%	[1] meta-ads-benchmarking
+Beauty & Cosmetics	$13.91	$1.81					[2] facebook-ads-cost
+Home Improvement		$0.67	1.72%			8.87%	[1] meta-ads-benchmarking
+Home Improvement	$12.17	$2.93					[2] facebook-ads-cost
+Health & Fitness		$0.71	1.70%			5.78%	[1] meta-ads-benchmarking
+Sports & Fitness	$14.02	$1.90					[2] facebook-ads-cost
+Real Estate	$10.97	$1.81					[2] facebook-ads-cost
+Apparel (trend data)			1.24%				[3] meta-ads-trend-analysis
+Retail			1.59%				[3] meta-ads-trend-analysis
+SaaS & B2B			1.51%				[3] meta-ads-trend-analysis
+Health & Wellness			1.01%				[3] meta-ads-trend-analysis
+Legal			1.61%				[4] average-ctr-for-facebook-ads
+Finance & Insurance			0.56%				[4] average-ctr-for-facebook-ads
+Employment & Job Training			0.47%				[4] average-ctr-for-facebook-ads
+Clothing & Apparel			1.71%				[5] industry-benchmarks-social-media
+Home & Garden			1.52%				[5] industry-benchmarks-social-media
+Food & Drink			0.88%				[5] industry-benchmarks-social-media
+General E-commerce		$1.37					[2] facebook-ads-cost
+All Industries (platform avg)	$8.15-$12.74	$0.70	1.57%-1.80%				[1][2][3] combined
+Lead Generation Campaigns			2.53%			8.78%	[1][3] campaign-type benchmark
+Traffic Campaigns			1.57%				[1][3] campaign-type benchmark

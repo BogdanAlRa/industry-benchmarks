@@ -1,0 +1,113 @@
+Source	Vaizle Insights (insights.vaizle.com/facebook-ad-benchmarks/)
+Data Date	Published August 2025; data from 5,200+ Meta ad accounts
+Retrieval Date	2026-02-20
+
+SECTION: GLOBAL BENCHMARKS (2025)
+Metric	Bottom 25%	Average/Median	Top 25%
+CTR	1.09%	2.46%	3.06%
+CPC	$0.11	$0.82	$0.88
+CPM	$0.86	$5.97	$6.81
+CPL	-	$8.68	-
+ROAS	0.00	2.33	4.50+
+Conversion Rate (Lead)	0.00%	3.41%	2.64%
+
+SECTION: BENCHMARKS BY COUNTRY/REGION (2025)
+Country/Region	CPC	CPM	CPA	CPL	CTR	Amount Spent (Avg)	CPC YoY	CPM YoY	CPA YoY
+United States	$1.67	$19.66	$2,272.71	-	3.49%	$93,151.49	+18.95%	+81.46%	+149.39%
+United Kingdom	$2.04	$23.79	$533.76	$171.92	-	$129,471.68	-23.78%	+64.72%	-52.66%
+Australia	$1.47	$15.65	$384.29	$6.94	-	$35,346.67	-17.88%	-28.31%	-23.44%
+Europe	$1.18	$4.90	$158.27	-	-	$57,331.54	-12.79%	-1.85%	-43.41%
+United Arab Emirates	$1.06	$7.47	$306.71	-	-	$33,657.75	-1.86%	+152.46%	-15.68%
+South Asia (India)	$0.41	$2.51	$5.21	$2.98	3.71%	$42,100.67	-	-	-
+Canada	$2.97	$7.15	$324.92	$5.81	-	$77,174.88	-10.82%	-26.92%	-31.85%
+Southeast Asia	$0.56	$5.93	$11.79	$3.72	3.05%	$57,248.92	-	-	-
+Africa	$0.24	$1.76	$6.41	$3.50	-	$22,569.87	-	-	-
+Egypt	$0.34	$1.94	$5.12	$6.21	-	$22,758.12	+30.77%	+22.78%	-45.06%
+
+SECTION: BENCHMARKS BY COUNTRY/REGION - PRIOR YEAR (2024)
+Country/Region	CPC	CPM	CPA	CPL	Amount Spent (Avg)
+United States	$1.40	$10.84	$911.30	-	$80,663.85
+United Kingdom	$2.68	$14.44	$1,127.47	$5.71	$159,893.17
+Australia	$1.79	$21.86	$501.58	$5.25	$44,731.91
+Europe	$1.35	$4.99	$279.66	-	$66,337.54
+United Arab Emirates	$1.08	$2.96	$363.72	-	$20,299.86
+Canada	$3.33	$9.79	$476.67	$3.41	$83,648.07
+Egypt	$0.26	$1.58	$9.38	$3.93	$17,112.10
+
+SECTION: CPM BY INDUSTRY (2025)
+Industry	Average	Top 25%	Bottom 25%
+E-commerce	$10.76	$6.81	$0.86
+Education	$5.25	$3.68	$0.92
+Finance & Insurance	$18.45	$2.68	$0.51
+Food & Beverage	$2.82	$0.86	$0.25
+Health & Wellness	$4.76	$3.69	$1.00
+Real Estate	$5.13	$3.80	$0.85
+Technology	$6.94	$4.75	$1.50
+Marketing & Advertising	$8.11	$5.00	$1.20
+Travel & Hospitality	$7.23	$5.50	$2.60
+Retail	$9.02	$6.10	$2.20
+Other	$6.50	$4.25	$1.00
+
+SECTION: CPC BY INDUSTRY (2025)
+Industry	Average	Top 25%	Bottom 25%
+E-commerce	$1.37	$0.88	$0.11
+Education	$0.70	$0.35	$0.10
+Finance & Insurance	$2.34	$1.80	$0.95
+Food & Beverage	$0.36	$0.21	$0.09
+Health & Wellness	$1.48	$0.94	$0.50
+Real Estate	$1.20	$0.75	$0.32
+Technology	$1.10	$0.65	$0.20
+Marketing & Advertising	$1.45	$1.00	$0.50
+Travel & Hospitality	$1.88	$1.50	$0.80
+Retail	$0.82	$0.55	$0.18
+Other	$0.90	$0.60	$0.30
+
+SECTION: CTR BY INDUSTRY (2025)
+Industry	Average	Top 25%	Bottom 25%
+E-commerce	2.46%	3.06%	1.09%
+Education	1.20%	1.80%	0.39%
+Finance & Insurance	2.31%	3.80%	1.20%
+Food & Beverage	3.67%	5.02%	2.15%
+Health & Wellness	2.59%	3.76%	1.27%
+Real Estate	1.89%	2.08%	1.51%
+Technology	1.91%	2.63%	0.94%
+Marketing & Advertising	1.33%	1.73%	0.94%
+Travel & Hospitality	2.09%	3.00%	1.12%
+Retail	2.88%	4.05%	1.35%
+Other	1.72%	2.35%	1.04%
+
+SECTION: ROAS BY INDUSTRY (2025)
+Industry	Average	Top 25%	Bottom 25%
+E-commerce	2.00	4.50	0.10
+Education	1.50	3.20	0.00
+Finance & Insurance	3.50	6.00	0.20
+Food & Beverage	0.50	1.20	0.00
+Health & Wellness	1.80	3.40	0.00
+Real Estate	2.10	4.00	0.50
+Technology	2.30	5.00	0.10
+Marketing & Advertising	0.90	1.50	0.00
+Travel & Hospitality	1.00	2.00	0.00
+Retail	2.50	5.00	0.30
+Other	0.80	1.40	0.00
+
+SECTION: CONVERSION RATES BY INDUSTRY (2025)
+Industry	Lead Conv Avg	Lead Conv Top 25%	Lead Conv Bottom 25%	Purchase Conv Avg	Purchase Conv Top 25%	Purchase Conv Bottom 25%
+E-commerce	0.06%	0.15%	0.01%	0.12%	0.30%	0.02%
+Education	0.11%	0.21%	0.00%	0.05%	0.12%	0.00%
+Finance & Insurance	0.15%	0.28%	0.05%	0.12%	0.25%	0.03%
+Food & Beverage	0.03%	0.09%	0.00%	0.02%	0.05%	0.00%
+Health & Wellness	0.04%	0.12%	0.00%	0.03%	0.09%	0.00%
+Real Estate	0.14%	0.35%	0.05%	0.10%	0.22%	0.02%
+Technology	0.08%	0.18%	0.02%	0.05%	0.13%	0.00%
+Marketing & Advertising	0.07%	0.12%	0.01%	0.04%	0.08%	0.00%
+Travel & Hospitality	0.05%	0.12%	0.00%	0.02%	0.06%	0.00%
+Retail	0.06%	0.15%	0.02%	0.11%	0.28%	0.00%
+Other	0.02%	0.05%	0.00%	0.01%	0.03%	0.00%
+
+SECTION: CURRENCY EQUIVALENTS (Global Median CPC/CPM)
+Currency	CPC	CPM
+USD	$0.82	$5.97
+INR	Rs.69	Rs.502
+GBP	£0.65	£4.73
+EUR	€0.76	€5.54
+AUD	A$1.27	A$9.25
