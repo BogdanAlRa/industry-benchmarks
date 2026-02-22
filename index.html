@@ -18,7 +18,7 @@
   --red:#ef4444;--red-bg:rgba(239,68,68,.1);
   --purple:#a78bfa;
 }
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-variant-numeric:tabular-nums}
 .topbar{position:sticky;top:0;z-index:100;background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
 .topbar h1{font-size:18px;font-weight:700;white-space:nowrap}
 .main-tabs{display:flex;background:var(--bg);border-radius:8px;overflow:hidden;border:1px solid var(--border)}
@@ -93,7 +93,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .no-us{display:inline-block;padding:2px 8px;font-size:10px;background:var(--bg3);color:var(--text3);border-radius:4px;margin-left:8px}
 
 /* === META ADS TAB STYLES === */
-.meta-nav{background:var(--bg2);border-bottom:1px solid var(--border);padding:10px 24px;display:flex;gap:4px;flex-wrap:wrap}
+.meta-nav{background:var(--bg2);border-bottom:1px solid var(--border);padding:10px 24px;display:flex;gap:4px;flex-wrap:wrap;align-items:center}
 .meta-nav-btn{padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:1px solid transparent;background:transparent;color:var(--text3);transition:all .15s}
 .meta-nav-btn.active{background:var(--bg3);color:var(--text);border-color:var(--border2)}
 .meta-nav-btn:hover:not(.active){color:var(--text2);background:var(--bg3)}
@@ -109,8 +109,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .data-tbl{width:100%;border-collapse:collapse;font-size:13px}
 .data-tbl th{padding:10px 12px;text-align:left;color:var(--text3);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid var(--border);cursor:pointer;user-select:none;white-space:nowrap}
 .data-tbl th:hover{color:var(--accent2)}
-.data-tbl th.sorted-asc::after{content:' \\2191';color:var(--accent)}
-.data-tbl th.sorted-desc::after{content:' \\2193';color:var(--accent)}
+.data-tbl th.sorted-asc::after{content:' \2191';color:var(--accent)}
+.data-tbl th.sorted-desc::after{content:' \2193';color:var(--accent)}
 .data-tbl td{padding:8px 12px;border-bottom:1px solid var(--border);white-space:nowrap}
 .data-tbl tr:hover td{background:var(--bg3)}
 .data-tbl td.num{text-align:right;font-variant-numeric:tabular-nums;font-weight:500}
@@ -129,6 +129,103 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .insight h6{font-size:11px;text-transform:uppercase;color:var(--text3);letter-spacing:.5px;margin-bottom:6px;font-weight:600}
 .insight .val{font-size:18px;font-weight:700;margin-bottom:4px}
 .insight .desc{font-size:12px;color:var(--text3)}
+
+/* =============================================
+   SPACIOUS INDUSTRY SECTIONS — NEW UI
+   ============================================= */
+.meta-sub-controls{background:var(--bg2);border-bottom:1px solid var(--border);padding:10px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.view-toggle{display:flex;background:var(--bg);border-radius:8px;overflow:hidden;border:1px solid var(--border)}
+.view-toggle-btn{padding:6px 16px;font-size:12px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--text3);transition:all .15s}
+.view-toggle-btn.active{background:var(--accent);color:#fff}
+.view-toggle-btn:hover:not(.active){background:var(--bg3);color:var(--text2)}
+.source-pills{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.source-pills-label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin-right:4px}
+.source-pill{padding:5px 14px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:2px solid transparent;transition:all .2s;user-select:none}
+.source-pill.active{opacity:1}
+.source-pill:not(.active){opacity:.35;filter:grayscale(.5)}
+.source-pill:hover{opacity:.85}
+
+/* Industry Section (full-width panel) */
+.ind-section{background:var(--bg2);border:1px solid var(--border);border-radius:16px;margin-bottom:24px;overflow:hidden;transition:border-color .25s ease,box-shadow .25s ease}
+.ind-section:hover{border-color:var(--border2);box-shadow:0 0 30px rgba(59,130,246,.04)}
+.ind-header{padding:24px 28px 0;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.ind-name{font-size:22px;font-weight:800;letter-spacing:-.3px}
+.source-count-badge{padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;background:var(--bg3);color:var(--text2)}
+.agreement-meter{height:6px;width:120px;border-radius:3px;background:var(--bg);overflow:hidden;position:relative}
+.agreement-meter-fill{height:100%;border-radius:3px;transition:width .3s ease}
+.agreement-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+.ind-source-badges{padding:8px 28px 0;display:flex;gap:6px;flex-wrap:wrap}
+.ind-src-pill{padding:3px 10px;border-radius:10px;font-size:10px;font-weight:600}
+
+/* Consensus KPI Row */
+.consensus-kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;padding:20px 28px}
+.ckpi{background:var(--bg);border-radius:12px;padding:16px;text-align:center;border:1px solid var(--border);position:relative;transition:border-color .2s}
+.ckpi:hover{border-color:var(--border2)}
+.ckpi-label{font-size:10px;text-transform:uppercase;letter-spacing:.7px;color:var(--text3);margin-bottom:6px;font-weight:700}
+.ckpi-value{font-size:28px;font-weight:800;line-height:1.1;margin-bottom:6px}
+.ckpi-ci-bar{height:4px;border-radius:2px;margin:0 8px 6px;overflow:hidden;background:var(--bg3)}
+.ckpi-ci-fill{height:100%;border-radius:2px;transition:width .3s ease}
+.ckpi-ci-text{font-size:10px;color:var(--text3);margin-bottom:4px}
+.ckpi-sources{font-size:10px;color:var(--text3)}
+.ckpi-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px;vertical-align:middle}
+.ckpi.single-source{border-style:dashed}
+
+/* Source Breakdown (expandable) */
+.ind-expand-btn{display:flex;align-items:center;justify-content:center;width:100%;padding:12px;background:none;border:none;border-top:1px solid var(--border);color:var(--text3);font-size:12px;cursor:pointer;transition:all .2s;font-weight:600;gap:6px}
+.ind-expand-btn:hover{color:var(--accent2);background:rgba(59,130,246,.04)}
+.source-breakdown{max-height:0;overflow:hidden;transition:max-height .35s ease,padding .25s ease;border-top:0 solid var(--border)}
+.source-breakdown.open{max-height:2000px;padding:20px 28px;border-top-width:1px}
+.src-breakdown-tbl{width:100%;border-collapse:collapse;font-size:13px}
+.src-breakdown-tbl th{padding:8px 10px;text-align:right;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);font-weight:600;border-bottom:1px solid var(--border)}
+.src-breakdown-tbl th:first-child{text-align:left}
+.src-breakdown-tbl td{padding:8px 10px;text-align:right;border-bottom:1px solid rgba(30,41,59,.5)}
+.src-breakdown-tbl td:first-child{text-align:left}
+.src-breakdown-tbl tr:hover td{background:var(--bg3)}
+.dev-positive{color:var(--red)}
+.dev-negative{color:var(--green)}
+.dev-neutral{color:var(--text3)}
+.outlier-flag{display:inline-block;padding:1px 5px;font-size:9px;font-weight:700;border-radius:3px;background:var(--red-bg);color:var(--red);margin-left:4px}
+
+/* Range visualization in breakdown */
+.range-viz{position:relative;height:12px;background:var(--bg3);border-radius:6px;margin:4px 0;min-width:160px}
+.range-viz-fill{position:absolute;height:100%;background:var(--accent);opacity:.3;border-radius:6px}
+.range-viz-marker{position:absolute;width:3px;height:100%;border-radius:2px;top:0}
+.range-viz-consensus{position:absolute;width:2px;height:16px;top:-2px;background:var(--text);border-radius:1px}
+
+/* Comparison Mode Table */
+.comparison-tbl{width:100%;border-collapse:collapse;font-size:13px;margin:20px 0}
+.comparison-tbl th{padding:10px 12px;text-align:right;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);font-weight:600;border-bottom:2px solid var(--border)}
+.comparison-tbl th:first-child{text-align:left}
+.comparison-tbl td{padding:8px 12px;text-align:right;border-bottom:1px solid rgba(30,41,59,.5)}
+.comparison-tbl td:first-child{text-align:left}
+.comparison-tbl tr:last-child td{border-top:2px solid var(--border);font-weight:700}
+.comparison-tbl tr:hover td{background:var(--bg3)}
+.dev-cell{border-radius:4px;padding:2px 4px}
+.dev-cell.hot{background:rgba(239,68,68,.12)}
+.dev-cell.warm{background:rgba(245,158,11,.1)}
+.dev-cell.cool{background:rgba(34,197,94,.1)}
+
+/* Country Section */
+.ctry-section{background:var(--bg2);border:1px solid var(--border);border-radius:16px;margin-bottom:20px;overflow:hidden;transition:border-color .25s ease,box-shadow .25s ease}
+.ctry-section:hover{border-color:var(--border2);box-shadow:0 0 20px rgba(59,130,246,.03)}
+.ctry-header{padding:20px 24px 0;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.ctry-name{font-size:20px;font-weight:800;letter-spacing:-.2px}
+.ctry-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:16px 24px 20px}
+.ctry-expand-btn{display:flex;align-items:center;justify-content:center;width:100%;padding:10px;background:none;border:none;border-top:1px solid var(--border);color:var(--text3);font-size:12px;cursor:pointer;transition:all .2s;font-weight:600;gap:6px}
+.ctry-expand-btn:hover{color:var(--accent2);background:rgba(59,130,246,.04)}
+.ctry-breakdown{max-height:0;overflow:hidden;transition:max-height .35s ease,padding .25s ease;border-top:0 solid var(--border)}
+.ctry-breakdown.open{max-height:1000px;padding:16px 24px;border-top-width:1px}
+
+/* Badge for data quality */
+.data-badge{display:inline-block;padding:2px 8px;border-radius:8px;font-size:10px;font-weight:700;letter-spacing:.3px}
+.data-badge.single{background:rgba(59,130,246,.15);color:var(--accent2)}
+.data-badge.limited{background:rgba(245,158,11,.15);color:var(--orange)}
+.data-badge.good{background:rgba(34,197,94,.12);color:var(--green)}
+
+@media(max-width:1024px){
+  .consensus-kpis{grid-template-columns:repeat(3,1fr)}
+  .ctry-kpis{grid-template-columns:repeat(3,1fr)}
+}
 @media(max-width:768px){
   .grid{grid-template-columns:1fr}
   .metrics{grid-template-columns:repeat(2,1fr)}
@@ -139,6 +236,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
   .stats{display:none}
   .kpi-grid{grid-template-columns:repeat(2,1fr)}
   .meta-chart-box.wide{grid-column:auto}
+  .consensus-kpis{grid-template-columns:repeat(2,1fr)}
+  .ctry-kpis{grid-template-columns:1fr 1fr 1fr}
+  .ind-header{padding:16px 16px 0}
+  .ind-source-badges{padding:6px 16px 0}
+  .consensus-kpis{padding:14px 16px}
+  .source-breakdown.open{padding:14px 16px}
+  .ind-name{font-size:18px}
+  .ckpi-value{font-size:22px}
+}
+@media(max-width:480px){
+  .consensus-kpis{grid-template-columns:1fr}
+  .ctry-kpis{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -177,6 +286,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <button class="ch-group-btn" data-group="other">Other</button>
     </div>
     <div class="ch-sub" id="chSubBar"></div>
+    <span style="margin-left:auto" class="data-badge single">Single Source: Triple Whale</span>
   </div>
   <div class="loading" id="loading"><div class="spinner"></div><div>Loading benchmarks...</div></div>
   <div class="main" id="main" style="display:none"></div>
@@ -191,10 +301,193 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
     <button class="meta-nav-btn" data-meta="trends">Weekly Trends</button>
     <button class="meta-nav-btn" data-meta="objectives">Objectives & Placements</button>
   </div>
+  <div class="meta-sub-controls" id="metaSubControls" style="display:none">
+    <div class="view-toggle" id="viewToggle">
+      <button class="view-toggle-btn active" data-mode="consensus">Consensus</button>
+      <button class="view-toggle-btn" data-mode="comparison">Source Comparison</button>
+    </div>
+    <div class="source-pills" id="sourcePills">
+      <span class="source-pills-label">Sources:</span>
+    </div>
+    <div class="search-wrap" style="min-width:160px;max-width:300px"><input type="text" id="metaSearchInput" placeholder="Search..."></div>
+  </div>
   <div class="meta-main" id="metaMain"></div>
 </div>
 
 <script>
+// =============================================
+// STATISTICAL RECONCILIATION ENGINE (StatEngine)
+// =============================================
+const StatEngine = {
+  WEIGHTS: {
+    'Superads': 0.85,
+    'Revealbot': 0.80,
+    'Databox': 0.75,
+    'Vaizle': 0.70,
+    'Madgicx': 0.65,
+    'WordStream': 0.60,
+    'WS Leads': 0.55,
+    'ADCostly+': 0.40
+  },
+
+  computeWeightedMean(values, weights) {
+    let sumWV = 0, sumW = 0;
+    for (let i = 0; i < values.length; i++) {
+      sumWV += values[i] * weights[i];
+      sumW += weights[i];
+    }
+    return sumW > 0 ? sumWV / sumW : null;
+  },
+
+  computeWeightedCI(values, weights, consensus) {
+    const n = values.length;
+    if (n < 2) return null;
+    let sumW = 0, sumW2 = 0, sumWD2 = 0;
+    for (let i = 0; i < n; i++) {
+      sumW += weights[i];
+      sumW2 += weights[i] * weights[i];
+      sumWD2 += weights[i] * Math.pow(values[i] - consensus, 2);
+    }
+    const denom = sumW - sumW2 / sumW;
+    if (denom <= 0) return null;
+    const wVar = sumWD2 / denom;
+    const wSD = Math.sqrt(wVar);
+    const nEff = (sumW * sumW) / sumW2;
+    const se = wSD / Math.sqrt(nEff);
+    return { low: consensus - 1.96 * se, high: consensus + 1.96 * se, sd: wSD };
+  },
+
+  computeDisagreement(values, consensus) {
+    if (values.length < 2) return 'single';
+    if (consensus === 0) return 'agreement';
+    const maxDev = Math.max(...values.map(v => Math.abs(v - consensus) / Math.abs(consensus)));
+    if (maxDev < 0.10) return 'agreement';
+    if (maxDev < 0.20) return 'moderate';
+    if (maxDev < 0.50) return 'disagreement';
+    return 'conflict';
+  },
+
+  identifyOutliers(values, weights, consensus) {
+    if (values.length < 3) return values.map(() => false);
+    let sumW = 0, sumWD2 = 0;
+    for (let i = 0; i < values.length; i++) {
+      sumW += weights[i];
+      sumWD2 += weights[i] * Math.pow(values[i] - consensus, 2);
+    }
+    const wSD = Math.sqrt(sumWD2 / sumW);
+    if (wSD === 0) return values.map(() => false);
+    return values.map(v => Math.abs(v - consensus) > 2 * wSD);
+  },
+
+  computeConsensus(rows, metricKeys) {
+    const result = {};
+    for (const m of metricKeys) {
+      const pairs = rows.filter(r => r[m] != null).map(r => ({
+        value: r[m], source: r.source, weight: this.WEIGHTS[r.source] || 0.50
+      }));
+      if (pairs.length === 0) {
+        result[m] = { value: null, ci_low: null, ci_high: null, disagreement: 'none', sources: [] };
+        continue;
+      }
+      const values = pairs.map(p => p.value);
+      const weights = pairs.map(p => p.weight);
+      const consensus = this.computeWeightedMean(values, weights);
+      const ci = pairs.length >= 2 ? this.computeWeightedCI(values, weights, consensus) : null;
+      const disagreement = this.computeDisagreement(values, consensus);
+      const outliers = this.identifyOutliers(values, weights, consensus);
+      result[m] = {
+        value: consensus,
+        ci_low: ci ? Math.max(0, ci.low) : consensus,
+        ci_high: ci ? ci.high : consensus,
+        sd: ci ? ci.sd : 0,
+        disagreement,
+        sources: pairs.map((p, i) => ({
+          name: p.source, value: p.value, weight: p.weight,
+          deviation: consensus !== 0 ? ((p.value - consensus) / Math.abs(consensus) * 100) : 0,
+          isOutlier: outliers[i]
+        }))
+      };
+    }
+    return result;
+  },
+
+  // Console helper for debugging
+  validate() {
+    console.log('=== StatEngine Validation ===');
+    const reRows = [];
+    for (const row of MI) {
+      if ((ALIAS_INDEX[row[0]] || row[0]) === 'Real Estate' && row[2] != null) {
+        reRows.push({ source: row[1], cpm: row[2] });
+      }
+    }
+    console.log('Real Estate CPM sources:', reRows.map(r => `${r.source}: $${r.cpm}`));
+    const vals = reRows.map(r => r.cpm);
+    const wts = reRows.map(r => StatEngine.WEIGHTS[r.source] || 0.5);
+    const mean = StatEngine.computeWeightedMean(vals, wts);
+    console.log('IVW Mean: $' + mean.toFixed(2));
+    const ci = StatEngine.computeWeightedCI(vals, wts, mean);
+    console.log('95% CI: $' + (ci ? ci.low.toFixed(2) : 'N/A') + ' - $' + (ci ? ci.high.toFixed(2) : 'N/A'));
+    console.log('Disagreement:', StatEngine.computeDisagreement(vals, mean));
+    console.log('Canonical industries:', Object.keys(normalizedIndustries).length);
+    console.log('Canonical countries:', Object.keys(normalizedCountries).length);
+    console.log('Total MI rows:', MI.length, '| Mapped:', Object.values(normalizedIndustries).reduce((s, d) => s + d._rows.length, 0));
+    return { mean, ci, disagreement: StatEngine.computeDisagreement(vals, mean) };
+  }
+};
+
+// =============================================
+// INDUSTRY NAME MAPPING (~40 canonical names)
+// =============================================
+const INDUSTRY_MAP = {
+  'Agriculture':['Agriculture'],
+  'Animals & Pets':['Animals & Pets'],
+  'Arts & Entertainment':['Arts','Arts & Entertainment'],
+  'Automotive':['Automotive'],
+  'Beauty & Personal Care':['Beauty & Personal Care','Beauty & Cosmetics'],
+  'Business Services':['Business Services','Consulting'],
+  'Career & Employment':['Career & Employment','HR & Staffing'],
+  'Construction':['Construction'],
+  'Consumer Goods':['Consumer Goods'],
+  'Crypto & Blockchain':['Crypto & Blockchain'],
+  'Dentists & Dental':['Dentists'],
+  'Design':['Design'],
+  'E-commerce':['E-commerce','Marketplaces'],
+  'Education':['Education'],
+  'Energy & Mining':['Energy & Mining'],
+  'Fashion & Apparel':['Fashion & Apparel','Apparel & Fashion','Apparel & Footwear','Textiles'],
+  'Finance & Insurance':['Finance','Finance & Insurance'],
+  'Food & Beverage':['Food & Beverage','Restaurants & Food','Food & Restaurants','Wine & Spirits'],
+  'Furniture':['Furniture'],
+  'Gaming':['Gaming'],
+  'Hardware & Networking':['Hardware & Networking'],
+  'Health & Wellness':['Health & Wellness','Health & Fitness','Fitness & Training','Wellness','Sports & Fitness'],
+  'Healthcare':['Healthcare'],
+  'Home Improvement':['Home Improvement'],
+  'Industrial & Manufacturing':['Industrial','Manufacturing'],
+  'IT Services':['IT Services'],
+  'Legal':['Legal','Legal Services'],
+  'Marketing & Advertising':['Marketing & Advertising'],
+  'Media':['Media'],
+  'Nonprofit':['Nonprofit'],
+  'Personal Services':['Personal Services'],
+  'Public Administration':['Public Administration'],
+  'Public Safety':['Public Safety'],
+  'Real Estate':['Real Estate'],
+  'Retail':['Retail'],
+  'SaaS & Technology':['SaaS & Cloud','Software Development','SaaS','Technology','Electronics & Tech'],
+  'Shopping & Gifts':['Shopping & Gifts'],
+  'Sports & Recreation':['Sports & Recreation'],
+  'Travel & Hospitality':['Recreation & Travel','Travel','Travel & Hospitality'],
+  'Transportation':['Transportation'],
+  'Venture Capital':['Venture Capital']
+};
+
+// Build reverse-lookup index
+const ALIAS_INDEX = {};
+for (const [canonical, aliases] of Object.entries(INDUSTRY_MAP)) {
+  for (const alias of aliases) ALIAS_INDEX[alias] = canonical;
+}
+
 // =============================================
 // TRIPLE WHALE MULTI-CHANNEL (existing logic)
 // =============================================
@@ -255,7 +548,7 @@ function hasSegmentData(ind){return!!(usData[ind]&&Object.keys(usData[ind]).leng
 function getGlobalMonthlyTrend(ind,metric,n){const c=globalData[ind];if(!c)return[];const f=filterChannels(c);const ms=new Set();for(const ch in f)for(const m in f[ch])ms.add(m);const s=[...ms].sort(sortM).slice(-n);return s.map(m=>{const mets=[];for(const ch in f)if(f[ch][m])mets.push(f[ch][m]);const a=mets.length?avgMetrics(mets):null;return{month:m,value:a?a[metric]:null}})}
 function getTimeDim(store,ind,keys){const c=store[ind];if(!c)return keys.map(()=>null);const f=filterChannels(c);return keys.map(k=>{const mets=[];for(const ch in f)if(f[ch]&&f[ch][k])mets.push(f[ch][k]);return mets.length?avgMetrics(mets):null})}
 
-function fmt(v,t){if(v==null)return'—';switch(t){case'$':return'$'+v.toFixed(2);case'%':return v.toFixed(2)+'%';case'x':return v.toFixed(2)+'x';default:return v.toFixed(2)}}
+function fmt(v,t){if(v==null)return'\u2014';switch(t){case'$':return'$'+v.toFixed(2);case'%':return v.toFixed(2)+'%';case'x':return v.toFixed(2)+'x';default:return v.toFixed(2)}}
 function fmtInd(s){return s.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase()).replace(/\bAnd\b/g,'&').replace(/\bSaas\b/g,'SaaS').replace(/\bHr\b/g,'HR').replace(/\bElearning\b/g,'eLearning').replace(/\bEcommerce\b/g,'eCommerce')}
 function metricClass(metric,value){if(value==null)return'';if(metric==='roas')return value>=2.5?'highlight':value>=1?'warn':'bad';if(metric==='mer')return value<0.5?'highlight':value<1?'warn':'bad';return''}
 
@@ -280,7 +573,7 @@ function render(){
 function cardHTML(ind){
   const id=ind.replace(/\W/g,''),chs=getChannelsFor(ind),noUS=currentRegion==='us'&&!hasSegmentData(ind);
   const chText=chs.length?chs.slice(0,6).join(', ')+(chs.length>6?` +${chs.length-6} more`:''):'No data';
-  return`<div class="card" id="c-${id}"><div class="card-top"><h3>${fmtInd(ind)}${noUS?'<span class="no-us">No segment data</span>':''}</h3><div class="card-channels" id="cch-${id}">${chText}</div><div class="metrics" id="met-${id}"><div class="metric" id="m-cpm-${id}"><div class="label">CPM</div><div class="val">—</div><div class="sub">Cost per 1K</div></div><div class="metric" id="m-cpc-${id}"><div class="label">CPC</div><div class="val">—</div><div class="sub">Cost per Click</div></div><div class="metric" id="m-ctr-${id}"><div class="label">CTR</div><div class="val">—</div><div class="sub">Click-through</div></div><div class="metric" id="m-cpa-${id}"><div class="label">CPA</div><div class="val">—</div><div class="sub">Cost per Acq.</div></div><div class="metric" id="m-roas-${id}"><div class="label">ROAS</div><div class="val">—</div><div class="sub">Return on Spend</div></div><div class="metric" id="m-aov-${id}"><div class="label">AOV</div><div class="val">—</div><div class="sub">Avg. Order</div></div><div class="metric" id="m-cvr-${id}"><div class="label">CVR</div><div class="val">—</div><div class="sub">Conversion</div></div><div class="metric" id="m-mer-${id}"><div class="label">MER</div><div class="val">—</div><div class="sub">Efficiency</div></div></div><div class="spark-row"><div class="spark-box"><div class="spark-label">CPM Trend</div><canvas id="sp-cpm-${id}"></canvas></div><div class="spark-box"><div class="spark-label">ROAS Trend</div><canvas id="sp-roas-${id}"></canvas></div></div></div><button class="expand-btn" onclick="toggleDetail('${id}','${ind}')"><span id="exp-${id}">See More &#9660;</span></button><div class="detail" id="det-${id}"></div></div>`;
+  return`<div class="card" id="c-${id}"><div class="card-top"><h3>${fmtInd(ind)}${noUS?'<span class="no-us">No segment data</span>':''}</h3><div class="card-channels" id="cch-${id}">${chText}</div><div class="metrics" id="met-${id}"><div class="metric" id="m-cpm-${id}"><div class="label">CPM</div><div class="val">\u2014</div><div class="sub">Cost per 1K</div></div><div class="metric" id="m-cpc-${id}"><div class="label">CPC</div><div class="val">\u2014</div><div class="sub">Cost per Click</div></div><div class="metric" id="m-ctr-${id}"><div class="label">CTR</div><div class="val">\u2014</div><div class="sub">Click-through</div></div><div class="metric" id="m-cpa-${id}"><div class="label">CPA</div><div class="val">\u2014</div><div class="sub">Cost per Acq.</div></div><div class="metric" id="m-roas-${id}"><div class="label">ROAS</div><div class="val">\u2014</div><div class="sub">Return on Spend</div></div><div class="metric" id="m-aov-${id}"><div class="label">AOV</div><div class="val">\u2014</div><div class="sub">Avg. Order</div></div><div class="metric" id="m-cvr-${id}"><div class="label">CVR</div><div class="val">\u2014</div><div class="sub">Conversion</div></div><div class="metric" id="m-mer-${id}"><div class="label">MER</div><div class="val">\u2014</div><div class="sub">Efficiency</div></div></div><div class="spark-row"><div class="spark-box"><div class="spark-label">CPM Trend</div><canvas id="sp-cpm-${id}"></canvas></div><div class="spark-box"><div class="spark-label">ROAS Trend</div><canvas id="sp-roas-${id}"></canvas></div></div></div><button class="expand-btn" onclick="toggleDetail('${id}','${ind}')"><span id="exp-${id}">See More &#9660;</span></button><div class="detail" id="det-${id}"></div></div>`;
 }
 
 function updateCard(ind){
@@ -435,46 +728,218 @@ const RB_OBJ_CPM_LABELS=['App Install','Brand Aware.','Catalog Sales','Conversio
 const RB_OBJ_CPM_LATEST=[3.25,2.24,16.19,6.34,17.53,8.78,2.65]; // Feb 2026
 
 // =============================================
+// DATA PIPELINE — Normalization & Consensus
+// =============================================
+const INDUSTRY_METRICS = ['cpm','cpc','ctr','cpa','cvr','roas'];
+const COUNTRY_METRICS = ['cpm','cpc','ctr'];
+const ALL_MI_SOURCES = ['Superads','Vaizle','WordStream','WS Leads','Madgicx','Databox'];
+const ALL_MC_SOURCES = ['Superads','Vaizle','ADCostly+'];
+
+let activeMetaSources = new Set(ALL_MI_SOURCES);
+let activeCountrySources = new Set(ALL_MC_SOURCES);
+let metaViewMode = 'consensus';
+let normalizedIndustries = {};
+let normalizedCountries = {};
+
+function buildNormalizedIndustries() {
+  const grouped = {};
+  for (const row of MI) {
+    const [rawName, source, cpm, cpc, ctr, cpa, cvr, roas] = row;
+    if (!activeMetaSources.has(source)) continue;
+    const canonical = ALIAS_INDEX[rawName] || 'Other / Unmatched';
+    if (!grouped[canonical]) grouped[canonical] = [];
+    grouped[canonical].push({ source, cpm, cpc, ctr, cpa, cvr, roas, rawName });
+  }
+  const result = {};
+  for (const [ind, rows] of Object.entries(grouped)) {
+    const consensus = StatEngine.computeConsensus(rows, INDUSTRY_METRICS);
+    consensus._rows = rows;
+    consensus._sources = [...new Set(rows.map(r => r.source))];
+    consensus._sourceCount = consensus._sources.length;
+    // Overall disagreement = worst metric disagreement
+    const levels = { none: 0, single: 1, agreement: 2, moderate: 3, disagreement: 4, conflict: 5 };
+    let worst = 'none';
+    for (const m of INDUSTRY_METRICS) {
+      if (consensus[m] && levels[consensus[m].disagreement] > levels[worst]) worst = consensus[m].disagreement;
+    }
+    consensus._overallDisagreement = worst;
+    result[ind] = consensus;
+  }
+  return result;
+}
+
+function buildNormalizedCountries() {
+  const grouped = {};
+  for (const row of MC) {
+    const [country, source, cpm, cpc, ctr] = row;
+    if (!activeCountrySources.has(source)) continue;
+    if (!grouped[country]) grouped[country] = [];
+    grouped[country].push({ source, cpm, cpc, ctr });
+  }
+  const result = {};
+  for (const [country, rows] of Object.entries(grouped)) {
+    const consensus = StatEngine.computeConsensus(rows, COUNTRY_METRICS);
+    consensus._rows = rows;
+    consensus._sources = [...new Set(rows.map(r => r.source))];
+    consensus._sourceCount = consensus._sources.length;
+    const levels = { none: 0, single: 1, agreement: 2, moderate: 3, disagreement: 4, conflict: 5 };
+    let worst = 'none';
+    for (const m of COUNTRY_METRICS) {
+      if (consensus[m] && levels[consensus[m].disagreement] > levels[worst]) worst = consensus[m].disagreement;
+    }
+    consensus._overallDisagreement = worst;
+    result[country] = consensus;
+  }
+  return result;
+}
+
+// =============================================
+// META ADS — UI HELPERS
+// =============================================
+const DISAGREE_COLORS = {
+  none: '#64748b', single: '#3b82f6', agreement: '#22c55e',
+  moderate: '#f59e0b', disagreement: '#f97316', conflict: '#ef4444'
+};
+const DISAGREE_LABELS = {
+  none: 'No data', single: 'Single source', agreement: 'Agreement',
+  moderate: 'Moderate', disagreement: 'Disagreement', conflict: 'Conflict'
+};
+const DISAGREE_WIDTH = { none: 0, single: 100, agreement: 100, moderate: 70, disagreement: 40, conflict: 15 };
+
+function fmtMetric(v, metric) {
+  if (v == null) return '\u2014';
+  if (metric === 'cpm' || metric === 'cpc' || metric === 'cpa') return '$' + v.toFixed(2);
+  if (metric === 'ctr' || metric === 'cvr') return v.toFixed(2) + '%';
+  if (metric === 'roas') return v.toFixed(2) + 'x';
+  return v.toFixed(2);
+}
+
+function fmtDev(dev) {
+  if (dev == null) return '';
+  const sign = dev >= 0 ? '+' : '';
+  return sign + dev.toFixed(0) + '%';
+}
+
+function devClass(dev) {
+  if (dev == null) return 'dev-neutral';
+  const abs = Math.abs(dev);
+  if (abs > 30) return dev > 0 ? 'dev-positive' : 'dev-negative';
+  if (abs > 15) return dev > 0 ? 'dev-positive' : 'dev-negative';
+  return 'dev-neutral';
+}
+
+function devCellClass(dev) {
+  if (dev == null) return '';
+  const abs = Math.abs(dev);
+  if (abs > 30) return 'hot';
+  if (abs > 15) return 'warm';
+  return 'cool';
+}
+
+function dataBadge(sourceCount) {
+  if (sourceCount <= 1) return '<span class="data-badge single">Single source</span>';
+  if (sourceCount === 2) return '<span class="data-badge limited">Limited data</span>';
+  return '<span class="data-badge good">' + sourceCount + ' sources</span>';
+}
+
+// =============================================
 // META ADS RENDERING
 // =============================================
 let metaView='overview',metaSortCol=null,metaSortAsc=true;
 
-function renderMeta(){
-  const v=metaView;
-  if(v==='overview')renderMetaOverview();
-  else if(v==='industry')renderMetaIndustry();
-  else if(v==='country')renderMetaCountry();
-  else if(v==='trends')renderMetaTrends();
-  else if(v==='objectives')renderMetaObjectives();
+function showSubControls(show, type) {
+  const ctrl = document.getElementById('metaSubControls');
+  ctrl.style.display = show ? '' : 'none';
+  if (!show) return;
+  // Render source pills
+  const pills = document.getElementById('sourcePills');
+  const sources = type === 'country' ? ALL_MC_SOURCES : ALL_MI_SOURCES;
+  const active = type === 'country' ? activeCountrySources : activeMetaSources;
+  let h = '<span class="source-pills-label">Sources:</span>';
+  for (const src of sources) {
+    const color = SRC_COLORS[src] || '#666';
+    const isActive = active.has(src);
+    h += `<span class="source-pill${isActive ? ' active' : ''}" style="background:${color}${isActive ? '' : '44'};color:${isActive ? '#fff' : '#999'}" data-src="${src}" data-type="${type}" onclick="toggleSourcePill(this)">${src}</span>`;
+  }
+  pills.innerHTML = h;
+  // Render view toggle state
+  document.querySelectorAll('.view-toggle-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.mode === metaViewMode);
+  });
 }
 
+function toggleSourcePill(el) {
+  const src = el.dataset.src;
+  const type = el.dataset.type;
+  const active = type === 'country' ? activeCountrySources : activeMetaSources;
+  if (active.has(src)) {
+    if (active.size > 1) active.delete(src);
+  } else {
+    active.add(src);
+  }
+  if (type === 'country') {
+    normalizedCountries = buildNormalizedCountries();
+    renderMetaCountry();
+  } else {
+    normalizedIndustries = buildNormalizedIndustries();
+    renderMetaIndustry();
+  }
+  showSubControls(true, type);
+}
+
+document.getElementById('viewToggle').addEventListener('click', e => {
+  const btn = e.target.closest('.view-toggle-btn');
+  if (!btn) return;
+  metaViewMode = btn.dataset.mode;
+  document.querySelectorAll('.view-toggle-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === metaViewMode));
+  if (metaView === 'industry') renderMetaIndustry();
+  else if (metaView === 'country') renderMetaCountry();
+});
+
+document.getElementById('metaSearchInput').addEventListener('input', function() {
+  const q = this.value.toLowerCase().trim();
+  document.querySelectorAll('.ind-section,.ctry-section').forEach(el => {
+    const name = (el.dataset.name || '').toLowerCase();
+    el.style.display = (!q || name.includes(q)) ? '' : 'none';
+  });
+});
+
+function renderMeta(){
+  const v=metaView;
+  if(v==='overview'){showSubControls(false);renderMetaOverview()}
+  else if(v==='industry'){showSubControls(true,'industry');renderMetaIndustry()}
+  else if(v==='country'){showSubControls(true,'country');renderMetaCountry()}
+  else if(v==='trends'){showSubControls(false);renderMetaTrends()}
+  else if(v==='objectives'){showSubControls(false);renderMetaObjectives()}
+}
+
+// ——— OVERVIEW ———
 function renderMetaOverview(){
   const mm=document.getElementById('metaMain');
+  // Compute overall consensus from META_OVERALL
+  const overallSources = Object.entries(META_OVERALL);
+  const cpmVals = overallSources.filter(([,d]) => d.cpm != null).map(([,d]) => d.cpm);
+  const cpcVals = overallSources.filter(([,d]) => d.cpc != null).map(([,d]) => d.cpc);
+  const ctrVals = overallSources.filter(([,d]) => d.ctr != null).map(([,d]) => d.ctr);
+  const roasVals = overallSources.filter(([,d]) => d.roas != null).map(([,d]) => d.roas);
+  const cpmW = [0.75,0.85,0.70,0.80]; // Databox,Superads,Vaizle,Revealbot
+  const consensusCPM = StatEngine.computeWeightedMean(cpmVals, cpmW.slice(0, cpmVals.length));
+  const consensusCPC = StatEngine.computeWeightedMean(cpcVals, cpmW.slice(0, cpcVals.length));
+
   let h=`<div class="section-title">Meta Ads Benchmarks Overview</div>`;
   h+=`<div class="sources-bar">`;
   for(const[s,c]of Object.entries(SRC_COLORS))h+=`<span class="src-badge" style="border-color:${c};color:${c}">${s}</span>`;
   h+=`</div>`;
 
-  // KPI cards from each source
   h+=`<div class="kpi-grid">`;
-  const kpis=[
-    {label:'Median CPM',vals:[['$7.13','Databox'],['$19.81','Superads'],['$5.97','Vaizle'],['$14.38','Revealbot']]},
-    {label:'Median CPC',vals:[['$0.35','Databox'],['$1.11','Superads'],['$0.82','Vaizle'],['$0.86','Revealbot']]},
-    {label:'Avg CTR',vals:[['1.91%','Databox'],['1.86%','Superads'],['2.46%','Vaizle'],['1.71%','WordStream']]},
-    {label:'Median ROAS',vals:[['2.89x','Databox'],['2.33x','Vaizle']]},
-    {label:'Cost per Purchase',vals:[['$10.18','Databox']]},
-    {label:'Data Sources',vals:[['7 sources',''],['100+ industries',''],['60+ countries','']]}
-  ];
-  for(const k of kpis){
-    h+=`<div class="kpi-card"><div class="kpi-label">${k.label}</div>`;
-    if(k.vals.length===1){h+=`<div class="kpi-val">${k.vals[0][0]}</div><div class="kpi-sub">${k.vals[0][1]}</div>`}
-    else{
-      h+=`<div class="kpi-val" style="font-size:20px">${k.vals[0][0]}</div><div class="kpi-range">`;
-      h+=k.vals.map(v=>`<span style="font-size:10px">${v[0]} <span style="color:var(--text3)">${v[1]}</span></span>`).join(' · ');
-      h+=`</div>`;
-    }
-    h+=`</div>`;
-  }
+  h+=`<div class="kpi-card"><div class="kpi-label">Consensus CPM</div><div class="kpi-val">$${consensusCPM.toFixed(2)}</div><div class="kpi-range" style="font-size:10px">${cpmVals.map((v,i) => '$'+v.toFixed(2)+' <span style="color:var(--text3)">'+overallSources.filter(([,d])=>d.cpm!=null).map(([n])=>n)[i].split('(')[0].trim()+'</span>').join(' · ')}</div></div>`;
+  h+=`<div class="kpi-card"><div class="kpi-label">Consensus CPC</div><div class="kpi-val">$${consensusCPC.toFixed(2)}</div><div class="kpi-range" style="font-size:10px">${cpcVals.map((v,i) => '$'+v.toFixed(2)+' <span style="color:var(--text3)">'+overallSources.filter(([,d])=>d.cpc!=null).map(([n])=>n)[i].split('(')[0].trim()+'</span>').join(' · ')}</div></div>`;
+  const avgCTR = ctrVals.reduce((a,b)=>a+b,0)/ctrVals.length;
+  h+=`<div class="kpi-card"><div class="kpi-label">Avg CTR</div><div class="kpi-val">${avgCTR.toFixed(2)}%</div><div class="kpi-sub">Across ${ctrVals.length} sources</div></div>`;
+  const avgROAS = roasVals.reduce((a,b)=>a+b,0)/roasVals.length;
+  h+=`<div class="kpi-card"><div class="kpi-label">Median ROAS</div><div class="kpi-val">${avgROAS.toFixed(2)}x</div><div class="kpi-sub">Databox + Vaizle</div></div>`;
+  h+=`<div class="kpi-card"><div class="kpi-label">Canonical Industries</div><div class="kpi-val">${Object.keys(normalizedIndustries).length}</div><div class="kpi-sub">Mapped from ${MI.length} data points</div></div>`;
+  h+=`<div class="kpi-card"><div class="kpi-label">Countries</div><div class="kpi-val">${Object.keys(normalizedCountries).length}</div><div class="kpi-sub">From ${MC.length} data points</div></div>`;
   h+=`</div>`;
 
   // Key insights
@@ -493,7 +958,6 @@ function renderMetaOverview(){
   for(const i of insights)h+=`<div class="insight"><h6>${i.t}</h6><div class="val">${i.v}</div><div class="desc">${i.d}</div></div>`;
   h+=`</div>`;
 
-  // Mini trend chart
   h+=`<div class="meta-chart-grid"><div class="meta-chart-box wide"><h5>Facebook vs Instagram CPM Trend (Revealbot, US)</h5><canvas id="mc-overview-trend"></canvas></div></div>`;
   mm.innerHTML=h;
   requestAnimationFrame(()=>{
@@ -506,116 +970,449 @@ function renderMetaOverview(){
   });
 }
 
+// ——— BY INDUSTRY (spacious full-width sections) ———
 function renderMetaIndustry(){
   const mm=document.getElementById('metaMain');
-  // Group data by industry
-  const byInd={};
-  for(const r of MI){
-    const ind=r[0];if(!byInd[ind])byInd[ind]={rows:[],cpm:[],cpc:[],ctr:[],cpa:[],cvr:[],roas:[]};
-    byInd[ind].rows.push(r);
-    if(r[2]!=N)byInd[ind].cpm.push(r[2]);if(r[3]!=N)byInd[ind].cpc.push(r[3]);
-    if(r[4]!=N)byInd[ind].ctr.push(r[4]);if(r[5]!=N)byInd[ind].cpa.push(r[5]);
-    if(r[6]!=N)byInd[ind].cvr.push(r[6]);if(r[7]!=N)byInd[ind].roas.push(r[7]);
-  }
-  let sorted=Object.entries(byInd);
-  if(metaSortCol!=null){
-    const ci={'industry':0,'cpm':1,'cpc':2,'ctr':3,'sources':4}[metaSortCol];
-    sorted.sort((a,b)=>{
-      let va,vb;
-      if(metaSortCol==='industry'){va=a[0].toLowerCase();vb=b[0].toLowerCase();return metaSortAsc?va.localeCompare(vb):vb.localeCompare(va)}
-      if(metaSortCol==='sources'){va=a[1].rows.length;vb=b[1].rows.length}
-      else{const k=metaSortCol;va=a[1][k].length?a[1][k].reduce((s,v)=>s+v,0)/a[1][k].length:-Infinity;vb=b[1][k].length?b[1][k].reduce((s,v)=>s+v,0)/b[1][k].length:-Infinity}
-      return metaSortAsc?va-vb:vb-va;
+  const data = normalizedIndustries;
+  let sorted = Object.entries(data).sort((a,b) => {
+    // Sort by source count desc, then alphabetically
+    if (b[1]._sourceCount !== a[1]._sourceCount) return b[1]._sourceCount - a[1]._sourceCount;
+    return a[0].localeCompare(b[0]);
+  });
+
+  if (metaSortCol) {
+    sorted.sort((a,b) => {
+      if (metaSortCol === 'name') return metaSortAsc ? a[0].localeCompare(b[0]) : b[0].localeCompare(a[0]);
+      if (metaSortCol === 'sources') return metaSortAsc ? a[1]._sourceCount - b[1]._sourceCount : b[1]._sourceCount - a[1]._sourceCount;
+      const va = a[1][metaSortCol]?.value ?? -Infinity;
+      const vb = b[1][metaSortCol]?.value ?? -Infinity;
+      return metaSortAsc ? va - vb : vb - va;
     });
   }
 
-  let h=`<div class="section-title">Meta Ads Benchmarks by Industry <span style="font-size:12px;color:var(--text3);font-weight:400">(${Object.keys(byInd).length} industries from 7 sources)</span></div>`;
-  h+=`<div class="meta-search"><input type="text" id="metaIndSearch" placeholder="Search industries..." oninput="filterMetaIndustry(this.value)"></div>`;
-  h+=`<table class="data-tbl" id="metaIndTbl"><thead><tr>`;
-  const cols=[['industry','Industry'],['sources','Src'],['cpm','CPM'],['cpc','CPC'],['ctr','CTR'],['cpa','CPA (Leads)'],['cvr','CVR'],['roas','ROAS']];
-  for(const[k,l]of cols){
-    const cls=metaSortCol===k?(metaSortAsc?'sorted-asc':'sorted-desc'):'';
-    h+=`<th class="${cls}" onclick="sortMetaInd('${k}')">${l}</th>`;
+  let h = `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">`;
+  h += `<div class="section-title" style="border:none;margin:0;padding:0">Meta Ads by Industry <span style="font-size:13px;color:var(--text3);font-weight:400">${sorted.length} canonical industries from ${activeMetaSources.size} sources</span></div>`;
+  h += `<div style="display:flex;gap:6px;flex-wrap:wrap">`;
+  const sortOpts = [['name','Name'],['sources','Sources'],['cpm','CPM'],['cpc','CPC'],['ctr','CTR']];
+  for (const [k,l] of sortOpts) {
+    const active = metaSortCol === k;
+    h += `<button onclick="sortMetaInd2('${k}')" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid ${active?'var(--accent)':'var(--border)'};background:${active?'rgba(59,130,246,.15)':'transparent'};color:${active?'var(--accent2)':'var(--text3)'}">${l}${active?(metaSortAsc?' \u2191':' \u2193'):''}</button>`;
   }
-  h+=`</tr></thead><tbody>`;
-  for(const[ind,d]of sorted){
-    const avg=(arr)=>arr.length?(arr.reduce((s,v)=>s+v,0)/arr.length):null;
-    const range=(arr)=>arr.length>1?`$${Math.min(...arr).toFixed(2)}-$${Math.max(...arr).toFixed(2)}`:(arr.length?'$'+arr[0].toFixed(2):'—');
-    const rangePct=(arr)=>arr.length>1?`${Math.min(...arr).toFixed(1)}-${Math.max(...arr).toFixed(1)}%`:(arr.length?arr[0].toFixed(2)+'%':'—');
-    const srcs=new Set(d.rows.map(r=>r[1]));
-    const srcBadges=[...srcs].map(s=>`<span class="src-tag" style="background:${SRC_COLORS[s]||'#555'}33;color:${SRC_COLORS[s]||'#999'}">${s}</span>`).join('');
-    h+=`<tr class="meta-ind-row" data-ind="${ind.toLowerCase()}">`;
-    h+=`<td><strong>${ind}</strong></td>`;
-    h+=`<td>${srcBadges}</td>`;
-    h+=`<td class="num">${d.cpm.length?range(d.cpm):'—'}</td>`;
-    h+=`<td class="num">${d.cpc.length?range(d.cpc):'—'}</td>`;
-    h+=`<td class="num">${d.ctr.length?rangePct(d.ctr):'—'}</td>`;
-    h+=`<td class="num">${d.cpa.length?range(d.cpa):'—'}</td>`;
-    h+=`<td class="num">${d.cvr.length?rangePct(d.cvr):'—'}</td>`;
-    h+=`<td class="num">${d.roas.length?(avg(d.roas)).toFixed(2)+'x':'—'}</td>`;
-    h+=`</tr>`;
+  h += `</div></div>`;
+
+  if (metaViewMode === 'consensus') {
+    for (const [ind, consensus] of sorted) {
+      h += renderIndustrySection(ind, consensus);
+    }
+  } else {
+    for (const [ind, consensus] of sorted) {
+      h += renderIndustryComparisonSection(ind, consensus);
+    }
   }
-  h+=`</tbody></table>`;
-  mm.innerHTML=h;
+
+  mm.innerHTML = h;
 }
 
-function sortMetaInd(col){if(metaSortCol===col)metaSortAsc=!metaSortAsc;else{metaSortCol=col;metaSortAsc=col==='industry'}renderMetaIndustry()}
-function filterMetaIndustry(q){q=q.toLowerCase();document.querySelectorAll('.meta-ind-row').forEach(r=>{r.style.display=r.dataset.ind.includes(q)?'':'none'})}
+function renderIndustrySection(ind, c) {
+  const id = ind.replace(/[^a-zA-Z0-9]/g, '_');
+  const dColor = DISAGREE_COLORS[c._overallDisagreement] || '#64748b';
+  const dLabel = DISAGREE_LABELS[c._overallDisagreement] || '';
+  const dWidth = DISAGREE_WIDTH[c._overallDisagreement] || 0;
 
+  let h = `<div class="ind-section" data-name="${ind}" data-id="${id}">`;
+  // Header
+  h += `<div class="ind-header">`;
+  h += `<span class="ind-name">${ind}</span>`;
+  h += `<span class="source-count-badge">${c._sourceCount} source${c._sourceCount !== 1 ? 's' : ''}</span>`;
+  h += `<div class="agreement-meter"><div class="agreement-meter-fill" style="width:${dWidth}%;background:${dColor}"></div></div>`;
+  h += `<span class="agreement-label" style="color:${dColor}">${dLabel}</span>`;
+  h += dataBadge(c._sourceCount);
+  h += `</div>`;
+
+  // Source badges
+  h += `<div class="ind-source-badges">`;
+  for (const src of c._sources) {
+    const color = SRC_COLORS[src] || '#666';
+    h += `<span class="ind-src-pill" style="background:${color}22;color:${color}">${src}</span>`;
+  }
+  h += `</div>`;
+
+  // Consensus KPIs
+  h += `<div class="consensus-kpis">`;
+  const metricLabels = { cpm: 'CPM', cpc: 'CPC', ctr: 'CTR', cpa: 'CPA', cvr: 'CVR', roas: 'ROAS' };
+  for (const m of INDUSTRY_METRICS) {
+    const d = c[m];
+    if (!d) continue;
+    const isSingle = d.sources.length <= 1;
+    const mColor = DISAGREE_COLORS[d.disagreement] || '#64748b';
+    const ciText = (d.sources.length >= 2 && d.value != null) ? `${fmtMetric(d.ci_low, m)} \u2013 ${fmtMetric(d.ci_high, m)}` : (isSingle && d.value != null ? 'Single source' : '');
+
+    h += `<div class="ckpi${isSingle ? ' single-source' : ''}" title="${d.sources.map(s => s.name + ': ' + fmtMetric(s.value, m)).join('\n')}">`;
+    h += `<div class="ckpi-label">${metricLabels[m]}</div>`;
+    h += `<div class="ckpi-value">${fmtMetric(d.value, m)}</div>`;
+    h += `<div class="ckpi-ci-bar"><div class="ckpi-ci-fill" style="width:${DISAGREE_WIDTH[d.disagreement] || 0}%;background:${mColor}"></div></div>`;
+    h += `<div class="ckpi-ci-text">${ciText}</div>`;
+    h += `<div class="ckpi-sources"><span class="ckpi-dot" style="background:${mColor}"></span>${d.sources.length} source${d.sources.length !== 1 ? 's' : ''}</div>`;
+    h += `</div>`;
+  }
+  h += `</div>`;
+
+  // Expand button
+  h += `<button class="ind-expand-btn" onclick="toggleIndBreakdown('${id}')"><span id="iexp-${id}">Source Breakdown \u25BC</span></button>`;
+
+  // Source breakdown (hidden)
+  h += `<div class="source-breakdown" id="ibk-${id}">`;
+  h += renderSourceBreakdownTable(c);
+  h += `</div>`;
+
+  h += `</div>`;
+  return h;
+}
+
+function renderIndustryComparisonSection(ind, c) {
+  const id = ind.replace(/[^a-zA-Z0-9]/g, '_');
+  const dColor = DISAGREE_COLORS[c._overallDisagreement] || '#64748b';
+  const dLabel = DISAGREE_LABELS[c._overallDisagreement] || '';
+  const dWidth = DISAGREE_WIDTH[c._overallDisagreement] || 0;
+
+  let h = `<div class="ind-section" data-name="${ind}" data-id="${id}">`;
+  h += `<div class="ind-header">`;
+  h += `<span class="ind-name">${ind}</span>`;
+  h += `<span class="source-count-badge">${c._sourceCount} source${c._sourceCount !== 1 ? 's' : ''}</span>`;
+  h += `<div class="agreement-meter"><div class="agreement-meter-fill" style="width:${dWidth}%;background:${dColor}"></div></div>`;
+  h += `<span class="agreement-label" style="color:${dColor}">${dLabel}</span>`;
+  h += `</div>`;
+
+  // Comparison table
+  h += `<div style="padding:12px 28px 20px;overflow-x:auto">`;
+  h += `<table class="comparison-tbl"><thead><tr><th style="text-align:left">Source</th>`;
+  const metricLabels = { cpm: 'CPM', cpc: 'CPC', ctr: 'CTR', cpa: 'CPA', cvr: 'CVR', roas: 'ROAS' };
+  for (const m of INDUSTRY_METRICS) h += `<th>${metricLabels[m]}</th>`;
+  h += `</tr></thead><tbody>`;
+
+  // Each source as a row
+  const sourceSet = {};
+  for (const row of c._rows) {
+    if (!sourceSet[row.source]) sourceSet[row.source] = {};
+    for (const m of INDUSTRY_METRICS) {
+      if (row[m] != null) sourceSet[row.source][m] = row[m];
+    }
+  }
+  for (const [src, vals] of Object.entries(sourceSet)) {
+    const color = SRC_COLORS[src] || '#666';
+    h += `<tr><td style="text-align:left"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${color};margin-right:6px;vertical-align:middle"></span>${src}</td>`;
+    for (const m of INDUSTRY_METRICS) {
+      const v = vals[m];
+      const consensus = c[m]?.value;
+      const dev = (v != null && consensus != null && consensus !== 0) ? ((v - consensus) / Math.abs(consensus) * 100) : null;
+      const cls = devCellClass(dev);
+      h += `<td class="num"><span class="dev-cell ${cls}">${fmtMetric(v, m)}${dev != null ? ` <small class="${devClass(dev)}">${fmtDev(dev)}</small>` : ''}</span></td>`;
+    }
+    h += `</tr>`;
+  }
+
+  // Consensus row
+  h += `<tr><td style="text-align:left;font-weight:700">Consensus (IVW)</td>`;
+  for (const m of INDUSTRY_METRICS) {
+    h += `<td class="num" style="font-weight:700">${fmtMetric(c[m]?.value, m)}</td>`;
+  }
+  h += `</tr></tbody></table></div>`;
+
+  h += `</div>`;
+  return h;
+}
+
+function renderSourceBreakdownTable(c) {
+  const metricLabels = { cpm: 'CPM', cpc: 'CPC', ctr: 'CTR', cpa: 'CPA', cvr: 'CVR', roas: 'ROAS' };
+  let h = `<h4 style="font-size:12px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">Per-Source Values vs Consensus</h4>`;
+
+  // For each metric that has data, show a mini breakdown
+  for (const m of INDUSTRY_METRICS) {
+    const d = c[m];
+    if (!d || d.sources.length === 0) continue;
+
+    h += `<div style="margin-bottom:16px">`;
+    h += `<div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:6px">${metricLabels[m]} \u2014 Consensus: ${fmtMetric(d.value, m)}</div>`;
+
+    if (d.sources.length >= 2) {
+      // Range visualization
+      const vals = d.sources.map(s => s.value);
+      const minV = Math.min(...vals);
+      const maxV = Math.max(...vals);
+      const range = maxV - minV || 1;
+
+      h += `<div class="range-viz" style="margin-bottom:8px">`;
+      // CI fill
+      if (d.ci_low != null && d.ci_high != null) {
+        const ciLeft = Math.max(0, ((d.ci_low - minV) / range) * 100);
+        const ciRight = Math.min(100, ((d.ci_high - minV) / range) * 100);
+        h += `<div class="range-viz-fill" style="left:${ciLeft}%;width:${ciRight - ciLeft}%;background:${DISAGREE_COLORS[d.disagreement]}"></div>`;
+      }
+      // Source markers
+      for (const s of d.sources) {
+        const pos = ((s.value - minV) / range) * 100;
+        const color = SRC_COLORS[s.name] || '#666';
+        h += `<div class="range-viz-marker" style="left:calc(${pos}% - 1.5px);background:${color};width:3px" title="${s.name}: ${fmtMetric(s.value, m)}"></div>`;
+      }
+      // Consensus line
+      const cPos = ((d.value - minV) / range) * 100;
+      h += `<div class="range-viz-consensus" style="left:calc(${cPos}% - 1px)" title="Consensus: ${fmtMetric(d.value, m)}"></div>`;
+      h += `</div>`;
+    }
+
+    // Source detail rows
+    h += `<table class="src-breakdown-tbl"><thead><tr><th style="text-align:left">Source</th><th>Value</th><th>Deviation</th><th>Weight</th><th></th></tr></thead><tbody>`;
+    for (const s of d.sources) {
+      const color = SRC_COLORS[s.name] || '#666';
+      const arrow = s.deviation > 0 ? '\u2191' : s.deviation < 0 ? '\u2193' : '\u2022';
+      h += `<tr>`;
+      h += `<td style="text-align:left"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${color};margin-right:6px;vertical-align:middle"></span>${s.name}</td>`;
+      h += `<td>${fmtMetric(s.value, m)}</td>`;
+      h += `<td class="${devClass(s.deviation)}">${arrow} ${fmtDev(s.deviation)}</td>`;
+      h += `<td style="color:var(--text3)">${s.weight.toFixed(2)}</td>`;
+      h += `<td>${s.isOutlier ? '<span class="outlier-flag">OUTLIER</span>' : ''}</td>`;
+      h += `</tr>`;
+    }
+    h += `</tbody></table></div>`;
+  }
+  return h;
+}
+
+function toggleIndBreakdown(id) {
+  const el = document.getElementById('ibk-' + id);
+  const btn = document.getElementById('iexp-' + id);
+  if (el.classList.contains('open')) {
+    el.classList.remove('open');
+    btn.innerHTML = 'Source Breakdown \u25BC';
+  } else {
+    el.classList.add('open');
+    btn.innerHTML = 'Source Breakdown \u25B2';
+  }
+}
+
+function sortMetaInd2(col) {
+  if (metaSortCol === col) metaSortAsc = !metaSortAsc;
+  else { metaSortCol = col; metaSortAsc = col === 'name'; }
+  renderMetaIndustry();
+  showSubControls(true, 'industry');
+}
+
+// ——— BY COUNTRY (spacious full-width sections) ———
 function renderMetaCountry(){
   const mm=document.getElementById('metaMain');
-  // Build unified country table, preferring Superads, then ADCostly+, then Vaizle
-  const byC={};
-  for(const r of MC){
-    const c=r[0];if(!byC[c])byC[c]={sources:{}};
-    byC[c].sources[r[1]]={cpm:r[2],cpc:r[3],ctr:r[4]};
-  }
-  // Sort by Superads CPM desc, then ADCostly+ CPM
-  let sorted=Object.entries(byC).sort((a,b)=>{
-    const ga=(a[1].sources.Superads?.cpm)||(a[1].sources['ADCostly+']?.cpm)||(a[1].sources.Vaizle?.cpm)||0;
-    const gb=(b[1].sources.Superads?.cpm)||(b[1].sources['ADCostly+']?.cpm)||(b[1].sources.Vaizle?.cpm)||0;
-    return gb-ga;
+  const data = normalizedCountries;
+  let sorted = Object.entries(data).sort((a,b) => {
+    const va = a[1].cpm?.value ?? -1;
+    const vb = b[1].cpm?.value ?? -1;
+    return vb - va; // highest CPM first by default
   });
-  if(metaSortCol){
-    sorted.sort((a,b)=>{
-      if(metaSortCol==='country'){const va=a[0],vb=b[0];return metaSortAsc?va.localeCompare(vb):vb.localeCompare(va)}
-      const getV=(d,k)=>{for(const s of['Superads','ADCostly+','Vaizle']){if(d.sources[s]&&d.sources[s][k]!=null)return d.sources[s][k]}return-Infinity};
-      return metaSortAsc?getV(a[1],metaSortCol)-getV(b[1],metaSortCol):getV(b[1],metaSortCol)-getV(a[1],metaSortCol);
+
+  if (metaSortCol) {
+    sorted.sort((a,b) => {
+      if (metaSortCol === 'name') return metaSortAsc ? a[0].localeCompare(b[0]) : b[0].localeCompare(a[0]);
+      if (metaSortCol === 'sources') return metaSortAsc ? a[1]._sourceCount - b[1]._sourceCount : b[1]._sourceCount - a[1]._sourceCount;
+      const va = a[1][metaSortCol]?.value ?? -Infinity;
+      const vb = b[1][metaSortCol]?.value ?? -Infinity;
+      return metaSortAsc ? va - vb : vb - va;
     });
   }
 
-  let h=`<div class="section-title">Meta Ads Benchmarks by Country <span style="font-size:12px;color:var(--text3);font-weight:400">(${Object.keys(byC).length} countries/regions)</span></div>`;
-  h+=`<div class="meta-search"><input type="text" id="metaCtrySearch" placeholder="Search countries..." oninput="filterMetaCountry(this.value)"></div>`;
-  h+=`<table class="data-tbl" id="metaCtryTbl"><thead><tr>`;
-  const ccols=[['country','Country'],['cpm','CPM'],['cpc','CPC'],['ctr','CTR'],['sources','Sources']];
-  for(const[k,l]of ccols){
-    const cls=metaSortCol===k?(metaSortAsc?'sorted-asc':'sorted-desc'):'';
-    h+=`<th class="${cls}" onclick="sortMetaCtry('${k}')">${l}</th>`;
+  let h = `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">`;
+  h += `<div class="section-title" style="border:none;margin:0;padding:0">Meta Ads by Country <span style="font-size:13px;color:var(--text3);font-weight:400">${sorted.length} countries/regions from ${activeCountrySources.size} sources</span></div>`;
+  h += `<div style="display:flex;gap:6px;flex-wrap:wrap">`;
+  const sortOpts = [['name','Name'],['sources','Sources'],['cpm','CPM'],['cpc','CPC'],['ctr','CTR']];
+  for (const [k,l] of sortOpts) {
+    const active = metaSortCol === k;
+    h += `<button onclick="sortMetaCtry2('${k}')" style="padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid ${active?'var(--accent)':'var(--border)'};background:${active?'rgba(59,130,246,.15)':'transparent'};color:${active?'var(--accent2)':'var(--text3)'}">${l}${active?(metaSortAsc?' \u2191':' \u2193'):''}</button>`;
   }
-  h+=`</tr></thead><tbody>`;
-  for(const[country,d]of sorted){
-    // Get best value (prefer Superads)
-    const best=d.sources.Superads||d.sources['ADCostly+']||d.sources.Vaizle||{};
-    const srcNames=Object.keys(d.sources);
-    const srcBadges=srcNames.map(s=>`<span class="src-tag" style="background:${SRC_COLORS[s]||'#555'}33;color:${SRC_COLORS[s]||'#999'}">${s}</span>`).join('');
-    // Color CPM by cost tier
-    const cpm=best.cpm;let cpmCol='var(--text)';
-    if(cpm!=null){if(cpm>=15)cpmCol='var(--red)';else if(cpm>=8)cpmCol='var(--orange)';else if(cpm>=3)cpmCol='var(--text)';else cpmCol='var(--green)'}
-    h+=`<tr class="meta-ctry-row" data-ctry="${country.toLowerCase()}">`;
-    h+=`<td><strong>${country}</strong></td>`;
-    h+=`<td class="num" style="color:${cpmCol}">${cpm!=null?'$'+cpm.toFixed(2):'—'}</td>`;
-    h+=`<td class="num">${best.cpc!=null?'$'+best.cpc.toFixed(2):'—'}</td>`;
-    h+=`<td class="num">${best.ctr!=null?best.ctr.toFixed(2)+'%':'—'}</td>`;
-    h+=`<td>${srcBadges}</td>`;
-    h+=`</tr>`;
+  h += `</div></div>`;
+
+  if (metaViewMode === 'consensus') {
+    for (const [country, consensus] of sorted) {
+      h += renderCountrySection(country, consensus);
+    }
+  } else {
+    for (const [country, consensus] of sorted) {
+      h += renderCountryComparisonSection(country, consensus);
+    }
   }
-  h+=`</tbody></table>`;
-  mm.innerHTML=h;
+
+  mm.innerHTML = h;
 }
 
-function sortMetaCtry(col){if(metaSortCol===col)metaSortAsc=!metaSortAsc;else{metaSortCol=col;metaSortAsc=col==='country'}renderMetaCountry()}
-function filterMetaCountry(q){q=q.toLowerCase();document.querySelectorAll('.meta-ctry-row').forEach(r=>{r.style.display=r.dataset.ctry.includes(q)?'':'none'})}
+function renderCountrySection(country, c) {
+  const id = country.replace(/[^a-zA-Z0-9]/g, '_');
+  const dColor = DISAGREE_COLORS[c._overallDisagreement] || '#64748b';
+  const dLabel = DISAGREE_LABELS[c._overallDisagreement] || '';
+  const dWidth = DISAGREE_WIDTH[c._overallDisagreement] || 0;
 
+  // Color CPM by tier
+  const cpm = c.cpm?.value;
+  let cpmColor = 'var(--text)';
+  if (cpm != null) {
+    if (cpm >= 15) cpmColor = 'var(--red)';
+    else if (cpm >= 8) cpmColor = 'var(--orange)';
+    else if (cpm >= 3) cpmColor = 'var(--text)';
+    else cpmColor = 'var(--green)';
+  }
+
+  let h = `<div class="ctry-section" data-name="${country}" data-id="${id}">`;
+  h += `<div class="ctry-header">`;
+  h += `<span class="ctry-name">${country}</span>`;
+  h += `<span class="source-count-badge">${c._sourceCount} source${c._sourceCount !== 1 ? 's' : ''}</span>`;
+  if (c._sourceCount > 1) {
+    h += `<div class="agreement-meter"><div class="agreement-meter-fill" style="width:${dWidth}%;background:${dColor}"></div></div>`;
+    h += `<span class="agreement-label" style="color:${dColor}">${dLabel}</span>`;
+  }
+  h += dataBadge(c._sourceCount);
+  // Source badges inline
+  for (const src of c._sources) {
+    const color = SRC_COLORS[src] || '#666';
+    h += `<span class="ind-src-pill" style="background:${color}22;color:${color};font-size:10px">${src}</span>`;
+  }
+  h += `</div>`;
+
+  // KPIs
+  h += `<div class="ctry-kpis">`;
+  const metricLabels = { cpm: 'CPM', cpc: 'CPC', ctr: 'CTR' };
+  for (const m of COUNTRY_METRICS) {
+    const d = c[m];
+    if (!d) continue;
+    const isSingle = d.sources.length <= 1;
+    const mColor = DISAGREE_COLORS[d.disagreement] || '#64748b';
+    const valColor = m === 'cpm' ? cpmColor : 'var(--text)';
+    const ciText = (d.sources.length >= 2 && d.value != null) ? `${fmtMetric(d.ci_low, m)} \u2013 ${fmtMetric(d.ci_high, m)}` : (isSingle && d.value != null ? 'Single source' : '');
+
+    h += `<div class="ckpi${isSingle ? ' single-source' : ''}">`;
+    h += `<div class="ckpi-label">${metricLabels[m]}</div>`;
+    h += `<div class="ckpi-value" style="color:${valColor}">${fmtMetric(d.value, m)}</div>`;
+    h += `<div class="ckpi-ci-bar"><div class="ckpi-ci-fill" style="width:${DISAGREE_WIDTH[d.disagreement] || 0}%;background:${mColor}"></div></div>`;
+    h += `<div class="ckpi-ci-text">${ciText}</div>`;
+    h += `<div class="ckpi-sources"><span class="ckpi-dot" style="background:${mColor}"></span>${d.sources.length} source${d.sources.length !== 1 ? 's' : ''}</div>`;
+    h += `</div>`;
+  }
+  h += `</div>`;
+
+  // Expand button (only if multiple sources)
+  if (c._sourceCount > 1) {
+    h += `<button class="ctry-expand-btn" onclick="toggleCtryBreakdown('${id}')"><span id="cexp-${id}">Source Breakdown \u25BC</span></button>`;
+    h += `<div class="ctry-breakdown" id="cbk-${id}">`;
+    h += renderCountryBreakdownTable(c);
+    h += `</div>`;
+  }
+
+  h += `</div>`;
+  return h;
+}
+
+function renderCountryComparisonSection(country, c) {
+  const id = country.replace(/[^a-zA-Z0-9]/g, '_');
+  const dColor = DISAGREE_COLORS[c._overallDisagreement] || '#64748b';
+
+  let h = `<div class="ctry-section" data-name="${country}" data-id="${id}">`;
+  h += `<div class="ctry-header">`;
+  h += `<span class="ctry-name">${country}</span>`;
+  h += `<span class="source-count-badge">${c._sourceCount} source${c._sourceCount !== 1 ? 's' : ''}</span>`;
+  h += dataBadge(c._sourceCount);
+  h += `</div>`;
+
+  h += `<div style="padding:12px 24px 20px;overflow-x:auto">`;
+  h += `<table class="comparison-tbl"><thead><tr><th style="text-align:left">Source</th>`;
+  const metricLabels = { cpm: 'CPM', cpc: 'CPC', ctr: 'CTR' };
+  for (const m of COUNTRY_METRICS) h += `<th>${metricLabels[m]}</th>`;
+  h += `</tr></thead><tbody>`;
+
+  const sourceSet = {};
+  for (const row of c._rows) {
+    if (!sourceSet[row.source]) sourceSet[row.source] = {};
+    for (const m of COUNTRY_METRICS) {
+      if (row[m] != null) sourceSet[row.source][m] = row[m];
+    }
+  }
+  for (const [src, vals] of Object.entries(sourceSet)) {
+    const color = SRC_COLORS[src] || '#666';
+    h += `<tr><td style="text-align:left"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${color};margin-right:6px;vertical-align:middle"></span>${src}</td>`;
+    for (const m of COUNTRY_METRICS) {
+      const v = vals[m];
+      const consensus = c[m]?.value;
+      const dev = (v != null && consensus != null && consensus !== 0) ? ((v - consensus) / Math.abs(consensus) * 100) : null;
+      const cls = devCellClass(dev);
+      h += `<td class="num"><span class="dev-cell ${cls}">${fmtMetric(v, m)}${dev != null ? ` <small class="${devClass(dev)}">${fmtDev(dev)}</small>` : ''}</span></td>`;
+    }
+    h += `</tr>`;
+  }
+  h += `<tr><td style="text-align:left;font-weight:700">Consensus (IVW)</td>`;
+  for (const m of COUNTRY_METRICS) h += `<td class="num" style="font-weight:700">${fmtMetric(c[m]?.value, m)}</td>`;
+  h += `</tr></tbody></table></div>`;
+
+  h += `</div>`;
+  return h;
+}
+
+function renderCountryBreakdownTable(c) {
+  const metricLabels = { cpm: 'CPM', cpc: 'CPC', ctr: 'CTR' };
+  let h = '';
+  for (const m of COUNTRY_METRICS) {
+    const d = c[m];
+    if (!d || d.sources.length < 2) continue;
+    h += `<div style="margin-bottom:12px">`;
+    h += `<div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:6px">${metricLabels[m]} \u2014 Consensus: ${fmtMetric(d.value, m)}</div>`;
+
+    const vals = d.sources.map(s => s.value);
+    const minV = Math.min(...vals);
+    const maxV = Math.max(...vals);
+    const range = maxV - minV || 1;
+    h += `<div class="range-viz" style="margin-bottom:6px">`;
+    if (d.ci_low != null && d.ci_high != null) {
+      const ciLeft = Math.max(0, ((d.ci_low - minV) / range) * 100);
+      const ciRight = Math.min(100, ((d.ci_high - minV) / range) * 100);
+      h += `<div class="range-viz-fill" style="left:${ciLeft}%;width:${ciRight - ciLeft}%;background:${DISAGREE_COLORS[d.disagreement]}"></div>`;
+    }
+    for (const s of d.sources) {
+      const pos = ((s.value - minV) / range) * 100;
+      const color = SRC_COLORS[s.name] || '#666';
+      h += `<div class="range-viz-marker" style="left:calc(${pos}% - 1.5px);background:${color};width:3px" title="${s.name}: ${fmtMetric(s.value, m)}"></div>`;
+    }
+    const cPos = ((d.value - minV) / range) * 100;
+    h += `<div class="range-viz-consensus" style="left:calc(${cPos}% - 1px)" title="Consensus"></div>`;
+    h += `</div>`;
+
+    for (const s of d.sources) {
+      const color = SRC_COLORS[s.name] || '#666';
+      const arrow = s.deviation > 0 ? '\u2191' : s.deviation < 0 ? '\u2193' : '';
+      h += `<div style="display:flex;align-items:center;gap:10px;font-size:12px;padding:3px 0">`;
+      h += `<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${color}"></span>`;
+      h += `<span style="width:70px;color:var(--text2)">${s.name}</span>`;
+      h += `<span style="width:60px;font-weight:600">${fmtMetric(s.value, m)}</span>`;
+      h += `<span class="${devClass(s.deviation)}" style="width:50px">${arrow} ${fmtDev(s.deviation)}</span>`;
+      h += `${s.isOutlier ? '<span class="outlier-flag">OUTLIER</span>' : ''}`;
+      h += `</div>`;
+    }
+    h += `</div>`;
+  }
+  return h;
+}
+
+function toggleCtryBreakdown(id) {
+  const el = document.getElementById('cbk-' + id);
+  const btn = document.getElementById('cexp-' + id);
+  if (el.classList.contains('open')) {
+    el.classList.remove('open');
+    btn.innerHTML = 'Source Breakdown \u25BC';
+  } else {
+    el.classList.add('open');
+    btn.innerHTML = 'Source Breakdown \u25B2';
+  }
+}
+
+function sortMetaCtry2(col) {
+  if (metaSortCol === col) metaSortAsc = !metaSortAsc;
+  else { metaSortCol = col; metaSortAsc = col === 'name'; }
+  renderMetaCountry();
+  showSubControls(true, 'country');
+}
+
+// ——— TRENDS (unchanged) ———
 function renderMetaTrends(){
   const mm=document.getElementById('metaMain');
   let h=`<div class="section-title">Meta Ads Weekly Trends <span style="font-size:12px;color:var(--text3);font-weight:400">(Revealbot/Birch, US campaigns, Feb 2025 - Feb 2026)</span></div>`;
@@ -625,8 +1422,6 @@ function renderMetaTrends(){
   h+=`<div class="meta-chart-box"><h5>Instagram CPM (Monthly Avg)</h5><canvas id="mc-ig-cpm"></canvas></div>`;
   h+=`<div class="meta-chart-box"><h5>Facebook vs Instagram CPM</h5><canvas id="mc-fbig-cpm"></canvas></div>`;
   h+=`</div>`;
-
-  // Monthly summary table
   h+=`<div class="section-title" style="margin-top:8px">Monthly Averages (USD)</div>`;
   h+=`<table class="data-tbl"><thead><tr><th>Month</th><th>FB CPM</th><th>FB CPC</th><th>IG CPM</th><th>FB CPM (Traffic)</th><th>FB CPM (Lead Gen)</th><th>FB CPM (Catalog)</th></tr></thead><tbody>`;
   const rbTraffic=[4.96,4.89,3.97,4.44,4.12,3.12,4.91,4.74,6.04,6.32,6.31,5.48,8.78];
@@ -637,7 +1432,6 @@ function renderMetaTrends(){
   }
   h+=`</tbody></table>`;
   mm.innerHTML=h;
-
   requestAnimationFrame(()=>{
     function lineC(id,data,color,label,prefix){
       destroyChart(id);const c=document.getElementById(id);if(!c)return;
@@ -646,7 +1440,6 @@ function renderMetaTrends(){
     lineC('mc-fb-cpm',RB_FB_CPM,'#1877f2','FB CPM','$');
     lineC('mc-fb-cpc',RB_FB_CPC,'#22c55e','FB CPC','$');
     lineC('mc-ig-cpm',RB_IG_CPM,'#e4405f','IG CPM','$');
-    // Combined chart
     destroyChart('mc-fbig-cpm');const c4=document.getElementById('mc-fbig-cpm');if(c4){
       charts['mc-fbig-cpm']=new Chart(c4.getContext('2d'),{type:'line',data:{labels:RB_MONTHS,datasets:[
         {label:'Facebook',data:RB_FB_CPM,borderColor:'#1877f2',backgroundColor:'#1877f222',borderWidth:2,fill:false,tension:.3,pointRadius:3},
@@ -656,6 +1449,7 @@ function renderMetaTrends(){
   });
 }
 
+// ——— OBJECTIVES (unchanged) ———
 function renderMetaObjectives(){
   const mm=document.getElementById('metaMain');
   let h=`<div class="section-title">Performance by Campaign Objective & Placement</div>`;
@@ -665,20 +1459,16 @@ function renderMetaObjectives(){
   h+=`<div class="meta-chart-box"><h5>CPM by Objective - Feb 2026 (Revealbot)</h5><canvas id="mc-obj-cpm"></canvas></div>`;
   h+=`<div class="meta-chart-box"><h5>CPC by Objective - Latest (Revealbot)</h5><canvas id="mc-obj-cpc"></canvas></div>`;
   h+=`</div>`;
-
-  // Objective summary table
   h+=`<div class="section-title" style="margin-top:8px">Campaign Objective Benchmarks</div>`;
   h+=`<table class="data-tbl"><thead><tr><th>Objective</th><th>CTR (Databox)</th><th>CPM Feb 26 (Revealbot)</th><th>Notes</th></tr></thead><tbody>`;
   const objNotes={'Lead Gen':'Highest CTR but highest CPM','Traffic':'Cheapest CPC ($0.22)','Conversions':'Most used objective','Brand Awareness':'Cheapest CPM ($2.24)','Video Views':'Volatile costs','Engagement':'Good for social proof','Reach':'Widest audience, lowest CTR'};
   for(let i=0;i<OBJ_CTR.length;i++){
     const[name,ctr]=OBJ_CTR[i];
     const cpmIdx=RB_OBJ_CPM_LABELS.findIndex(l=>l.startsWith(name.split(' ')[0]));
-    const cpm=cpmIdx>=0?'$'+RB_OBJ_CPM_LATEST[cpmIdx].toFixed(2):'—';
+    const cpm=cpmIdx>=0?'$'+RB_OBJ_CPM_LATEST[cpmIdx].toFixed(2):'\u2014';
     h+=`<tr><td><strong>${name}</strong></td><td class="num">${ctr.toFixed(2)}%</td><td class="num">${cpm}</td><td style="color:var(--text3);font-size:12px">${objNotes[name]||''}</td></tr>`;
   }
   h+=`</tbody></table>`;
-
-  // Placement table
   h+=`<div class="section-title" style="margin-top:20px">Placement CTR Benchmarks (Databox)</div>`;
   h+=`<table class="data-tbl"><thead><tr><th>Placement</th><th>CTR</th><th>Relative</th></tr></thead><tbody>`;
   const maxP=Math.max(...PLACE_CTR.map(p=>p[1]));
@@ -688,12 +1478,11 @@ function renderMetaObjectives(){
   }
   h+=`</tbody></table>`;
   mm.innerHTML=h;
-
   requestAnimationFrame(()=>{
     barChart('mc-obj-ctr',OBJ_CTR.map(o=>o[0]),OBJ_CTR.map(o=>o[1]),'#3b82f6','%');
     barChart('mc-place-ctr',PLACE_CTR.map(p=>p[0]),PLACE_CTR.map(p=>p[1]),'#a78bfa','%');
     barChart('mc-obj-cpm',RB_OBJ_CPM_LABELS,RB_OBJ_CPM_LATEST,'#f59e0b','$');
-    const rbObjCpcLatest=[0.20,0.00,1.53,0.51,1.41,0.22,0.00]; // Feb 2026
+    const rbObjCpcLatest=[0.20,0.00,1.53,0.51,1.41,0.22,0.00];
     barChart('mc-obj-cpc',RB_OBJ_CPM_LABELS,rbObjCpcLatest,'#22c55e','$');
   });
 }
@@ -726,6 +1515,10 @@ document.getElementById('metaNav').addEventListener('click',e=>{
 (async()=>{
   try{
     await loadAll();
+    // Build normalized data
+    normalizedIndustries = buildNormalizedIndustries();
+    normalizedCountries = buildNormalizedCountries();
+    console.log(`StatEngine initialized: ${Object.keys(normalizedIndustries).length} industries, ${Object.keys(normalizedCountries).length} countries`);
     document.getElementById('loading').style.display='none';
     document.getElementById('main').style.display='block';
     render();
