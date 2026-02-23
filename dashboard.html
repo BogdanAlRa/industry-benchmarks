@@ -156,6 +156,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .agreement-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.4px}
 .ind-source-badges{padding:8px 28px 0;display:flex;gap:6px;flex-wrap:wrap}
 .ind-src-pill{padding:3px 10px;border-radius:10px;font-size:10px;font-weight:600}
+.geo-tag{display:inline-block;padding:1px 5px;border-radius:4px;font-size:8px;font-weight:700;letter-spacing:.3px;margin-left:3px;vertical-align:middle}
 
 /* Consensus KPI Row */
 .consensus-kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;padding:20px 28px}
@@ -621,6 +622,11 @@ document.getElementById('searchInput').addEventListener('input',function(){const
 // =============================================
 const N=null;
 const SRC_COLORS={Superads:'#10b981',Vaizle:'#8b5cf6',WordStream:'#f59e0b','WS Leads':'#ef4444',Databox:'#3b82f6',Madgicx:'#ec4899','ADCostly+':'#06b6d4',Revealbot:'#f97316'};
+const SRC_GEO={Superads:'Global',Vaizle:'Global',WordStream:'US',
+  'WS Leads':'US',Databox:'Mixed',Madgicx:'Global','ADCostly+':'Global',Revealbot:'US'};
+const GEO_BADGE_STYLE={US:'background:rgba(239,68,68,.15);color:#f87171',
+  Global:'background:rgba(34,197,94,.12);color:#4ade80',
+  Mixed:'background:rgba(245,158,11,.12);color:#fbbf24'};
 
 // [industry, source, cpm, cpc, ctr, cpa, cvr, roas]
 const MI=[
@@ -859,7 +865,8 @@ function showSubControls(show, type) {
   for (const src of sources) {
     const color = SRC_COLORS[src] || '#666';
     const isActive = active.has(src);
-    h += `<span class="source-pill${isActive ? ' active' : ''}" style="background:${color}${isActive ? '' : '44'};color:${isActive ? '#fff' : '#999'}" data-src="${src}" data-type="${type}" onclick="toggleSourcePill(this)">${src}</span>`;
+    const geo = SRC_GEO[src] || '';
+    h += `<span class="source-pill${isActive ? ' active' : ''}" style="background:${color}${isActive ? '' : '44'};color:${isActive ? '#fff' : '#999'}" data-src="${src}" data-type="${type}" onclick="toggleSourcePill(this)">${src} <span style="font-size:9px;opacity:.7">${geo}</span></span>`;
   }
   pills.innerHTML = h;
   // Render view toggle state
@@ -928,7 +935,7 @@ function renderMetaOverview(){
 
   let h=`<div class="section-title">Meta Ads Benchmarks Overview</div>`;
   h+=`<div class="sources-bar">`;
-  for(const[s,c]of Object.entries(SRC_COLORS))h+=`<span class="src-badge" style="border-color:${c};color:${c}">${s}</span>`;
+  for(const[s,c]of Object.entries(SRC_COLORS)){const geo=SRC_GEO[s]||'';const gs=GEO_BADGE_STYLE[geo]||'';h+=`<span class="src-badge" style="border-color:${c};color:${c}">${s}${geo?` <span class="geo-tag" style="${gs}">${geo}</span>`:''}</span>`;}
   h+=`</div>`;
 
   h+=`<div class="kpi-grid">`;
@@ -1033,7 +1040,9 @@ function renderIndustrySection(ind, c) {
   h += `<div class="ind-source-badges">`;
   for (const src of c._sources) {
     const color = SRC_COLORS[src] || '#666';
-    h += `<span class="ind-src-pill" style="background:${color}22;color:${color}">${src}</span>`;
+    const geo = SRC_GEO[src] || '';
+    const geoStyle = GEO_BADGE_STYLE[geo] || '';
+    h += `<span class="ind-src-pill" style="background:${color}22;color:${color}">${src}${geo ? `<span class="geo-tag" style="${geoStyle}">${geo}</span>` : ''}</span>`;
   }
   h += `</div>`;
 
@@ -1166,7 +1175,8 @@ function renderSourceBreakdownTable(c) {
       const color = SRC_COLORS[s.name] || '#666';
       const arrow = s.deviation > 0 ? '\u2191' : s.deviation < 0 ? '\u2193' : '\u2022';
       h += `<tr>`;
-      h += `<td style="text-align:left"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${color};margin-right:6px;vertical-align:middle"></span>${s.name}</td>`;
+      const sGeo = SRC_GEO[s.name]||''; const sGs = GEO_BADGE_STYLE[sGeo]||'';
+      h += `<td style="text-align:left"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${color};margin-right:6px;vertical-align:middle"></span>${s.name}${sGeo?` <span class="geo-tag" style="${sGs}">${sGeo}</span>`:''}</td>`;
       h += `<td>${fmtMetric(s.value, m)}</td>`;
       h += `<td class="${devClass(s.deviation)}">${arrow} ${fmtDev(s.deviation)}</td>`;
       h += `<td style="color:var(--text3)">${s.weight.toFixed(2)}</td>`;
@@ -1268,7 +1278,9 @@ function renderCountrySection(country, c) {
   // Source badges inline
   for (const src of c._sources) {
     const color = SRC_COLORS[src] || '#666';
-    h += `<span class="ind-src-pill" style="background:${color}22;color:${color};font-size:10px">${src}</span>`;
+    const geo = SRC_GEO[src] || '';
+    const geoStyle = GEO_BADGE_STYLE[geo] || '';
+    h += `<span class="ind-src-pill" style="background:${color}22;color:${color};font-size:10px">${src}${geo ? `<span class="geo-tag" style="${geoStyle}">${geo}</span>` : ''}</span>`;
   }
   h += `</div>`;
 
