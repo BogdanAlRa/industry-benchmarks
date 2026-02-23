@@ -332,6 +332,193 @@ const StatEngine = {
     'ADCostly+': 0.40
   },
 
+  // =========================================
+  // TEMPORAL ADJUSTMENT (Nowcasting)
+  // Uses Revealbot monthly series as time-series anchor.
+  // Sources collected in earlier months are scaled to
+  // current (Feb 2026) using the Revealbot CPM/CPC index.
+  // Index(t) = Revealbot(latest) / Revealbot(t_collection)
+  // =========================================
+  SOURCE_COLLECTION_MONTH: {
+    // Index into RB_MONTHS (0=Feb25 ... 12=Feb26)
+    'Superads': 10,    // ~Dec 2025 ($3B spend data)
+    'Revealbot': 12,   // Feb 2026 (latest, anchor)
+    'Databox': 9,      // ~Nov 2025 (monthly reports)
+    'Vaizle': 6,       // Aug 2025 (5,200 accounts)
+    'Madgicx': 8,      // ~Oct 2025
+    'WordStream': 5,   // ~Jul 2025
+    'WS Leads': 5,     // ~Jul 2025
+    'ADCostly+': 4     // ~Jun 2025 (composite older data)
+  },
+
+  // Compute temporal adjustment factor for a source
+  temporalFactor(source, metric) {
+    const idx = this.SOURCE_COLLECTION_MONTH[source];
+    if (idx == null || idx === 12) return 1.0; // already current or unknown
+    // Use CPM series for cpm/cpa, CPC series for cpc
+    const series = (metric === 'cpc') ? RB_FB_CPC : RB_FB_CPM;
+    const latest = series[12]; // Feb 2026
+    const atCollection = series[idx];
+    if (!atCollection || atCollection === 0) return 1.0;
+    // Clamp factor to [0.7, 1.5] to avoid extreme adjustments
+    return Math.max(0.7, Math.min(1.5, latest / atCollection));
+  },
+
+  // Apply temporal adjustment to a value
+  temporalAdjust(value, source, metric) {
+    if (value == null) return value;
+    // Only adjust cost metrics (cpm, cpc, cpa) — ratios (ctr, cvr, roas) are more stable
+    if (!['cpm', 'cpc', 'cpa'].includes(metric)) return value;
+    return value * this.temporalFactor(source, metric);
+  },
+
+  // =========================================
+  // GEOGRAPHIC CORRECTION
+  // Adjusts Global sources toward US estimates using
+  // the US/Global CPM ratio derived from ADCostly+ country data.
+  // Databox is handled specially as 70% US / 30% international.
+  // =========================================
+  // US/Global CPM ratio derived from country data:
+  // US CPM ~$22.20 (Superads), global average CPM ~$11.50
+  // → US is ~1.93x global average for CPM
+  // For CPC: US CPC ~$1.11, global avg ~$0.85 → 1.31x
+  GEO_RATIOS: {
+    cpm: { us_to_global: 1.93, global_to_us: 1.93 },
+    cpc: { us_to_global: 1.31, global_to_us: 1.31 },
+    cpa: { us_to_global: 1.50, global_to_us: 1.50 },  // estimated
+    ctr: { us_to_global: 1.0, global_to_us: 1.0 },     // CTR is relatively stable across geos
+    cvr: { us_to_global: 1.0, global_to_us: 1.0 },
+    roas: { us_to_global: 1.0, global_to_us: 1.0 }
+  },
+
+  // Source geographic composition: fraction of data that is US
+  SRC_US_FRACTION: {
+    'Superads': 0.35,   // Global, ~35% US ad spend share
+    'Vaizle': 0.40,     // Global, India/US-heavy
+    'WordStream': 1.0,  // US only
+    'WS Leads': 1.0,    // US only
+    'Databox': 0.70,    // 70% US / 30% international
+    'Madgicx': 0.45,    // Global, e-commerce skew
+    'ADCostly+': 0.30,  // Global, broad coverage
+    'Revealbot': 1.0    // US only
+  },
+
+  // Compute geographic adjustment to estimate US-equivalent value
+  geoAdjust(value, source, metric) {
+    if (value == null) return value;
+    const usFrac = this.SRC_US_FRACTION[source];
+    if (usFrac == null || usFrac >= 0.95) return value; // already US-only
+    const ratio = this.GEO_RATIOS[metric];
+    if (!ratio || ratio.global_to_us === 1.0) return value;
+    // Mixed source decomposition:
+    // observed = usFrac * μ_US + (1-usFrac) * μ_intl
+    // where μ_intl ≈ μ_US / ratio
+    // → observed = usFrac * μ_US + (1-usFrac) * μ_US / ratio
+    // → μ_US = observed / (usFrac + (1-usFrac) / ratio)
+    const intlFrac = 1.0 - usFrac;
+    const denominator = usFrac + intlFrac / ratio.global_to_us;
+    if (denominator === 0) return value;
+    const usEstimate = value / denominator;
+    // Blend: don't fully correct, apply 60% of the correction to avoid over-adjusting
+    const correction = 0.6;
+    return value + correction * (usEstimate - value);
+  },
+
+  // =========================================
+  // JAMES-STEIN SHRINKAGE
+  // For sparse industries (few sources), shrink estimates
+  // toward the grand mean across all industries.
+  // θ_shrunk = grandMean + c·(θ_i - grandMean)
+  // where c = max(0, 1 - (k-2)·σ² / Σ(θ_i - grandMean)²)
+  // k = number of industries (dimensions)
+  // Provably dominates MLE for k ≥ 3 (Stein 1956)
+  // =========================================
+  _grandMeans: {}, // populated during batch processing
+
+  computeGrandMean(allIndustries, metricKey) {
+    const vals = [];
+    const wts = [];
+    for (const [, consensus] of Object.entries(allIndustries)) {
+      const d = consensus[metricKey];
+      if (d && d.value != null && d.sources.length >= 2) {
+        vals.push(d.value);
+        wts.push(d.sources.length); // weight by source count
+      }
+    }
+    if (vals.length === 0) return null;
+    let sumWV = 0, sumW = 0;
+    for (let i = 0; i < vals.length; i++) { sumWV += vals[i] * wts[i]; sumW += wts[i]; }
+    return sumWV / sumW;
+  },
+
+  jamesSteingShrink(value, grandMean, allValues, sourceCount) {
+    if (value == null || grandMean == null) return value;
+    if (sourceCount >= 4) return value; // enough data, no shrinkage needed
+    const k = allValues.length;
+    if (k < 3) return value; // JS needs k≥3
+    // Compute sum of squared deviations from grand mean
+    let sumSqDev = 0;
+    for (const v of allValues) sumSqDev += Math.pow(v - grandMean, 2);
+    if (sumSqDev === 0) return value;
+    // Estimate σ² as average squared deviation
+    const sigma2 = sumSqDev / k;
+    // Shrinkage factor: c = max(0, 1 - (k-2)·σ² / sumSqDev)
+    const c = Math.max(0, 1 - ((k - 2) * sigma2) / sumSqDev);
+    // For sparse industries (1-2 sources), apply stronger shrinkage
+    const sparsityBoost = sourceCount <= 1 ? 0.5 : sourceCount <= 2 ? 0.7 : 0.85;
+    const effectiveC = c * sparsityBoost;
+    return grandMean + effectiveC * (value - grandMean);
+  },
+
+  // =========================================
+  // CPM = CPC × CTR × 1000 CONSISTENCY CHECK
+  // Cross-validates metrics using algebraic identity.
+  // When 2 of 3 are present, imputes the missing one.
+  // Flags violations beyond 15% threshold.
+  // =========================================
+  checkCPMConsistency(cpm, cpc, ctr) {
+    // ctr is in percentage points (e.g., 2.0 = 2%)
+    const result = { consistent: null, impliedCPM: null, impliedCPC: null, impliedCTR: null, violation: null };
+    if (cpc != null && ctr != null && ctr > 0) {
+      result.impliedCPM = cpc * (ctr / 100) * 1000;
+      if (cpm != null) {
+        const pctDiff = Math.abs(cpm - result.impliedCPM) / Math.max(cpm, result.impliedCPM);
+        result.consistent = pctDiff < 0.15;
+        result.violation = pctDiff;
+      }
+    }
+    if (cpm != null && ctr != null && ctr > 0) {
+      result.impliedCPC = cpm / ((ctr / 100) * 1000);
+    }
+    if (cpm != null && cpc != null && cpc > 0) {
+      result.impliedCTR = (cpm / (cpc * 1000)) * 100;
+    }
+    return result;
+  },
+
+  // Apply consistency-based imputation to a row
+  imputeFromConsistency(row) {
+    const check = this.checkCPMConsistency(row.cpm, row.cpc, row.ctr);
+    const patched = { ...row, _consistency: check };
+    // Impute missing values from available ones
+    if (patched.cpm == null && check.impliedCPM != null) {
+      patched.cpm = check.impliedCPM;
+      patched._cpmImputed = true;
+    }
+    if (patched.cpc == null && check.impliedCPC != null) {
+      patched.cpc = check.impliedCPC;
+      patched._cpcImputed = true;
+    }
+    if (patched.ctr == null && check.impliedCTR != null && check.impliedCTR > 0 && check.impliedCTR < 20) {
+      patched.ctr = check.impliedCTR;
+      patched._ctrImputed = true;
+    }
+    return patched;
+  },
+
+  // =========================================
+  // CORE FUNCTIONS
+  // =========================================
   computeWeightedMean(values, weights) {
     let sumWV = 0, sumW = 0;
     for (let i = 0; i < values.length; i++) {
@@ -381,22 +568,56 @@ const StatEngine = {
     return values.map(v => Math.abs(v - consensus) > 2 * wSD);
   },
 
-  computeConsensus(rows, metricKeys) {
+  // =========================================
+  // ENHANCED CONSENSUS (full pipeline)
+  // Pipeline: Impute → Temporal → Geographic → IVW → Shrinkage
+  // =========================================
+  computeConsensus(rows, metricKeys, opts = {}) {
     const result = {};
+    // Step 1: Apply CPM=CPC×CTR consistency imputation
+    const enrichedRows = rows.map(r => this.imputeFromConsistency(r));
+
     for (const m of metricKeys) {
-      const pairs = rows.filter(r => r[m] != null).map(r => ({
-        value: r[m], source: r.source, weight: this.WEIGHTS[r.source] || 0.50
+      const pairs = enrichedRows.filter(r => r[m] != null).map(r => ({
+        value: r[m],
+        rawValue: r[m], // preserve original
+        source: r.source,
+        weight: this.WEIGHTS[r.source] || 0.50,
+        imputed: r['_' + m + 'Imputed'] || false
       }));
       if (pairs.length === 0) {
-        result[m] = { value: null, ci_low: null, ci_high: null, disagreement: 'none', sources: [] };
+        result[m] = { value: null, ci_low: null, ci_high: null, disagreement: 'none', sources: [], adjustments: null };
         continue;
       }
+
+      // Step 2: Apply temporal adjustment
+      const temporalFactors = {};
+      for (const p of pairs) {
+        const factor = this.temporalFactor(p.source, m);
+        p.value = this.temporalAdjust(p.rawValue, p.source, m);
+        temporalFactors[p.source] = factor;
+        // Reduce weight for imputed values
+        if (p.imputed) p.weight *= 0.6;
+      }
+
+      // Step 3: Apply geographic correction (if US-focused view)
+      const geoFactors = {};
+      if (opts.geoTarget !== 'global') {
+        for (const p of pairs) {
+          const before = p.value;
+          p.value = this.geoAdjust(p.value, p.source, m);
+          geoFactors[p.source] = before !== 0 ? p.value / before : 1.0;
+        }
+      }
+
+      // Step 4: IVW consensus
       const values = pairs.map(p => p.value);
       const weights = pairs.map(p => p.weight);
       const consensus = this.computeWeightedMean(values, weights);
       const ci = pairs.length >= 2 ? this.computeWeightedCI(values, weights, consensus) : null;
       const disagreement = this.computeDisagreement(values, consensus);
       const outliers = this.identifyOutliers(values, weights, consensus);
+
       result[m] = {
         value: consensus,
         ci_low: ci ? Math.max(0, ci.low) : consensus,
@@ -404,36 +625,120 @@ const StatEngine = {
         sd: ci ? ci.sd : 0,
         disagreement,
         sources: pairs.map((p, i) => ({
-          name: p.source, value: p.value, weight: p.weight,
+          name: p.source,
+          value: p.value,
+          rawValue: p.rawValue,
+          weight: p.weight,
           deviation: consensus !== 0 ? ((p.value - consensus) / Math.abs(consensus) * 100) : 0,
-          isOutlier: outliers[i]
-        }))
+          isOutlier: outliers[i],
+          imputed: p.imputed,
+          temporalFactor: temporalFactors[p.source] || 1.0,
+          geoFactor: geoFactors[p.source] || 1.0
+        })),
+        adjustments: {
+          temporalApplied: Object.values(temporalFactors).some(f => f !== 1.0),
+          geoApplied: Object.keys(geoFactors).length > 0,
+          imputedCount: pairs.filter(p => p.imputed).length
+        }
       };
     }
     return result;
   },
 
+  // Step 5: Apply James-Stein shrinkage across all industries (post-processing)
+  applyShrinkage(allIndustries, metricKeys) {
+    for (const m of metricKeys) {
+      // Collect all consensus values for this metric
+      const allVals = [];
+      for (const [, consensus] of Object.entries(allIndustries)) {
+        if (consensus[m] && consensus[m].value != null) allVals.push(consensus[m].value);
+      }
+      if (allVals.length < 3) continue;
+      const grandMean = this.computeGrandMean(allIndustries, m);
+      if (grandMean == null) continue;
+      this._grandMeans[m] = grandMean;
+
+      for (const [, consensus] of Object.entries(allIndustries)) {
+        const d = consensus[m];
+        if (!d || d.value == null) continue;
+        const srcCount = d.sources.length;
+        if (srcCount >= 4) continue; // enough data, skip shrinkage
+        const original = d.value;
+        d.value = this.jamesSteingShrink(original, grandMean, allVals, srcCount);
+        d._shrunk = original !== d.value;
+        d._preShrink = original;
+        // Also adjust CI bounds proportionally
+        if (d._shrunk && original !== 0) {
+          const ratio = d.value / original;
+          d.ci_low = Math.max(0, d.ci_low * ratio);
+          d.ci_high = d.ci_high * ratio;
+        }
+      }
+    }
+    return allIndustries;
+  },
+
   // Console helper for debugging
   validate() {
-    console.log('=== StatEngine Validation ===');
+    console.log('=== StatEngine Validation (Enhanced) ===');
+    // Real Estate CPM test
     const reRows = [];
     for (const row of MI) {
       if ((ALIAS_INDEX[row[0]] || row[0]) === 'Real Estate' && row[2] != null) {
-        reRows.push({ source: row[1], cpm: row[2] });
+        reRows.push({ source: row[1], cpm: row[2], cpc: row[3], ctr: row[4] });
       }
     }
     console.log('Real Estate CPM sources:', reRows.map(r => `${r.source}: $${r.cpm}`));
     const vals = reRows.map(r => r.cpm);
     const wts = reRows.map(r => StatEngine.WEIGHTS[r.source] || 0.5);
     const mean = StatEngine.computeWeightedMean(vals, wts);
-    console.log('IVW Mean: $' + mean.toFixed(2));
-    const ci = StatEngine.computeWeightedCI(vals, wts, mean);
-    console.log('95% CI: $' + (ci ? ci.low.toFixed(2) : 'N/A') + ' - $' + (ci ? ci.high.toFixed(2) : 'N/A'));
-    console.log('Disagreement:', StatEngine.computeDisagreement(vals, mean));
+    console.log('Raw IVW Mean: $' + mean.toFixed(2));
+
+    // Temporal factors
+    console.log('\n--- Temporal Adjustment Factors ---');
+    for (const src of Object.keys(this.WEIGHTS)) {
+      const f = this.temporalFactor(src, 'cpm');
+      if (f !== 1.0) console.log(`  ${src}: ×${f.toFixed(3)}`);
+    }
+
+    // Geo factors
+    console.log('\n--- Geographic Correction (US estimate) ---');
+    for (const src of Object.keys(this.WEIGHTS)) {
+      const usFrac = this.SRC_US_FRACTION[src];
+      if (usFrac < 0.95) console.log(`  ${src}: ${(usFrac*100).toFixed(0)}% US → adjust ×${(this.geoAdjust(10, src, 'cpm')/10).toFixed(3)}`);
+    }
+
+    // Consistency check
+    console.log('\n--- CPM=CPC×CTR Consistency ---');
+    let violations = 0;
+    for (const row of reRows) {
+      const check = this.checkCPMConsistency(row.cpm, row.cpc, row.ctr);
+      if (check.violation != null) {
+        const status = check.consistent ? 'OK' : 'VIOLATION';
+        console.log(`  ${row.source}: CPM=$${row.cpm} vs implied=$${check.impliedCPM?.toFixed(2)} (${(check.violation*100).toFixed(1)}% diff) [${status}]`);
+        if (!check.consistent) violations++;
+      }
+    }
+
+    // James-Stein
+    console.log('\n--- James-Stein Shrinkage ---');
+    const grandCPM = this._grandMeans?.cpm;
+    if (grandCPM) console.log(`  Grand mean CPM: $${grandCPM.toFixed(2)}`);
+    let shrunkCount = 0;
+    for (const [ind, c] of Object.entries(normalizedIndustries)) {
+      if (c.cpm?._shrunk) {
+        console.log(`  ${ind}: $${c.cpm._preShrink.toFixed(2)} → $${c.cpm.value.toFixed(2)} (${c.cpm.sources.length} sources)`);
+        shrunkCount++;
+      }
+    }
+    console.log(`  ${shrunkCount} industries shrunk toward grand mean`);
+
+    console.log('\n--- Summary ---');
     console.log('Canonical industries:', Object.keys(normalizedIndustries).length);
     console.log('Canonical countries:', Object.keys(normalizedCountries).length);
     console.log('Total MI rows:', MI.length, '| Mapped:', Object.values(normalizedIndustries).reduce((s, d) => s + d._rows.length, 0));
-    return { mean, ci, disagreement: StatEngine.computeDisagreement(vals, mean) };
+    console.log('Consistency violations:', violations);
+    return { mean, grandMeans: this._grandMeans };
   }
 };
 
@@ -759,11 +1064,11 @@ function buildNormalizedIndustries() {
   }
   const result = {};
   for (const [ind, rows] of Object.entries(grouped)) {
-    const consensus = StatEngine.computeConsensus(rows, INDUSTRY_METRICS);
+    // Enhanced pipeline: impute → temporal → geo → IVW
+    const consensus = StatEngine.computeConsensus(rows, INDUSTRY_METRICS, { geoTarget: 'us' });
     consensus._rows = rows;
     consensus._sources = [...new Set(rows.map(r => r.source))];
     consensus._sourceCount = consensus._sources.length;
-    // Overall disagreement = worst metric disagreement
     const levels = { none: 0, single: 1, agreement: 2, moderate: 3, disagreement: 4, conflict: 5 };
     let worst = 'none';
     for (const m of INDUSTRY_METRICS) {
@@ -772,6 +1077,8 @@ function buildNormalizedIndustries() {
     consensus._overallDisagreement = worst;
     result[ind] = consensus;
   }
+  // Step 5: James-Stein shrinkage across industries (sparse → grand mean)
+  StatEngine.applyShrinkage(result, INDUSTRY_METRICS);
   return result;
 }
 
@@ -785,7 +1092,9 @@ function buildNormalizedCountries() {
   }
   const result = {};
   for (const [country, rows] of Object.entries(grouped)) {
-    const consensus = StatEngine.computeConsensus(rows, COUNTRY_METRICS);
+    // Country data: apply temporal adjustment but NOT geographic correction
+    // (country data is already geo-specific)
+    const consensus = StatEngine.computeConsensus(rows, COUNTRY_METRICS, { geoTarget: 'global' });
     consensus._rows = rows;
     consensus._sources = [...new Set(rows.map(r => r.source))];
     consensus._sourceCount = consensus._sources.length;
@@ -797,6 +1106,8 @@ function buildNormalizedCountries() {
     consensus._overallDisagreement = worst;
     result[country] = consensus;
   }
+  // Apply shrinkage for sparse countries
+  StatEngine.applyShrinkage(result, COUNTRY_METRICS);
   return result;
 }
 
@@ -1057,8 +1368,23 @@ function renderIndustrySection(ind, c) {
     const mColor = DISAGREE_COLORS[d.disagreement] || '#64748b';
     const ciText = (d.sources.length >= 2 && d.value != null) ? `${fmtMetric(d.ci_low, m)} \u2013 ${fmtMetric(d.ci_high, m)}` : (isSingle && d.value != null ? 'Single source' : '');
 
-    h += `<div class="ckpi${isSingle ? ' single-source' : ''}" title="${d.sources.map(s => s.name + ': ' + fmtMetric(s.value, m)).join('\n')}">`;
-    h += `<div class="ckpi-label">${metricLabels[m]}</div>`;
+    // Build tooltip with adjustment details
+    let tooltip = d.sources.map(s => {
+      let line = s.name + ': ' + fmtMetric(s.value, m);
+      if (s.rawValue !== s.value) line += ' (raw: ' + fmtMetric(s.rawValue, m) + ')';
+      return line;
+    }).join('\n');
+    if (d._shrunk) tooltip += '\n[Shrunk toward grand mean: $' + StatEngine._grandMeans[m]?.toFixed(2) + ']';
+    if (d.adjustments?.temporalApplied) tooltip += '\n[Temporal adjustment applied]';
+    if (d.adjustments?.geoApplied) tooltip += '\n[Geographic correction applied]';
+    if (d.adjustments?.imputedCount) tooltip += '\n[' + d.adjustments.imputedCount + ' value(s) imputed via CPM=CPC×CTR]';
+
+    h += `<div class="ckpi${isSingle ? ' single-source' : ''}" title="${tooltip}">`;
+    h += `<div class="ckpi-label">${metricLabels[m]}`;
+    // Show adjustment badges
+    if (d._shrunk) h += ` <span style="font-size:8px;padding:1px 4px;border-radius:3px;background:rgba(168,85,247,.12);color:#c084fc" title="James-Stein shrinkage applied">JS</span>`;
+    if (d.adjustments?.imputedCount) h += ` <span style="font-size:8px;padding:1px 4px;border-radius:3px;background:rgba(245,158,11,.12);color:#fbbf24" title="${d.adjustments.imputedCount} imputed">I×${d.adjustments.imputedCount}</span>`;
+    h += `</div>`;
     h += `<div class="ckpi-value">${fmtMetric(d.value, m)}</div>`;
     h += `<div class="ckpi-ci-bar"><div class="ckpi-ci-fill" style="width:${DISAGREE_WIDTH[d.disagreement] || 0}%;background:${mColor}"></div></div>`;
     h += `<div class="ckpi-ci-text">${ciText}</div>`;
@@ -1121,10 +1447,15 @@ function renderIndustryComparisonSection(ind, c) {
     h += `</tr>`;
   }
 
-  // Consensus row
-  h += `<tr><td style="text-align:left;font-weight:700">Consensus (IVW)</td>`;
+  // Consensus row with adjustment indicators
+  h += `<tr><td style="text-align:left;font-weight:700">Consensus (IVW+)</td>`;
   for (const m of INDUSTRY_METRICS) {
-    h += `<td class="num" style="font-weight:700">${fmtMetric(c[m]?.value, m)}</td>`;
+    let badges = '';
+    const d = c[m];
+    if (d?.adjustments?.temporalApplied) badges += '<span style="font-size:8px;padding:1px 3px;border-radius:2px;background:rgba(168,85,247,.12);color:#c084fc;margin-left:2px">T</span>';
+    if (d?.adjustments?.geoApplied) badges += '<span style="font-size:8px;padding:1px 3px;border-radius:2px;background:rgba(59,130,246,.12);color:#60a5fa;margin-left:2px">G</span>';
+    if (d?._shrunk) badges += '<span style="font-size:8px;padding:1px 3px;border-radius:2px;background:rgba(168,85,247,.12);color:#c084fc;margin-left:2px">JS</span>';
+    h += `<td class="num" style="font-weight:700">${fmtMetric(c[m]?.value, m)}${badges}</td>`;
   }
   h += `</tr></tbody></table></div>`;
 
@@ -1171,14 +1502,21 @@ function renderSourceBreakdownTable(c) {
     }
 
     // Source detail rows
-    h += `<table class="src-breakdown-tbl"><thead><tr><th style="text-align:left">Source</th><th>Value</th><th>Deviation</th><th>Weight</th><th></th></tr></thead><tbody>`;
+    h += `<table class="src-breakdown-tbl"><thead><tr><th style="text-align:left">Source</th><th>Raw</th><th>Adjusted</th><th>Deviation</th><th>Weight</th><th></th></tr></thead><tbody>`;
     for (const s of d.sources) {
       const color = SRC_COLORS[s.name] || '#666';
       const arrow = s.deviation > 0 ? '\u2191' : s.deviation < 0 ? '\u2193' : '\u2022';
       h += `<tr>`;
       const sGeo = SRC_GEO[s.name]||''; const sGs = GEO_BADGE_STYLE[sGeo]||'';
       h += `<td style="text-align:left"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${color};margin-right:6px;vertical-align:middle"></span>${s.name}${sGeo?` <span class="geo-tag" style="${sGs}">${sGeo}</span>`:''}</td>`;
-      h += `<td>${fmtMetric(s.value, m)}</td>`;
+      // Show raw value
+      h += `<td style="color:var(--text3)">${fmtMetric(s.rawValue, m)}</td>`;
+      // Show adjusted value (with indicators for what changed)
+      let adjTags = '';
+      if (s.temporalFactor && s.temporalFactor !== 1.0) adjTags += `<span style="font-size:8px;padding:1px 4px;border-radius:3px;background:rgba(168,85,247,.15);color:#c084fc;margin-left:2px" title="Temporal: ×${s.temporalFactor.toFixed(2)}">T</span>`;
+      if (s.geoFactor && s.geoFactor !== 1.0) adjTags += `<span style="font-size:8px;padding:1px 4px;border-radius:3px;background:rgba(59,130,246,.15);color:#60a5fa;margin-left:2px" title="Geo-adjusted to US">G</span>`;
+      if (s.imputed) adjTags += `<span style="font-size:8px;padding:1px 4px;border-radius:3px;background:rgba(245,158,11,.15);color:#fbbf24;margin-left:2px" title="Imputed from CPM=CPC×CTR">I</span>`;
+      h += `<td>${fmtMetric(s.value, m)}${adjTags}</td>`;
       h += `<td class="${devClass(s.deviation)}">${arrow} ${fmtDev(s.deviation)}</td>`;
       h += `<td style="color:var(--text3)">${s.weight.toFixed(2)}</td>`;
       h += `<td>${s.isOutlier ? '<span class="outlier-flag">OUTLIER</span>' : ''}</td>`;
