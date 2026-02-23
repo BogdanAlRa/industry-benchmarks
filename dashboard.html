@@ -262,8 +262,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
   </div>
   <div id="twControls" style="display:contents">
     <div class="region-toggle" id="regionToggle">
-      <button class="region-btn active" data-region="global">All Markets</button>
-      <button class="region-btn" data-region="us">$1M-$10M GMV</button>
+      <button class="region-btn active" data-region="us">🇺🇸 United States</button>
+      <button class="region-btn" data-region="global">🌍 Global</button>
     </div>
     <div class="search-wrap"><input type="text" id="searchInput" placeholder="Search industries..."></div>
     <div class="stats">
@@ -287,7 +287,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <button class="ch-group-btn" data-group="other">Other</button>
     </div>
     <div class="ch-sub" id="chSubBar"></div>
-    <span style="margin-left:auto" class="data-badge single">Single Source: Triple Whale</span>
+    <span style="margin-left:auto" class="data-badge single" id="twSourceBadge">Source: Triple Whale · US ($1M-$10M GMV)</span>
   </div>
   <div class="loading" id="loading"><div class="spinner"></div><div>Loading benchmarks...</div></div>
   <div class="main" id="main" style="display:none"></div>
@@ -848,7 +848,7 @@ for(let y=22;y<=26;y++)for(let m=0;m<12;m++)MONTH_ORDER[`${MN[m]} ${y}`]=y*12+m;
 function sortM(a,b){return(MONTH_ORDER[a]||0)-(MONTH_ORDER[b]||0)}
 const DAY_NAMES=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
 
-let currentRegion='global',currentGroup='all',selectedChannels=new Set();
+let currentRegion='us',currentGroup='all',selectedChannels=new Set();
 let globalData={},usData={},dowData={},womData={},domData={};
 let allIndustries=new Set(),allChannels=new Set(),totalRows=0;
 const charts={};
@@ -904,7 +904,7 @@ function render(){
 function cardHTML(ind){
   const id=ind.replace(/\W/g,''),chs=getChannelsFor(ind),noUS=currentRegion==='us'&&!hasSegmentData(ind);
   const chText=chs.length?chs.slice(0,6).join(', ')+(chs.length>6?` +${chs.length-6} more`:''):'No data';
-  return`<div class="card" id="c-${id}"><div class="card-top"><h3>${fmtInd(ind)}${noUS?'<span class="no-us">No segment data</span>':''}</h3><div class="card-channels" id="cch-${id}">${chText}</div><div class="metrics" id="met-${id}"><div class="metric" id="m-cpm-${id}"><div class="label">CPM</div><div class="val">\u2014</div><div class="sub">Cost per 1K</div></div><div class="metric" id="m-cpc-${id}"><div class="label">CPC</div><div class="val">\u2014</div><div class="sub">Cost per Click</div></div><div class="metric" id="m-ctr-${id}"><div class="label">CTR</div><div class="val">\u2014</div><div class="sub">Click-through</div></div><div class="metric" id="m-cpa-${id}"><div class="label">CPA</div><div class="val">\u2014</div><div class="sub">Cost per Acq.</div></div><div class="metric" id="m-roas-${id}"><div class="label">ROAS</div><div class="val">\u2014</div><div class="sub">Return on Spend</div></div><div class="metric" id="m-aov-${id}"><div class="label">AOV</div><div class="val">\u2014</div><div class="sub">Avg. Order</div></div><div class="metric" id="m-cvr-${id}"><div class="label">CVR</div><div class="val">\u2014</div><div class="sub">Conversion</div></div><div class="metric" id="m-mer-${id}"><div class="label">MER</div><div class="val">\u2014</div><div class="sub">Efficiency</div></div></div><div class="spark-row"><div class="spark-box"><div class="spark-label">CPM Trend</div><canvas id="sp-cpm-${id}"></canvas></div><div class="spark-box"><div class="spark-label">ROAS Trend</div><canvas id="sp-roas-${id}"></canvas></div></div></div><button class="expand-btn" onclick="toggleDetail('${id}','${ind}')"><span id="exp-${id}">See More &#9660;</span></button><div class="detail" id="det-${id}"></div></div>`;
+  return`<div class="card" id="c-${id}"><div class="card-top"><h3>${fmtInd(ind)}${noUS?'<span class="no-us">Global only</span>':''}</h3><div class="card-channels" id="cch-${id}">${chText}</div><div class="metrics" id="met-${id}"><div class="metric" id="m-cpm-${id}"><div class="label">CPM</div><div class="val">\u2014</div><div class="sub">Cost per 1K</div></div><div class="metric" id="m-cpc-${id}"><div class="label">CPC</div><div class="val">\u2014</div><div class="sub">Cost per Click</div></div><div class="metric" id="m-ctr-${id}"><div class="label">CTR</div><div class="val">\u2014</div><div class="sub">Click-through</div></div><div class="metric" id="m-cpa-${id}"><div class="label">CPA</div><div class="val">\u2014</div><div class="sub">Cost per Acq.</div></div><div class="metric" id="m-roas-${id}"><div class="label">ROAS</div><div class="val">\u2014</div><div class="sub">Return on Spend</div></div><div class="metric" id="m-aov-${id}"><div class="label">AOV</div><div class="val">\u2014</div><div class="sub">Avg. Order</div></div><div class="metric" id="m-cvr-${id}"><div class="label">CVR</div><div class="val">\u2014</div><div class="sub">Conversion</div></div><div class="metric" id="m-mer-${id}"><div class="label">MER</div><div class="val">\u2014</div><div class="sub">Efficiency</div></div></div><div class="spark-row"><div class="spark-box"><div class="spark-label">CPM Trend</div><canvas id="sp-cpm-${id}"></canvas></div><div class="spark-box"><div class="spark-label">ROAS Trend</div><canvas id="sp-roas-${id}"></canvas></div></div></div><button class="expand-btn" onclick="toggleDetail('${id}','${ind}')"><span id="exp-${id}">See More &#9660;</span></button><div class="detail" id="det-${id}"></div></div>`;
 }
 
 function updateCard(ind){
@@ -913,8 +913,7 @@ function updateCard(ind){
   setMetric(id,'roas',m?.roas,'x','roas');setMetric(id,'aov',m?.aov,'$');setMetric(id,'cvr',m?.cvr,'%');setMetric(id,'mer',m?.mer,'','mer');
   const chs=getChannelsFor(ind),chEl=document.getElementById(`cch-${id}`);
   if(chEl)chEl.textContent=chs.length?chs.slice(0,6).join(', ')+(chs.length>6?` +${chs.length-6} more`:''):'No data';
-  if(currentRegion==='global'){sparkline(`sp-cpm-${id}`,getGlobalMonthlyTrend(ind,'cpm',8),'#3b82f6','$');sparkline(`sp-roas-${id}`,getGlobalMonthlyTrend(ind,'roas',8),'#22c55e','')}
-  else{sparkline(`sp-cpm-${id}`,getGlobalMonthlyTrend(ind,'cpm',8),'#64748b','$');sparkline(`sp-roas-${id}`,getGlobalMonthlyTrend(ind,'roas',8),'#64748b','')}
+  sparkline(`sp-cpm-${id}`,getGlobalMonthlyTrend(ind,'cpm',8),'#3b82f6','$');sparkline(`sp-roas-${id}`,getGlobalMonthlyTrend(ind,'roas',8),'#22c55e','');
   const det=document.getElementById(`det-${id}`);if(det&&det.classList.contains('open'))renderDetail(id,ind);
 }
 
@@ -927,9 +926,9 @@ function renderDetail(id,ind){
   if(isUS){const c=usData[ind];if(c){const f=filterChannels(c);for(const[ch,m]of Object.entries(f).sort((a,b)=>a[0].localeCompare(b[0]))){const col=ALL_CHANNELS_COLOR[ch]||'#64748b';rows+=`<tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${col};margin-right:6px"></span>${ch}</td><td>${fmt(m.cpm,'$')}</td><td>${fmt(m.cpc,'$')}</td><td>${fmt(m.ctr,'%')}</td><td>${fmt(m.cpa,'$')}</td><td>${fmt(m.cvr,'%')}</td><td>${fmt(m.roas,'x')}</td><td>${fmt(m.aov,'$')}</td><td>${fmt(m.mer,'')}</td></tr>`}}}
   else{const c=globalData[ind];if(c){const f=filterChannels(c);const ms=new Set();for(const ch in f)for(const m in f[ch])ms.add(m);const s=[...ms].sort(sortM);const l=s[s.length-1];for(const[ch,mD]of Object.entries(f).sort((a,b)=>a[0].localeCompare(b[0]))){const m=mD[l];if(!m)continue;const col=ALL_CHANNELS_COLOR[ch]||'#64748b';rows+=`<tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${col};margin-right:6px"></span>${ch}</td><td>${fmt(m.cpm,'$')}</td><td>${fmt(m.cpc,'$')}</td><td>${fmt(m.ctr,'%')}</td><td>${fmt(m.cpa,'$')}</td><td>${fmt(m.cvr,'%')}</td><td>${fmt(m.roas,'x')}</td><td>${fmt(m.aov,'$')}</td><td>${fmt(m.mer,'')}</td></tr>`}}}
   const dowId=`dow-${id}`,womId=`wom-${id}`,domId=`dom-${id}`,trendId=`trend-${id}`;
-  det.innerHTML=`<div class="detail-section"><h4>Channel Breakdown${isUS?' ($1M-$10M GMV Tier)':' (All Markets, Latest Month)'}</h4>${rows?`<table class="tbl"><thead><tr><th>Channel</th><th>CPM</th><th>CPC</th><th>CTR</th><th>CPA</th><th>CVR</th><th>ROAS</th><th>AOV</th><th>MER</th></tr></thead><tbody>${rows}</tbody></table>`:'<div style="color:var(--text3);font-size:12px;padding:12px">No data for current selection</div>'}</div>${!isUS?`<div class="detail-section"><h4>ROAS Trend (12 Months)</h4><div class="chart-box"><canvas id="${trendId}"></canvas></div></div>`:''}<div class="detail-section"><h4>Time Patterns (Global)</h4><div class="chart-row"><div class="chart-box"><h5>CPA by Day of Week</h5><canvas id="${dowId}"></canvas></div><div class="chart-box"><h5>CPA by Week of Month</h5><canvas id="${womId}"></canvas></div></div><div class="chart-row" style="margin-top:12px"><div class="chart-box" style="grid-column:1/-1"><h5>CPA by Day of Month (Days 10-16, partial)</h5><canvas id="${domId}"></canvas></div></div></div>`;
+  det.innerHTML=`<div class="detail-section"><h4>Channel Breakdown${isUS?' (US, $1M-$10M GMV)':' (Global, Latest Month)'}</h4>${rows?`<table class="tbl"><thead><tr><th>Channel</th><th>CPM</th><th>CPC</th><th>CTR</th><th>CPA</th><th>CVR</th><th>ROAS</th><th>AOV</th><th>MER</th></tr></thead><tbody>${rows}</tbody></table>`:'<div style="color:var(--text3);font-size:12px;padding:12px">No data for current selection</div>'}</div><div class="detail-section"><h4>ROAS Trend (12 Months${isUS?' — Global Trend':''})</h4><div class="chart-box"><canvas id="${trendId}"></canvas></div></div><div class="detail-section"><h4>Time Patterns (Global)</h4><div class="chart-row"><div class="chart-box"><h5>CPA by Day of Week</h5><canvas id="${dowId}"></canvas></div><div class="chart-box"><h5>CPA by Week of Month</h5><canvas id="${womId}"></canvas></div></div><div class="chart-row" style="margin-top:12px"><div class="chart-box" style="grid-column:1/-1"><h5>CPA by Day of Month (Days 10-16, partial)</h5><canvas id="${domId}"></canvas></div></div></div>`;
   requestAnimationFrame(()=>{
-    if(!isUS){const rt=getGlobalMonthlyTrend(ind,'roas',12);barChart(trendId,rt.map(d=>d.month),rt.map(d=>d.value),'#22c55e','x')}
+    {const rt=getGlobalMonthlyTrend(ind,'roas',12);barChart(trendId,rt.map(d=>d.month),rt.map(d=>d.value),'#22c55e','x')}
     const dk=['1','2','3','4','5','6','7'],dm=getTimeDim(dowData,ind,dk),dv=dm.map(m=>m?.cpa??null);if(dv.some(v=>v!=null))barChart(dowId,DAY_NAMES,dv,'#3b82f6','$');
     const wk=['1','2','3','4','5'],wm=getTimeDim(womData,ind,wk),wv=wm.map(m=>m?.cpa??null);if(wv.some(v=>v!=null))barChart(womId,['Wk 1','Wk 2','Wk 3','Wk 4','Wk 5'],wv,'#a78bfa','$');
     const domK=[];for(let d=10;d<=16;d++)domK.push(String(d));const domM=getTimeDim(domData,ind,domK),domV=domM.map(m=>m?.cpa??null);if(domV.some(v=>v!=null))barChart(domId,domK.map(d=>'Day '+d),domV,'#f59e0b','$');
@@ -938,7 +937,7 @@ function renderDetail(id,ind){
 
 function toggleCat(hdr){hdr.classList.toggle('collapsed');hdr.nextElementSibling.classList.toggle('hidden')}
 
-document.getElementById('regionToggle').addEventListener('click',e=>{const b=e.target.closest('.region-btn');if(!b)return;document.querySelectorAll('.region-btn').forEach(b=>b.classList.remove('active'));b.classList.add('active');currentRegion=b.dataset.region;render()});
+document.getElementById('regionToggle').addEventListener('click',e=>{const b=e.target.closest('.region-btn');if(!b)return;document.querySelectorAll('.region-btn').forEach(b=>b.classList.remove('active'));b.classList.add('active');currentRegion=b.dataset.region;document.getElementById('twSourceBadge').textContent=currentRegion==='us'?'Source: Triple Whale · US ($1M-$10M GMV)':'Source: Triple Whale · Global (All Markets)';render()});
 document.getElementById('chGroupBar').addEventListener('click',e=>{const b=e.target.closest('.ch-group-btn');if(!b)return;document.querySelectorAll('.ch-group-btn').forEach(b=>b.classList.remove('active'));b.classList.add('active');currentGroup=b.dataset.group;selectedChannels.clear();renderSubChannels();refreshAllCards()});
 
 function renderSubChannels(){const s=document.getElementById('chSubBar');if(currentGroup==='all'){s.innerHTML='';return}const g=CHANNEL_GROUPS[currentGroup];if(!g){s.innerHTML='';return}s.innerHTML=g.channels.map(ch=>{const c=g.colors[ch]||'#666';const sel=selectedChannels.size===0||selectedChannels.has(ch);return`<button class="ch-sub-btn${sel?' selected':''}" style="background:${c}${sel?'':'44'};color:${sel?'#fff':'#999'}" data-ch="${ch}" onclick="toggleSubCh(this)">${ch}</button>`}).join('')}
