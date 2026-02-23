@@ -451,23 +451,18 @@ const StatEngine = {
     return sumWV / sumW;
   },
 
-  jamesSteingShrink(value, grandMean, allValues, sourceCount) {
+  // Empirical Bayes shrinkage (proper James-Stein)
+  // Uses within-industry variance (CI width) as uncertainty measure.
+  // B_i = σ²_i / (σ²_i + τ²) where σ²_i = within-industry SE², τ² = between-industry variance
+  // θ_shrunk = (1 - B_i)·θ_i + B_i·grandMean
+  // → Uncertain estimates (wide CI, few sources) shrink more toward the grand mean
+  // → Precise estimates (narrow CI, many sources) stay close to their raw value
+  jamesSteingShrink(value, grandMean, withinVar, betweenVar) {
     if (value == null || grandMean == null) return value;
-    if (sourceCount >= 4) return value; // enough data, no shrinkage needed
-    const k = allValues.length;
-    if (k < 3) return value; // JS needs k≥3
-    // Compute sum of squared deviations from grand mean
-    let sumSqDev = 0;
-    for (const v of allValues) sumSqDev += Math.pow(v - grandMean, 2);
-    if (sumSqDev === 0) return value;
-    // Estimate σ² as average squared deviation
-    const sigma2 = sumSqDev / k;
-    // Shrinkage factor: c = max(0, 1 - (k-2)·σ² / sumSqDev)
-    const c = Math.max(0, 1 - ((k - 2) * sigma2) / sumSqDev);
-    // For sparse industries (1-2 sources), apply stronger shrinkage
-    const sparsityBoost = sourceCount <= 1 ? 0.5 : sourceCount <= 2 ? 0.7 : 0.85;
-    const effectiveC = c * sparsityBoost;
-    return grandMean + effectiveC * (value - grandMean);
+    if (betweenVar <= 0) return value;
+    // B_i: fraction of grand mean to mix in (higher = more shrinkage)
+    const B = withinVar / (withinVar + betweenVar);
+    return (1 - B) * value + B * grandMean;
   },
 
   // =========================================
@@ -646,32 +641,60 @@ const StatEngine = {
   },
 
   // Step 5: Apply James-Stein shrinkage across all industries (post-processing)
+  // Empirical Bayes: estimate between-industry variance τ², then shrink each
+  // industry's estimate proportionally to its uncertainty relative to τ².
   applyShrinkage(allIndustries, metricKeys) {
     for (const m of metricKeys) {
-      // Collect all consensus values for this metric
-      const allVals = [];
-      for (const [, consensus] of Object.entries(allIndustries)) {
-        if (consensus[m] && consensus[m].value != null) allVals.push(consensus[m].value);
+      // Collect all consensus values and their within-industry variances
+      const entries = [];
+      for (const [ind, consensus] of Object.entries(allIndustries)) {
+        const d = consensus[m];
+        if (!d || d.value == null) continue;
+        // Within-industry variance: use sd² from CI computation, or estimate from source spread
+        let withinVar;
+        if (d.sd > 0 && d.sources.length >= 2) {
+          // SE² = sd² / nEff
+          const nEff = d.sources.length; // simplified effective sample size
+          withinVar = (d.sd * d.sd) / nEff;
+        } else {
+          // Single source: very uncertain, use a large proxy variance
+          // Set to 4× the between-industry variance (computed below) to ensure strong shrinkage
+          withinVar = null; // mark for later
+        }
+        entries.push({ ind, d, withinVar });
       }
-      if (allVals.length < 3) continue;
+      if (entries.length < 3) continue;
+
       const grandMean = this.computeGrandMean(allIndustries, m);
       if (grandMean == null) continue;
       this._grandMeans[m] = grandMean;
 
-      for (const [, consensus] of Object.entries(allIndustries)) {
-        const d = consensus[m];
-        if (!d || d.value == null) continue;
-        const srcCount = d.sources.length;
-        if (srcCount >= 4) continue; // enough data, skip shrinkage
-        const original = d.value;
-        d.value = this.jamesSteingShrink(original, grandMean, allVals, srcCount);
-        d._shrunk = original !== d.value;
-        d._preShrink = original;
+      // Compute between-industry variance τ² (variance of consensus values around grand mean)
+      const vals = entries.filter(e => e.withinVar != null).map(e => e.d.value);
+      if (vals.length < 2) continue;
+      let sumSqDev = 0;
+      for (const v of vals) sumSqDev += Math.pow(v - grandMean, 2);
+      const tau2 = sumSqDev / (vals.length - 1); // between-industry variance
+
+      // Fill in proxy within-variance for single-source industries
+      // Single source → withinVar = 4×τ² (high uncertainty, moderate shrinkage)
+      for (const e of entries) {
+        if (e.withinVar == null) e.withinVar = 4 * tau2;
+      }
+
+      for (const e of entries) {
+        const srcCount = e.d.sources.length;
+        if (srcCount >= 5) continue; // enough data, skip shrinkage
+        const original = e.d.value;
+        e.d.value = this.jamesSteingShrink(original, grandMean, e.withinVar, tau2);
+        e.d._shrunk = Math.abs(original - e.d.value) > 0.01;
+        e.d._preShrink = original;
+        e.d._shrinkB = e.withinVar / (e.withinVar + tau2); // shrinkage intensity
         // Also adjust CI bounds proportionally
-        if (d._shrunk && original !== 0) {
-          const ratio = d.value / original;
-          d.ci_low = Math.max(0, d.ci_low * ratio);
-          d.ci_high = d.ci_high * ratio;
+        if (e.d._shrunk && original !== 0) {
+          const ratio = e.d.value / original;
+          e.d.ci_low = Math.max(0, e.d.ci_low * ratio);
+          e.d.ci_high = e.d.ci_high * ratio;
         }
       }
     }
@@ -721,13 +744,14 @@ const StatEngine = {
     }
 
     // James-Stein
-    console.log('\n--- James-Stein Shrinkage ---');
+    console.log('\n--- James-Stein Shrinkage (Empirical Bayes) ---');
     const grandCPM = this._grandMeans?.cpm;
     if (grandCPM) console.log(`  Grand mean CPM: $${grandCPM.toFixed(2)}`);
     let shrunkCount = 0;
     for (const [ind, c] of Object.entries(normalizedIndustries)) {
       if (c.cpm?._shrunk) {
-        console.log(`  ${ind}: $${c.cpm._preShrink.toFixed(2)} → $${c.cpm.value.toFixed(2)} (${c.cpm.sources.length} sources)`);
+        const B = c.cpm._shrinkB;
+        console.log(`  ${ind}: $${c.cpm._preShrink.toFixed(2)} → $${c.cpm.value.toFixed(2)} (${c.cpm.sources.length} src, B=${B?.toFixed(2) || '?'})`);
         shrunkCount++;
       }
     }
