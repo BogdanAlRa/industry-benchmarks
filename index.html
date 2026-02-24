@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Industry Benchmarks Dashboard</title>
+<title>Meta Ads Industry Benchmarks</title>
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
@@ -255,12 +255,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <body>
 
 <div class="topbar">
-  <h1>Industry Benchmarks</h1>
+  <h1>Meta Ads Benchmarks</h1>
   <div class="main-tabs" id="mainTabs">
-    <button class="main-tab active" data-tab="tw">Multi-Channel</button>
-    <button class="main-tab" data-tab="meta">Meta Ads</button>
+    <button class="main-tab" data-tab="tw">Multi-Channel</button>
+    <button class="main-tab active" data-tab="meta">Meta Ads</button>
   </div>
-  <div id="twControls" style="display:contents">
+  <div id="twControls" style="display:none">
     <div class="region-toggle" id="regionToggle">
       <button class="region-btn active" data-region="us">🇺🇸 United States</button>
       <button class="region-btn" data-region="global">🌍 Global</button>
@@ -275,7 +275,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 </div>
 
 <!-- ===== TRIPLE WHALE VIEW ===== -->
-<div id="twView">
+<div id="twView" style="display:none">
   <div class="channel-bar">
     <span class="channel-bar-label">Channels:</span>
     <div class="ch-group" id="chGroupBar">
@@ -294,10 +294,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 </div>
 
 <!-- ===== META ADS VIEW ===== -->
-<div id="metaView" style="display:none">
+<div id="metaView">
   <div class="meta-nav" id="metaNav">
-    <button class="meta-nav-btn active" data-meta="overview">Overview</button>
-    <button class="meta-nav-btn" data-meta="industry">By Industry</button>
+    <button class="meta-nav-btn" data-meta="overview">Overview</button>
+    <button class="meta-nav-btn active" data-meta="industry">By Industry</button>
     <button class="meta-nav-btn" data-meta="country">By Country</button>
     <button class="meta-nav-btn" data-meta="trends">Weekly Trends</button>
     <button class="meta-nav-btn" data-meta="objectives">Objectives & Placements</button>
@@ -1186,7 +1186,7 @@ function dataBadge(sourceCount) {
 // =============================================
 // META ADS RENDERING
 // =============================================
-let metaView='overview',metaSortCol=null,metaSortAsc=true;
+let metaView='industry',metaSortCol=null,metaSortAsc=true;
 
 function showSubControls(show, type) {
   const ctrl = document.getElementById('metaSubControls');
@@ -1896,6 +1896,7 @@ document.getElementById('metaNav').addEventListener('click',e=>{
     document.getElementById('loading').style.display='none';
     document.getElementById('main').style.display='block';
     render();
+    renderMeta();
   }catch(err){
     document.getElementById('loading').innerHTML=`<div style="color:#ef4444">Error: ${err.message}<br><br>Serve via HTTP: python3 -m http.server 8765</div>`;
     console.error(err);
